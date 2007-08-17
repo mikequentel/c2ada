@@ -3,6 +3,9 @@
 
 #include <stdio.h>
 #include <errno.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "lowlevel.h"
 
 #include "printf.h"
@@ -136,13 +139,9 @@ unix_error()
 	extern int sys_nerr;
 
 	if (errno != 0) {
-		if (errno > 0 && errno < sys_nerr) {
-			fputs(sys_errlist[errno], stderr);
-		}
-		else {
-			fprintf(stderr, "errno = %d", errno);
-		}
+                  fprintf(stderr,strerror(errno));
 	}
+	
 }
 
 void

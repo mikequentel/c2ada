@@ -112,7 +112,7 @@ expr_op_string( node_pt e)
 	    }
 	    return char_val_funcname;
 	}
-    case _Bool:
+    case bool:
 	{
 	    static char * toBool_funcname;
 	    if (!toBool_funcname) {
@@ -686,7 +686,7 @@ gen_expr_Not( node_pt e, boolean in_parens )
     }
 
     lparen(in_parens);
-    if (eSub->node_kind==_Bool) {
+    if (eSub->node_kind==bool) {
 	put_string("not ");
 	gen_expr(e->node.unary, FALSE);
     } else {
@@ -747,7 +747,7 @@ gen_expr_func( node_pt e )
     case _Not:
 	return gen_expr_Not;
 
-    case _Bool:
+    case bool:
     case _UnBool:
     case _Char_to_Int:
     case _Int_to_Char:

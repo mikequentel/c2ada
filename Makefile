@@ -9,20 +9,20 @@ GPERF		  = /usr/bin/gperf
 # This variable should point to the top-level Python distribution
 # directory on your system; cf. http://www.python.org .
 #
-PYTHON            = /usr/lib/python1.5
+PYTHON            = /usr/lib/python2.5
 
 ## this is the library name, on my system, I had python 1.5, so the
 ## library was libpython1.5.so, so I type python1.5 below
-PYTHON_LIB        = python1.5
+PYTHON_LIB        = python2.5
 
 ## this is where python .py stuff is
-PYTHON_INCLUDE    = /usr/include/python1.5
+PYTHON_INCLUDE    = /usr/include/python2.5
 
 # HERE should be set to the directory containing the *.py files
 # in the C2Ada source distribution. The form here simply sets this
 # to the source directory.
 #
-HERE = /home/nabbasi/data/ada/c2ada
+HERE = /home/nabbasi/Desktop/c2ada_linux_august_2007
 
 ### no need to change anything below this. Unless you want
 ### to change gcc flags to be non-debug.
@@ -43,7 +43,7 @@ PYTHON_INCLUDES   = -DHAVE_CONFIG_H -I$(PYTHON_INCLUDE)
 PYTHON_SCRIPTS_PATH = $(HERE):$(PYTHON)/Lib
 DEF_PPATH = -DPPATH=\"$(PYTHON_SCRIPTS_PATH)\"
 
-GNU_C_OPTS = -g -Wall -Wimplicit -Wreturn-type -MMD
+GNU_C_OPTS = -g -Wall -Wimplicit -Wreturn-type -MMD -trigraphs
 CC = gcc 
 CFLAGS= $(GNU_C_OPTS) -DDEBUG $(PYTHON_INCLUDES) $(DEF_PPATH) -DLINUX
 LINKER		  = gcc -g

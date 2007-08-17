@@ -140,7 +140,7 @@ typedef enum {
 	_Not,
 	_Aggregate,
 	_Indirect,					/* last unary */
-	_Bool,    /* cvt to Boolean, Ada only, unary */
+	bool,    /* cvt to Boolean, Ada only, unary */
 	_UnBool,  /* cvt bool->int,  Ada only, unary */
 	_Char_to_Int,
 	_Int_to_Char,

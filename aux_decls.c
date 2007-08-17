@@ -1,6 +1,7 @@
 /* $Source: /home/CVSROOT/c2ada/aux_decls.c,v $ */
 /* $Revision: 1.3 $  $Date: 1999/02/09 18:16:51 $ */
 
+
 #include <string.h>
 
 #include "lowlevel.h"
