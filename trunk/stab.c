@@ -1,6 +1,7 @@
 /* $Source: /home/CVSROOT/c2ada/stab.c,v $ */
 /* $Revision: 1.2 $ $Date: 1999/02/03 19:45:04 $ $Author: nabbasi $ */
 
+#include <string.h>
 #include <sys/types.h>
 #include <stdlib.h>
 #include "lowlevel.h"

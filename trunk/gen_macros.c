@@ -466,7 +466,7 @@ static void
 do_macro_body(buf, ret, coercion, fname, all, params)
     char *buf, *ret, *coercion, *fname, *all, *params;
 {
-    static char * no_empty_params ANSI_PROTO((char *));
+    char * no_empty_params ANSI_PROTO((char *));
 
     params = no_empty_params(params);
     if(coercion == NULL)
@@ -1263,7 +1263,7 @@ grok_coercion(coercion_name)
     return NULL;	/* one that gets here is "void * const" */
 }
 
-static char * 
+char * 
 no_empty_params(params)
     char *params;
 {

@@ -2,6 +2,7 @@
 /* $Source: /home/CVSROOT/c2ada/c.prf,v $ */
 /* $Revision: 1.1.1.1 $  $Date: 1999/02/02 12:01:51 $  */
 #include <sys/types.h>
+#include <string.h>
 #include "lowlevel.h"
 #include "host.h"
 #include "files.h"

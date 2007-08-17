@@ -20,7 +20,7 @@
  *
  */
 
-
+#include <stdlib.h>
 #include "hostinfo.h"
 
 #include "lowlevel.h"
@@ -1134,7 +1134,7 @@ gives_bool(node_pt e)
     case _Le:
     case _Land:
     case _Lor:
-    case _Bool:
+    case bool:
 	return TRUE;
     case _Not:
 	return FALSE; /* TBD: Not could be a special case */
@@ -1182,7 +1182,7 @@ adjust_bool( node_pt e, boolean is_bool )
 	if (e0) {
 	    result = new_pos_node(e->node_def, _Ne, e, e0);
 	} else {
-	    result = new_pos_node(e->node_def, _Bool, e);
+	    result = new_pos_node(e->node_def, bool, e);
 	}
     } else {
 	result = new_pos_node(e->node_def, _UnBool, e);
@@ -1529,7 +1529,7 @@ has_side_effects( node_pt e )
     case _Ones_Complement:
     case _Not:
     case _Indirect:					/* last unary */
-    case _Bool:
+    case bool:
     case _UnBool: 
 	return has_side_effects(e->node.unary);
 
@@ -2463,7 +2463,7 @@ fix_expr_func( node_pt expr )
     case _Shr:
 	return fix_expr_Shift;
 
-    case _Bool:
+    case bool:
     case _UnBool:
     case _Exp:
 	/*

@@ -253,7 +253,7 @@ undone_node_requisites( symbols_t syms, node_pt node, unit_n unit )
     case _Not:
     case _Aggregate:
     case _Indirect:	
-    case _Bool:
+    case bool:
     case _UnBool:
     case _Char_to_Int:
     case _Int_to_Char:
@@ -268,7 +268,7 @@ undone_node_requisites( symbols_t syms, node_pt node, unit_n unit )
 	undone_node_requisites(syms, node->node.cond.fals, unit);
 	break;
 
-    default:
+    default: break;
 	/* error */
     }
 }

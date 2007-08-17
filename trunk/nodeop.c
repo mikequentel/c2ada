@@ -140,7 +140,7 @@ node_classof(node_kind_t kind)
     case _Exp:
     case _Concat:
 	return _Binary;
-    case _Bool:
+    case bool:
     case _UnBool:
     case _Char_to_Int:
     case _Int_to_Char:

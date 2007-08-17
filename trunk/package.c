@@ -187,7 +187,7 @@ gen_pkg_def( symbol_pt sym, int indent )
     switch (pkg_def->kind) {
     case Pointers_pkg:
 	gen_ptrs_pkg_def( (ptrs_pkg_def_pt)pkg_def, sym, indent);
-    default:
+    default: break;
     }
 }
 

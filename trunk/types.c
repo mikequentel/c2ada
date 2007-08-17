@@ -5,6 +5,8 @@
  * Most of the semantic routines are found here.
  */
 
+#include <string.h>
+
 #if defined(LINUX)
 #include <malloc.h>
 #endif 

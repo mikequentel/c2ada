@@ -179,7 +179,7 @@ nameof_node_kind(node_kind_t n)
 	case _Not: return "_Not";
 	case _Aggregate: return "_Aggregate";
 	case _Indirect: return "_Indirect";
-	case _Bool: return "_Bool";
+	case bool: return "_Bool";
 	case _UnBool: return "_UnBool";
 	case _Cond: return "_Cond";
 	default: return "<???>";
