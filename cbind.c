@@ -29,12 +29,6 @@
 static char *vec[MAXARGS];
 int vec_index = 1;
 
-#if !defined(LINUX)  /* these allready defined in system headers */
-extern void fputs ANSI_PROTO((char *, FILE *));
-extern void fprintf ANSI_PROTO((FILE *, char *, ...));
-extern void fputc ANSI_PROTO((char, FILE *));
-#endif
-
 int output_refs = 1;            /* Output references from Ada back to C */
 
 static int

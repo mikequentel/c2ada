@@ -5,7 +5,6 @@
 #define _H_ERRORS_
 
 #include <stdarg.h>
-#include "lowlevel.h"
 
 typedef enum {
     Report_fatal,
@@ -20,13 +19,13 @@ extern void vreport(report_t severity,
 		    char *format,
 		    va_list ap);
 
-extern void fatal ANSI_PROTO((char*,int,char*,...));
-extern void error ANSI_PROTO((char*,int,char*,...));
-extern void warning ANSI_PROTO((char*,int,char*,...));
-extern void inform ANSI_PROTO((char*,int,char*,...));
+extern void fatal(char*,int,char*,...);
+extern void error(char*,int,char*,...);
+extern void warning(char*,int,char*,...);
+extern void inform(char*,int,char*,...);
 
-extern void assert_failed ANSI_PROTO((char*,int,char*));
-extern void syserr ANSI_PROTO((char*,int));
+extern void assert_failed(char*,int,char*);
+extern void syserr(char*,int);
 
 #endif /* _H_ERRORS_ */
 

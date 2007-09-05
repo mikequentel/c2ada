@@ -7,8 +7,6 @@
 #include "gen_expr.h"
 #include "print.h"
 
-#include "printf.h"
-
 #define NEXT 2		/* next indentation level */
 #define MAXPRINT	1000
 
@@ -57,7 +55,6 @@ static void print_node_t(node_pt n, int indent);
 static void print_symbol_t(symbol_pt s, int indent);
 static void print_typeinfo_t(typeinfo_t *t, int indent);
 
-#if !defined(LINUX) /* function not used! */
 static void 
 print_unknown(s, val)
     char *s;
@@ -65,7 +62,6 @@ print_unknown(s, val)
 {
     printf("unknown %s %d", s, val);
 }
-#endif
 
 
 char*
@@ -91,7 +87,7 @@ nameof_stmt_kind(stmt_kind_t s)
         case _Null: return "_Null";
         case _FuncDef: return "_FuncDef";
 	case _MacroBody: return "_MacroBody";
-	default: return "<???>";
+	default: return "<?" "?" "?>";
     }
 }
 
@@ -112,7 +108,7 @@ nameof_typekind(typekind_t t)
         case function_type: return "function_type";
         case enum_type: return "enum_type";
         case typemodifier: return "typemodifier";
-	default: return "<???>";
+	default: return "<?" "?" "?>";
     }
 }
 
@@ -182,7 +178,7 @@ nameof_node_kind(node_kind_t n)
 	case bool: return "_Bool";
 	case _UnBool: return "_UnBool";
 	case _Cond: return "_Cond";
-	default: return "<???>";
+	default: return "<?" "?" "?>";
     }
 }
 
@@ -195,7 +191,7 @@ nameof_sym_kind(sym_kind_t s)
 	case param_symbol: return "param_symbol";
 	case var_symbol: return "var_symbol";
 	case enum_literal: return "enum_literal";
-	default: return "<???>";
+	default: return "<?" "?" "?>";
     }
 }
 

@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 
-#include "lowlevel.h"
 #include "il.h"
 #include "errors.h"
 #include "order.h"
@@ -216,7 +215,6 @@ char * getpythonpath()
     }
 }
 
-#if !defined(LINUX) /* function not called! */
 /* for debugging */
 static char *
 repr(PyObject * py)
@@ -224,4 +222,3 @@ repr(PyObject * py)
     PyObject * result = PyObject_Repr( py );
     return PyString_AsString( result );
 }
-#endif

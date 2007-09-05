@@ -6,7 +6,8 @@
  * It contains the statement creation routines called from the grammar.
  */
 
-#include "lowlevel.h"
+#include <assert.h>
+
 #include "errors.h"
 #include "stmt.h"
 #include "gen_stmt.h"

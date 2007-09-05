@@ -4,6 +4,7 @@
 #ifndef H_CONTEXT
 #define H_CONTEXT
 
+#include "boolean.h"
 #include "stmt.h"
 
 typedef struct context_t ctxt_t, *ctxt_pt;

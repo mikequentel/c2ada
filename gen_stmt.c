@@ -9,13 +9,14 @@
  * statements, and the expressions therein, into a suitable form.
  */
 
+#include <assert.h>
 #include <stdio.h>
+
 #include "errors.h"
 #include "format.h"
 #include "gen_stmt.h"
 #include "gen_expr.h"
 #include "print.h"
-#include "printf.h"
 #include "gen.h"
 #include "allocate.h"
 #include "anonymous.h"
@@ -354,7 +355,6 @@ new_case_stmt()
     return allocate(sizeof(case_stmt));
 }
 
-#if !defined(LINUX) /* function not used! */
 static void 
 free_case_stmt(case_stmt_pt cp)
 {
@@ -377,7 +377,6 @@ free_case_stmt(case_stmt_pt cp)
     deallocate(cp);
     
 }
-#endif
 
 static case_blist_pt
 add_to_blist(case_stmt_pt cp, case_blist_pt bp)

@@ -5,13 +5,13 @@
  * Ridiculous heap routines
  */
 
+#include <assert.h>
 #include <sys/types.h>
 #include <string.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <memory.h>
 #include <stdio.h>
 
-#include "lowlevel.h"
 #include "errors.h"
 #include "allocate.h"
 

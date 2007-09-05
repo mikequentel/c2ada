@@ -9,9 +9,7 @@
 #ifndef _H_STMT_
 #define _H_STMT_
 
-#ifndef _H_IL_
 #include "il.h"
-#endif
 
 typedef struct stmt_t * stmt_pt;
 
@@ -199,6 +197,6 @@ typedef struct case_stmt {	/* C switch stmt, Ada case stmt */
     case_blist_pt default_branch;
 } case_stmt, *case_stmt_pt;
 
-extern void gen_funcdef ANSI_PROTO((symbol_pt funcdef, int indent));
+extern void gen_funcdef(symbol_pt funcdef, int indent);
 
 #endif

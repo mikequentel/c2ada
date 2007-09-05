@@ -5,11 +5,12 @@
  * Functions to generate anonymous Ada types
  */
 
+#include <assert.h>
 #include <sys/types.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "lowlevel.h"
+
 #include "errors.h"
 #include "host.h"
 #include "files.h"
@@ -65,7 +66,6 @@ predef_name_copy(char * s)
     return new_string(predef_name(s));
 }
 
-#if !defined(LINUX)  /* function not used! */
 /*
  * don't generate names ending in _t_t
  */
@@ -80,7 +80,6 @@ ends_in_t(str)
 	}
 	return 0;
 }
-#endif
 
 /*
  * look for type in Anonymous type hash table

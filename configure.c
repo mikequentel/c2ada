@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 
-#include "lowlevel.h"
 #include "errors.h"
 #include "allocate.h"
 #include "files.h"
@@ -137,9 +136,7 @@ configured_sym_info( symbol_pt sym, typeinfo_pt type )
     PyObject * return_type_is_voidObj;
     PyObject * ada_nameObj;
 
-#if !defined(LINUX)
     file_id_t file = pos_file(sym->sym_def);
-#endif
 
     source = file_source( pos_file(sym->sym_def) );
     if (!source) return FALSE;

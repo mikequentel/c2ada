@@ -4,10 +4,8 @@
 #ifndef _H_LOCALFUNC_
 #define _H_LOCALFUNC_
 
-#ifndef _H_IL_
+#include "boolean.h"
 #include "il.h"
-#endif
-
 #include "stmt.h"
 
 extern stmt_pt return_bool_stmt(boolean value, file_pos_t pos );

@@ -1,7 +1,6 @@
 /* $Source: /home/CVSROOT/c2ada/localfunc.c,v $ */
 /* $Revision: 1.1.1.1 $  $Date: 1999/02/02 12:01:51 $ */
 
-#include "lowlevel.h"
 #include "localfunc.h"
 #include "types.h"
 #include "nodeop.h"

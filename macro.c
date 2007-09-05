@@ -1,12 +1,12 @@
 /* $Source: /home/CVSROOT/c2ada/macro.c,v $ */
 /* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
 
+#include <assert.h>
 #include <memory.h>
 #include <stdio.h>
 #include <sys/types.h>
-#include "lowlevel.h"
+
 #include "errors.h"
-#include "printf.h"
 #include "files.h"
 #include "hash.h"
 #include "buffer.h"
@@ -16,7 +16,7 @@
 #include "units.h"
 #include "comment.h"
 
-/* from scan.c*/
+/* from scan.c */
 extern comment_block_pt fetch_comment_block(void);
 
 #undef NULL

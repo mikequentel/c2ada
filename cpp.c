@@ -4,13 +4,15 @@
 /*
  * Routines to implement a C preprocessor
  */
+
+#include <assert.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <fcntl.h>
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
-#include "lowlevel.h"
+
 #include "errors.h"
 #include "files.h"
 #include "hash.h"
@@ -139,7 +141,6 @@ unhandled(file, line)
     fatal(FN, LN, "Unhandled case %s:%d", file, line);
 }
 
-#if !defined(LINUX)  /* function not used! */
 static void
 not_implemented(file, line)
     char *file;
@@ -147,7 +148,6 @@ not_implemented(file, line)
 {
     fatal(FN, LN, "Not yet implemented (source %s:%d)", file, line);
 }
-#endif
 
 static void
 bad_directive()
@@ -179,7 +179,6 @@ unexpected_eof(msg)
     unexpected(buf);
 }
 
-#if !defined(LINUX)  /* function not used ! */
 static void
 unexpected_eol(msg)
     char *msg;
@@ -188,7 +187,6 @@ unexpected_eol(msg)
     sprintf(buf, "end of line %s", msg);
     unexpected(buf);
 }
-#endif
 
 static char*
 charstr(c)
@@ -1749,14 +1747,15 @@ grok_undef(buf, c)
 }
 
 
+/* from cpp_perf.c */
+struct resword {char *name; int token;};
+extern struct resword *cpp_keyword(char *str, int len);
+
 static int
 scan_directive(buf, c)
     buffer_t *buf;
     int c;
 {
-    struct resword {char *name; int token;};
-    extern struct resword *cpp_keyword ANSI_PROTO((char *str, int len));
-
     buffer_t lbuf;
     char ident[32];
     int len;

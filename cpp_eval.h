@@ -25,7 +25,7 @@ typedef struct {
 	typeinfo_pt  explicit_type;
 } cpp_eval_result_t;
 
-extern cpp_eval_result_t cpp_eval ANSI_PROTO((char*));
+extern cpp_eval_result_t cpp_eval(char*);
 
 #define EVAL_FAILED(x)			((x).eval_result_kind == eval_failed)
 #define IS_EVAL_INT(x)			((x).eval_result_kind == eval_int)

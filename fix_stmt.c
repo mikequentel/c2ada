@@ -20,10 +20,10 @@
  *
  */
 
+#include <assert.h>
 #include <stdlib.h>
-#include "hostinfo.h"
 
-#include "lowlevel.h"
+#include "hostinfo.h"
 #include "errors.h"
 #include "context.h"
 #include "fix_stmt.h"
@@ -781,7 +781,6 @@ promote( node_pt e, typeinfo_pt to_type, ctxt_pt ctxt )
 
 }
 
-#if !defined(LINUX) /* function not used ! */
 static node_pt
 int_if_char( node_pt e )
 {
@@ -790,7 +789,6 @@ int_if_char( node_pt e )
     }
     return e;
 }
-#endif
 
 static node_pt
 promote_integer( node_pt e )
@@ -1353,11 +1351,7 @@ type_to_builtin( typeinfo_pt type )
     }
     return 0;
 }
-    
 
-
-
-#if !defined(LINUX) /* function not used ! */
 static node_pt
 to_unsigned( node_pt e )
     /* Cast result to unsigned integer type if it's signed */
@@ -1375,7 +1369,6 @@ to_unsigned( node_pt e )
 	return e;
     }
 }
-#endif
 
 static boolean
 val_must_be_unsigned( host_int_t val, int size )
