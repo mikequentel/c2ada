@@ -6,9 +6,10 @@
  * on any lexeme size.
  */
 
+#include <assert.h>
 #include <sys/types.h>
-#include <malloc.h>
-#include "lowlevel.h"
+#include <stdlib.h>
+
 #include "errors.h"
 #include "buffer.h"
 #include "allocate.h"

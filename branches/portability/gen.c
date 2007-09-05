@@ -1,17 +1,15 @@
 /* $Source: /home/CVSROOT/c2ada/gen.c,v $ */
 /* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
 
-#include "hostinfo.h"
-
-#include "lowlevel.h"
-#include "errors.h"
-
+#include <assert.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 
+#include "errors.h"
+#include "hostinfo.h"
 #include "host.h"
 #include "files.h"
 #include "hash.h"
@@ -83,11 +81,6 @@ static struct {
 
 /* forward references */
 static int gen_params( symbol_t * params, int pass, char * result_to_add );
-
-#if !defined(LINUX) /* allready in system headers on linux */
-extern void printf(char *, ...);
-extern void fprintf(FILE *, char *, ...);
-#endif
 
 static void inline_func(symbol_t *, int);
 
@@ -618,12 +611,12 @@ print_comment(char * p)
 {
         if (!p) return;
 
-#if defined(LINUX) /* to make gcc -Wall happy on linux */
-	while (is_white( (int)*p)) {
+#if 0
+	while (is_white((int)*p)) {
 		p++;
 	}
 #else
-	while (is_white(*p)) {
+	while (isspace(*p)) {
 		p++;
 	}
 #endif
@@ -2446,14 +2439,12 @@ gen_params(params, pass, result_to_add)
     return cur_indent();
 }
 
-#if !defined(LINUX) /* function not used! */
 static int
 multiple_params(params)
 	symbol_t *params;
 {
 	return params != NULL && params->sym_parse_list != NULL;
 }
-#endif
 
 static boolean
 declaring_sym_in_spec(symbol_pt sym)

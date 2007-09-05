@@ -1,7 +1,8 @@
 /* $Source: /home/CVSROOT/c2ada/package.c,v $ */
 /* $Revision: 1.2 $  $Date: 1999/02/03 19:45:04 $ */
 
-#include "lowlevel.h"
+#include <assert.h>
+
 #include "il.h"
 #include "types.h"
 #include "anonymous.h"

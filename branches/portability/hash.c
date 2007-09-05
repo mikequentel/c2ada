@@ -1,6 +1,6 @@
 /* $Source: /home/CVSROOT/c2ada/hash.c,v $ */
 /* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
-#include "lowlevel.h"
+
 #include "hash.h"
 
 hash_t

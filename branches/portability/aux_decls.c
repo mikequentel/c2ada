@@ -4,7 +4,6 @@
 
 #include <string.h>
 
-#include "lowlevel.h"
 #include "aux_decls.h"
 #include "allocate.h"
 #include "gen.h"
@@ -130,9 +129,7 @@ static unit_type_usage_t use_type_o;
 static PyObject * module_UnitDict;
 static PyObject * class_UnitDict;
 
-#if !defined(LINUX)  /* Not used! */
 static PyObject * unitDict_use_type;
-#endif
 
 void
 init_unit_dict(void)
@@ -226,9 +223,7 @@ gen_unit_type_usages(unit_type_usage_pt          usage,
 {
     typeinfo_pt type_item;
     int i;
-#if !defined(LINUX)  /* Not used!*/
     boolean has_concats;
-#endif
 
     PyObject * key;           /* unit */
     PyObject * entry;         /* entry = stdarg_concat.dict[key] */

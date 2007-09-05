@@ -4,6 +4,7 @@
 #ifndef _AUX_DECLS
 #define _AUX_DECLS
 
+#include "boolean.h"
 #include "il.h"
 #include "types.h"
 #include "units.h"

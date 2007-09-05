@@ -1,7 +1,7 @@
 /* $Source: /home/CVSROOT/c2ada/order.c,v $ */
 /* $Revision: 1.1.1.1 $  $Date: 1999/02/02 12:01:51 $ */
 
-#include "lowlevel.h"
+#include "boolean.h"
 #include "il.h"
 #include "units.h"
 #include "order.h"

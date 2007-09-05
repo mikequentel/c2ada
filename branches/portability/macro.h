@@ -4,9 +4,8 @@
 #ifndef _H_MACRO_
 #define _H_MACRO_
 
-#ifndef _H_CPP_EVAL_
+#include "boolean.h"
 #include "cpp_eval.h"
-#endif
 
 /*
  * If a macro is a function, split up the right-hand-side
@@ -51,10 +50,10 @@ typedef struct {
 
 extern macro_t *unit_macros[];
 
-extern void macro_init ANSI_PROTO((int));
-extern void macro_undef ANSI_PROTO((char*));
-extern void macro_def ANSI_PROTO((char*, char*, int, int, 
-				  char **, file_pos_t, char*));
-extern macro_t *macro_find ANSI_PROTO((char*));
+extern void macro_init(int);
+extern void macro_undef(char*);
+extern void macro_def(char*, char*, int, int, 
+				  char **, file_pos_t, char*);
+extern macro_t *macro_find(char*);
 
 #endif /* _H_MACRO_ */

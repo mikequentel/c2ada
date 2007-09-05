@@ -1,6 +1,8 @@
 /* $Source: /home/CVSROOT/c2ada/configure.h,v $ */
 /* $Revision: 1.1.1.1 $  $Date: 1999/02/02 12:01:51 $ */
 
+#include "boolean.h"
+
 extern void configure_project( char * filename );
 
 extern char ** configured_reserved_ids(int * count_p);

@@ -8,10 +8,10 @@
 #	define free(x)
 #endif
 
-extern char *new_string ANSI_PROTO((char*));
-extern char *new_strf( char *, ... ); /* uses printf style formatting */
-extern void *allocate ANSI_PROTO((size_t size));
-extern void deallocate ANSI_PROTO((void *ptr));
+extern char *new_string(char*);
+extern char *new_strf(char *, ... ); /* uses printf style formatting */
+extern void *allocate(size_t size);
+extern void deallocate(void *ptr);
 
 #define NEW(type) ((type*)allocate(sizeof(type)))
 

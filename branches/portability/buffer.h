@@ -20,15 +20,15 @@ typedef struct buffer_t {
 	struct buffer_t *next, *last;
 } buffer_t;
 
-extern int buf_empty ANSI_PROTO((buffer_t*));
-extern int buf_count ANSI_PROTO((buffer_t*));
-extern void buf_add ANSI_PROTO((buffer_t*, int));
-extern void buf_add_str ANSI_PROTO((buffer_t*, char*));
-extern char buf_get ANSI_PROTO((buffer_t*));
-extern void buf_init ANSI_PROTO((buffer_t*));
-extern void buf_destroy ANSI_PROTO((buffer_t*));
-extern void buf_concat ANSI_PROTO((buffer_t*,buffer_t*));
-extern void buf_move_to ANSI_PROTO((buffer_t*,char*));
-extern char *buf_get_str ANSI_PROTO((buffer_t*));
+extern int buf_empty(buffer_t*);
+extern int buf_count(buffer_t*);
+extern void buf_add(buffer_t*, int);
+extern void buf_add_str(buffer_t*, char*);
+extern char buf_get(buffer_t*);
+extern void buf_init(buffer_t*);
+extern void buf_destroy(buffer_t*);
+extern void buf_concat(buffer_t*,buffer_t*);
+extern void buf_move_to(buffer_t*,char*);
+extern char *buf_get_str(buffer_t*);
 
 #endif /* _H_BUFFER_ */

@@ -1,13 +1,14 @@
 /* $Source: /home/CVSROOT/c2ada/gen_macros.c,v $ */
 /* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
 
+#include <assert.h>
 #include <stdio.h>
 #include <sys/types.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <memory.h>
 #include <string.h>
 #include <ctype.h>
-#include "lowlevel.h"
+
 #include "allocate.h"
 #include "errors.h"
 #include "il.h"
@@ -23,7 +24,6 @@
 #include "cpp_eval.h"
 #include "format.h"
 #include "units.h"
-#include "printf.h"
 #include "stab.h"
 #include "stmt.h"
 #include "types.h"
@@ -32,11 +32,12 @@
 macro_t *unit_macros[MAX_UNIQ_FNAMES];
 static macro_t *unknown_macro_list = NULL;
 
-static macro_function_t * grok_macro_function ANSI_PROTO((char * rhs));
-struct typeinfo_t * grok_coercion ANSI_PROTO((char *type_name));
+static char * no_empty_params(char *);
 
-static int match_param_name 
-    ANSI_PROTO((char *formal_name, char *body_name));
+static macro_function_t * grok_macro_function(char * rhs);
+struct typeinfo_t * grok_coercion(char *type_name);
+
+static int match_param_name(char *formal_name, char *body_name);
 
 extern int auto_package;
 extern int ada_version;
@@ -66,7 +67,6 @@ macro_enq(m)
     }
 }
 
-#if !defined(LINUX) /* function not used ! */
 static void 
 dump_macros(list, max)
     macro_t *list;
@@ -86,7 +86,6 @@ dump_macros(list, max)
     }
     fprintf(stderr, "----------- end macro dump --------\n");
 }
-#endif
 
 void 
 gen_macro_warnings()
@@ -460,14 +459,11 @@ after_coercion:
     }
     return FALSE;
 }
-
-
+ 
 static void 
 do_macro_body(buf, ret, coercion, fname, all, params)
     char *buf, *ret, *coercion, *fname, *all, *params;
 {
-    char * no_empty_params ANSI_PROTO((char *));
-
     params = no_empty_params(params);
     if(coercion == NULL)
 	sprintf(buf, "%s %s%s%s;", ret, fname, all, params);
@@ -870,21 +866,28 @@ finish_macros(m)
  * ***************************************/
 
 #define INIT register char *sp = instring;
-#define GETC() (*sp++)
-#define PEEKC() (*sp)
-#define UNGETC(C) (--sp)
-#define RETURN(C) return;
-#define ERROR(c) regerr(c)
-#define MAXX 100
 
-#include <regexp.h>
+#include <regex.h>
 
-#undef INIT
-#undef GETC
-#undef PEEKC
-#undef UNGETC
-#undef RETURN
-#undef ERROR
+/*
+ * Implementation of regexp.h's step() in terms of regex.h.
+ */
+
+char *loc1, *loc2;
+
+static int step_impl(const char *string, const regex_t *expbuf)
+{
+  regmatch_t match;
+  if (regexec(expbuf, string, 1, &match, 0) == 0) {
+    loc1 = string + match.rm_so;
+    loc2 = string + match.rm_eo;
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+#define step(string, expbuf) step_impl(string, &expbuf)
 
 int
 regerr(err)
@@ -896,74 +899,54 @@ regerr(err)
 
 /* used by grok_macro_function */
 static char *ident = "[a-zA-Z_][a-zA-Z0-9_]*";
-static char ident_buf[MAXX];
+static regex_t ident_buf;
 static char *in_parens = "(.*)";
-static char in_parens_buf[MAXX];
+static regex_t in_parens_buf;
 static char *next_arg = "[,)]";
-static char next_arg_buf[MAXX];
+static regex_t next_arg_buf;
 
 /* used by grok_coercion */
 static char *int_name = "^[ 	]*int[ 	]*";
-static char int_buf[MAXX];
-static int  int_circf;
+static regex_t int_buf;
 
 static char *const_name = "^[ 	]*const[ 	]*";
-static char const_buf[MAXX];
-static int  const_circf;
+static regex_t const_buf;
 
 static char *char_name = "^[ 	]*char[ 	]*";
-static char char_buf[MAXX];
-static int  char_circf;
+static regex_t char_buf;
 
 static char *empty_params_name = "([ 	]*)";
-static char empty_params_buf[MAXX];
+static regex_t empty_params_buf;
 
 static char *float_name = "^[ 	]*float[ 	]*";
-static char float_buf[MAXX];
-static int  float_circf;
+static regex_t float_buf;
 
 static char *double_name = "^[ 	]*double[ 	]*";
-static char double_buf[MAXX];
-static int  double_circf;
+static regex_t double_buf;
 
 static char *short_name = "^[ 	]*short[ 	]*";
-static char short_buf[MAXX];
-static int  short_circf;
+static regex_t short_buf;
 
 static char *long_name = "^[ 	]*long[ 	]*";
-static char long_buf[MAXX];
-static int  long_circf;
+static regex_t long_buf;
 
 static char *unsigned_name = "^[ 	]*unsigned[ 	]*";
-static char unsigned_buf[MAXX];
-static int  unsigned_circf;
+static regex_t unsigned_buf;
 
 static char *signed_name = "^[ 	]*signed[ 	]*";
-static char signed_buf[MAXX];
-static int  signed_circf;
+static regex_t signed_buf;
 
 static char *void_name = "^[ 	]*void[ 	]*";
-static char void_buf[MAXX];
-static int  void_circf;
+static regex_t void_buf;
 
 static char *star_name = "^[ 	]*\\*[ 	]*";
-static char star_buf[MAXX];
-static int  star_circf;
+static regex_t star_buf;
 
 static char *struct_name = "^struct[ 	]*";
-static char struct_buf[MAXX];
-static int  struct_circf;
+static regex_t struct_buf;
 
 static char *union_name = "^struct\\>";
-static char union_buf[MAXX];
-static int  union_circf;
-
-#if defined(LINUX) /* where is this defined? could not find it 
-                      so remove extern, did not seem to make a difference :) */
-int  circf;
-#else
-extern int  circf;
-#endif
+static regex_t union_buf;
 
 static char *
 new_str(loc1, loc2)
@@ -983,7 +966,6 @@ static void
 init_regex()
 {
     static int first_time = 1;
-    int junk;
 
     if(!first_time) 
 	return;
@@ -995,41 +977,38 @@ init_regex()
     }
 #   endif
 
-#   define COMP(str, buf, circf_var) 		\
-	compile(str, buf, &buf[MAXX], '\0'); 	\
-	circf_var = circf
+#   define COMP(str, buf)			\
+    regcomp(&buf, str, 0)
 
-    COMP(ident,             ident_buf,        junk);
-    COMP(in_parens,         in_parens_buf,    junk);
-    COMP(next_arg,          next_arg_buf,     junk);
-    COMP(empty_params_name, empty_params_buf, junk);
+    COMP(ident,             ident_buf);
+    COMP(in_parens,         in_parens_buf);
+    COMP(next_arg,          next_arg_buf);
+    COMP(empty_params_name, empty_params_buf);
 
-    COMP(char_name,     char_buf,      char_circf);
-    COMP(const_name,    const_buf,     const_circf);
-    COMP(double_name,   double_buf,    double_circf);
-    COMP(float_name,    float_buf,     float_circf);
-    COMP(int_name,      int_buf,       int_circf);
-    COMP(long_name,     long_buf,      long_circf);
-    COMP(short_name,    short_buf,     short_circf);
-    COMP(signed_name,   signed_buf,    signed_circf);
-    COMP(star_name,     star_buf,      star_circf);
-    COMP(struct_name,   struct_buf,    struct_circf);
-    COMP(union_name,    union_buf,     union_circf);
-    COMP(unsigned_name, unsigned_buf,  unsigned_circf);
-    COMP(void_name,     void_buf,      void_circf);
+    COMP(char_name,     char_buf);
+    COMP(const_name,    const_buf);
+    COMP(double_name,   double_buf);
+    COMP(float_name,    float_buf);
+    COMP(int_name,      int_buf);
+    COMP(long_name,     long_buf);
+    COMP(short_name,    short_buf);
+    COMP(signed_name,   signed_buf);
+    COMP(star_name,     star_buf);
+    COMP(struct_name,   struct_buf);
+    COMP(union_name,    union_buf);
+    COMP(unsigned_name, unsigned_buf);
+    COMP(void_name,     void_buf);
 #   undef COMP
 
     first_time = 0;
 }
 
-#if !defined(LINUX) /* function not used ! */
 static void
 unbalanced(loc)
     char *loc;
 {
     printf("error, unbalanced parens %s\n", loc);
 }
-#endif
 
 static char *
 skip_parens(loc, max)
@@ -1094,7 +1073,6 @@ grok_macro_function(rhs)
     /* printf("getting parameters from %s\n", rhs); */
     f.mf_is_pointer = 0;
     f.mf_coercion   = NULL;
-    circf = 0;
     if (step(rhs, ident_buf)) {	/* first identifier */
 	before_func = loc1;
 	after_func = loc2;
@@ -1152,8 +1130,7 @@ grok_coercion(coercion_name)
     init_regex();
     for(;;) {
 	/* type modifiers */
-#       define TM(circf_val, buff, tmod)			\
-	circf = circf_val;					\
+#       define TM(buff, tmod)					\
 	if (step(p, buff)) {					\
 	    typ = concat_types(typ, typeof_typemod(tmod));	\
 	    p = loc2;						\
@@ -1162,11 +1139,11 @@ grok_coercion(coercion_name)
 	    continue;						\
 	}
 
-	TM(const_circf,    const_buf,    TYPEMOD_CONST);
-	TM(long_circf,     long_buf,     TYPEMOD_LONG);
-	TM(short_circf,    short_buf,    TYPEMOD_SHORT);
-	TM(signed_circf,   signed_buf,   TYPEMOD_SIGNED);
-	TM(unsigned_circf, unsigned_buf, TYPEMOD_UNSIGNED);
+	TM(const_buf,    TYPEMOD_CONST);
+	TM(long_buf,     TYPEMOD_LONG);
+	TM(short_buf,    TYPEMOD_SHORT);
+	TM(signed_buf,   TYPEMOD_SIGNED);
+	TM(unsigned_buf, TYPEMOD_UNSIGNED);
 	/*
 	 * don't bother with volatile, typedef, extern, static, auto,
 	 * register, or inline for a type coercion
@@ -1174,8 +1151,7 @@ grok_coercion(coercion_name)
 #       undef TM
 
 	/* basic types */
-#       define BT(circf_val, buff, bastype)			\
-	circf = circf_val;					\
+#       define BT(buff, bastype)				\
 	if (step(p, buff)) {					\
 	    typ = concat_types(typ, bastype);			\
 	    p = loc2;						\
@@ -1185,22 +1161,21 @@ grok_coercion(coercion_name)
 	}
 
 	/* basic types */
-	BT(char_circf,   char_buf,   typeof_char());
-	BT(double_circf, double_buf, typeof_double());
-	BT(float_circf,  float_buf,  typeof_float());
-	BT(int_circf,    int_buf,    typeof_int());
-	BT(void_circf,   void_buf,   typeof_void());
+	BT(char_buf,   typeof_char());
+	BT(double_buf, typeof_double());
+	BT(float_buf,  typeof_float());
+	BT(int_buf,    typeof_int());
+	BT(void_buf,   typeof_void());
 #       undef BT
 
 	/* struct and union */
-#       define SU(circf_val, buff, prefix)				\
-	circf = circf_val;						\
+#       define SU(buff, prefix)						\
 	if (step(p, buff) && step(loc2, ident_buf)) {			\
 	    p = loc2;							\
 	    buf[0] = prefix;						\
 	    strncpy(&buf[1], loc1, loc2-loc1);				\
 	    buf[loc2-loc1+1] = '\0';					\
-	    if ((sym = find_sym(buf)) == NULL) {				\
+	    if ((sym = find_sym(buf)) == NULL) {			\
 		return NULL;						\
 	    } else {							\
 		typ = concat_types(typ, sym->sym_type);			\
@@ -1211,8 +1186,8 @@ grok_coercion(coercion_name)
 	}
 
 	/* struct and union */
-	SU(struct_circf, struct_buf, STRUCT_PREFIX);
-	SU(union_circf,  union_buf,  UNION_PREFIX);
+	SU(struct_buf, STRUCT_PREFIX);
+	SU(union_buf,  UNION_PREFIX);
 #       undef SU
 
 	/* typedefs */
@@ -1244,7 +1219,6 @@ grok_coercion(coercion_name)
 
     /* indirections */
 
-    circf = star_circf;
     while(step(p, star_buf)) {
 	typ = add_pointer_type(typ);
 	sym = get_anonymous_type(typ);
@@ -1263,7 +1237,7 @@ grok_coercion(coercion_name)
     return NULL;	/* one that gets here is "void * const" */
 }
 
-char * 
+static char * 
 no_empty_params(params)
     char *params;
 {
@@ -1277,13 +1251,15 @@ static int
 match_param_name(formal_name, body_name)
     char *formal_name, *body_name;
 {
-    char buf1[MAXX], buf2[MAXX];
+    char pattern[100];
+    regex_t compiled;
+    regmatch_t matches[1];
 
     if (body_name == NULL)
 	return(0);
-    sprintf(buf1, "\\<%s\\>", formal_name);
-    compile(buf1, buf2, &buf2[MAXX], '\0');
-    return(step(body_name, buf2));
+    sprintf(pattern, "\\<%s\\>", formal_name);
+    regcomp(&compiled, pattern, 0);
+    return(regexec(&compiled, body_name, 1, matches, 0));
 }
 
 #ifdef TEST_MACROS

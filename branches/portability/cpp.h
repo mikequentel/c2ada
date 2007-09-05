@@ -27,13 +27,13 @@ typedef struct scan_position_t {
     struct scan_position_t *    scan_next;
 } scan_position_t;
 
-extern int  cpp_open ANSI_PROTO((char *path));
-extern void cpp_cleanup ANSI_PROTO((void));
-extern int  cpp_getc ANSI_PROTO((void));
-extern void cpp_search_path ANSI_PROTO((char*));
+extern int  cpp_open(char *path);
+extern void cpp_cleanup(void);
+extern int  cpp_getc(void);
+extern void cpp_search_path(char*);
 extern void cpp_system_search_path(char*);
 extern int  in_system_search_path(char*);
-extern void cpp_show_predefines ANSI_PROTO((void));
+extern void cpp_show_predefines(void);
 
 extern boolean at_file_start;
 

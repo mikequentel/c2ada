@@ -6,10 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "lowlevel.h"
-
-#include "printf.h"
-
 #include "errors.h"
 
 int Num_Errors;
@@ -118,6 +114,7 @@ inform(char *f, int l, char*  fmt, ...)
 	va_end(args);
 }
 
+#if 0
 void
 assert_failed(f, l, msg)
 	char *f, *msg;
@@ -128,20 +125,14 @@ assert_failed(f, l, msg)
 	endmsg();
 	exit(1);
 }
+#endif
 
 static void
 unix_error()
 {
-#if !defined(LINUX)  /* not needed on linux */
-	extern char *sys_errlist[];
-#endif
-
-	extern int sys_nerr;
-
 	if (errno != 0) {
                   fprintf(stderr,strerror(errno));
 	}
-	
 }
 
 void

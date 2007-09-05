@@ -4,12 +4,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 
-#if defined(LINUX)
 #include <sys/param.h>  /* for NBBY */
-#endif
-
-#include "printf.h"
-
 
 #define CHAR_SIZE				sizeof(char)
 #define SHORT_SIZE				sizeof(short int)
@@ -117,18 +112,18 @@ main()
 #endif
 
 	printf("#define BITS_PER_BYTE\t\t\t%d\n\n", NBBY);
-	printf("#define SIZEOF_CHAR\t\t\t\t%d\n", CHAR_SIZE);
-	printf("#define SIZEOF_SHORT\t\t\t%d\n", SHORT_SIZE);
-	printf("#define SIZEOF_INT\t\t\t\t%d\n", INT_SIZE);
-	printf("#define SIZEOF_LONG\t\t\t\t%d\n", LONG_SIZE);
-	printf("#define SIZEOF_FLOAT\t\t\t%d\n", FLOAT_SIZE);
-	printf("#define SIZEOF_DOUBLE\t\t\t%d\n", DOUBLE_SIZE);
+	printf("#define SIZEOF_CHAR\t\t\t\t%lu\n", CHAR_SIZE);
+	printf("#define SIZEOF_SHORT\t\t\t%lu\n", SHORT_SIZE);
+	printf("#define SIZEOF_INT\t\t\t\t%lu\n", INT_SIZE);
+	printf("#define SIZEOF_LONG\t\t\t\t%lu\n", LONG_SIZE);
+	printf("#define SIZEOF_FLOAT\t\t\t%lu\n", FLOAT_SIZE);
+	printf("#define SIZEOF_DOUBLE\t\t\t%lu\n", DOUBLE_SIZE);
 #ifndef sun
-	printf("#define SIZEOF_LONG_DOUBLE\t\t%d\n", LONG_DOUBLE_SIZE);
+	printf("#define SIZEOF_LONG_DOUBLE\t\t%lu\n", LONG_DOUBLE_SIZE);
 #endif
-	printf("#define SIZEOF_ADDRESS\t\t%d\n", ADDRESS_SIZE);
+	printf("#define SIZEOF_ADDRESS\t\t%lu\n", ADDRESS_SIZE);
 
-	printf("\n#define ALIGNOF_CHAR\t\t\t%d\n", CHAR_SIZE);
+	printf("\n#define ALIGNOF_CHAR\t\t\t%lu\n", CHAR_SIZE);
 	printf("#define ALIGNOF_SHORT\t\t\t%d\n", alignof_short());
 	printf("#define ALIGNOF_INT\t\t\t\t%d\n", alignof_int());
 	printf("#define ALIGNOF_LONG\t\t\t%d\n", alignof_long());

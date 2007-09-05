@@ -4,14 +4,11 @@
 #ifndef _H_GEN_EXPR_
 #define _H_GEN_EXPR_
 
-#include "lowlevel.h"
-
-#ifndef _H_IL_
+#include "boolean.h"
 #include "il.h"
-#endif
 
 extern void gen_expr( node_pt e, boolean in_parens );
 
 extern char* null_pointer_value_name( typeinfo_pt type );
 
-#endif
+#endif /* _H_GEN_EXPR_ */

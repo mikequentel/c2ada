@@ -3,7 +3,8 @@
 
 /* Routines concerned with fixing and generating variable initializers */
 
-#include "lowlevel.h"
+#include <assert.h>
+
 #include "il.h"
 #include "errors.h"
 #include "stmt.h"

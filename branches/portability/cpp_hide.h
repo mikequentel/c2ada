@@ -1,3 +1,4 @@
+
 /* $Source: /home/CVSROOT/c2ada/cpp_hide.h,v $ */
 /* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
 #ifndef _H_CPP_HIDE_
@@ -50,16 +51,16 @@ enum {
 	Undef
 };
 
-#define is_eof(c)				((cpp_char_class[(c)] & END_INPUT) != 0)
-#define is_eol(c)				((cpp_char_class[(c)] & END_OF_LINE) != 0)
-#define is_hex_digit(c)			((cpp_char_class[(c)] & XDIGIT) != 0)
+#define is_eof(c)				((cpp_char_class[(int)(c)] & END_INPUT) != 0)
+#define is_eol(c)				((cpp_char_class[(int)(c)] & END_OF_LINE) != 0)
+#define is_hex_digit(c)			((cpp_char_class[(int)(c)] & XDIGIT) != 0)
 #define is_octal_digit(c)		((c) >= '0' && (c) <= '7')
-#define is_digit(c)				((cpp_char_class[(c)] & DIGIT) != 0)
-#define is_white(c)				((cpp_char_class[(c)] & WHITE) != 0)
-#define is_punct(c)				(cpp_char_class[(c)] == PUNCT)
-#define is_alpha(c)				((cpp_char_class[(c)] & ALPHA) != 0)
-#define is_alpha_numeric(c)		((cpp_char_class[(c)] & (ALPHA | DIGIT)) != 0)
-#define classof(c)				(cpp_char_class[(c)])
+#define is_digit(c)				((cpp_char_class[(int)(c)] & DIGIT) != 0)
+#define is_white(c)				((cpp_char_class[(int)(c)] & WHITE) != 0)
+#define is_punct(c)				(cpp_char_class[(int)(c)] == PUNCT)
+#define is_alpha(c)				((cpp_char_class[(int)(c)] & ALPHA) != 0)
+#define is_alpha_numeric(c)		((cpp_char_class[(int)(c)] & (ALPHA | DIGIT)) != 0)
+#define classof(c)				(cpp_char_class[(int)(c)])
 
 #define int_modifier(c)			((c) == 'l' || (c) == 'L' || (c) == 'u' || (c) == 'U')
 #define float_modifier(c)		((c) == 'F' || (c) == 'f' || (c) == 'D' || (c) == 'd')
@@ -68,7 +69,7 @@ enum {
 extern unsigned char cpp_char_class[];
 extern macro_t *macro_list_head;
 
-extern int cpp_getc_from ANSI_PROTO((buffer_t*));
-extern void cpp_set_state ANSI_PROTO((scan_position_t*, cpp_control_state_t*, scan_position_t**, cpp_control_state_t*));
+extern int cpp_getc_from(buffer_t*);
+extern void cpp_set_state(scan_position_t*, cpp_control_state_t*, scan_position_t**, cpp_control_state_t*);
 
 #endif /* _H_CPP_HIDE_ */

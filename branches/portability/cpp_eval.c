@@ -1,10 +1,11 @@
 /* $Source: /home/CVSROOT/c2ada/cpp_eval.c,v $ */
 /* $Revision: 1.2 $ $Date: 1999/02/03 19:45:03 $ $Author: nabbasi $ */
 
+#include <assert.h>
 #include <sys/types.h>
 #include <ctype.h>
 #include <setjmp.h>
-#include "lowlevel.h"
+
 #include "errors.h"
 #include "host.h"
 #include "files.h"

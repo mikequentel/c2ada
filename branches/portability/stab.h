@@ -3,9 +3,9 @@
 #ifndef _H_STAB_
 #define _H_STAB_
 
-extern symbol_t *new_sym ANSI_PROTO((void));
-extern symbol_t *find_sym ANSI_PROTO((char*));
-extern void store_sym ANSI_PROTO((symbol_t*));
+extern symbol_t *new_sym(void);
+extern symbol_t *find_sym(char*);
+extern void store_sym(symbol_t*);
 
 /* Scopes */
 
@@ -30,7 +30,7 @@ extern void set_scope_symbol( scope_id_t scope, symbol_pt sym);
 extern void scope_push( scope_kind_t kind );
 extern void scope_pop( void );
 
-extern int next_param ANSI_PROTO((void));
+extern int next_param (void);
 
 extern scope_id_t new_scope_id(scope_kind_t kind);
 extern scope_id_t new_block_scope(scope_id_t parent);

@@ -5,19 +5,15 @@
  * Most of the semantic routines are found here.
  */
 
+#include <assert.h>
 #include <string.h>
-
-#if defined(LINUX)
-#include <malloc.h>
-#endif 
-
-#include "hostinfo.h"
-
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
-#include "lowlevel.h"
+
 #include "errors.h"
 #include "host.h"
+#include "hostinfo.h"
 #include "files.h"
 #include "hash.h"
 #include "il.h"
@@ -39,14 +35,6 @@
 /* Import from scanner */
 extern file_pos_t yypos;
 extern int auto_package;
-
-#if !defined(LINUX) /* allready defined in system header on linux */
-extern void fputs ANSI_PROTO((char *, FILE *));
-extern void fputc ANSI_PROTO((char, FILE *));
-extern char *malloc ANSI_PROTO((int));
-extern void free ANSI_PROTO((char *));
-extern int strncmp ANSI_PROTO((char *, char *, int));
-#endif
 
 static file_pos_t current_file_pos;
 static char * current_name;
@@ -690,16 +678,13 @@ decl_class(typ)
  * This really is a crappy way of dealing with long long, but
  * it was convenient at the time.
  */
-#if !defined(LINUX) /* function not called! */
 static int
 how_long(tmod)
     int tmod;
 {
     return tmod >> 12;
 }
-#endif
 
-#if !defined(LINUX) /* function not called! */
 static void
 apply_type_mod(tmod, typ)
     int tmod;
@@ -738,7 +723,6 @@ apply_type_mod(tmod, typ)
 	}
     }
 }
-#endif
 
 boolean
 inline_decl(typeinfo_pt type)
@@ -1355,7 +1339,6 @@ grok_decl_list(tspec, vlist, uniq)
     return NULL;
 }
 
-#if !defined(LINUX) /* function not called!  */
 static void
 check_type_base(sym)
     symbol_t *sym;
@@ -1377,7 +1360,6 @@ check_type_base(sym)
 	break;
     }
 }
-#endif
 
 static symbol_t*
 set_symbol_kind(vlist)
@@ -1410,7 +1392,6 @@ set_symbol_kind(vlist)
  * you can say:	 p debug_type(typ)
  * buy vads :-)
  */
-#if !defined(LINUX) /* function not called! */
 static void
 dump_type(typ)
     typeinfo_t *typ;
@@ -1475,7 +1456,6 @@ dump_type(typ)
     }
     fputc('\n',stderr);
 }
-#endif
 
 static int
 simple_ptr_typedef(typ)
@@ -1860,7 +1840,6 @@ grok_enum_lits(tags, typ)
     }
 }
 
-#if !defined(LINUX) /* function not called! */
 static symbol_t*
 gen_enum_sym(id)
     node_t *id;
@@ -1884,7 +1863,6 @@ gen_enum_sym(id)
 
     return sym;
 }
-#endif
 
 static void
 add_tags(decls, tags)
