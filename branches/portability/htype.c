@@ -104,6 +104,17 @@ int
 main()
 {
 
+  /* format strings for printing *SIZE values */
+#ifdef __APPLE__
+#define SIZE_FLAG "%lu"
+#elif defined linux
+#define SIZE_FLAG "%u"
+#elif defined sun
+#define SIZE_FLAG "%u"
+#else
+#define SIZE_FLAG "%u"
+#endif
+
   /* On Linux, the BIG_ENDIAN, LITTLE_ENDIAN is allready defined
      in a system header file, no need to try to find what it is ourself
   */
@@ -112,20 +123,20 @@ main()
 #endif
 
 	printf("#define BITS_PER_BYTE\t\t\t%d\n\n", NBBY);
-	printf("#define SIZEOF_CHAR\t\t\t\t%lu\n", CHAR_SIZE);
-	printf("#define SIZEOF_SHORT\t\t\t%lu\n", SHORT_SIZE);
-	printf("#define SIZEOF_INT\t\t\t\t%lu\n", INT_SIZE);
-	printf("#define SIZEOF_LONG\t\t\t\t%lu\n", LONG_SIZE);
-	printf("#define SIZEOF_FLOAT\t\t\t%lu\n", FLOAT_SIZE);
-	printf("#define SIZEOF_DOUBLE\t\t\t%lu\n", DOUBLE_SIZE);
+	printf("#define SIZEOF_CHAR\t\t\t" SIZE_FLAG "\n", CHAR_SIZE);
+	printf("#define SIZEOF_SHORT\t\t\t" SIZE_FLAG "\n", SHORT_SIZE);
+	printf("#define SIZEOF_INT\t\t\t" SIZE_FLAG "\n", INT_SIZE);
+	printf("#define SIZEOF_LONG\t\t\t" SIZE_FLAG "\n", LONG_SIZE);
+	printf("#define SIZEOF_FLOAT\t\t\t" SIZE_FLAG "\n", FLOAT_SIZE);
+	printf("#define SIZEOF_DOUBLE\t\t\t" SIZE_FLAG "\n", DOUBLE_SIZE);
 #ifndef sun
-	printf("#define SIZEOF_LONG_DOUBLE\t\t%lu\n", LONG_DOUBLE_SIZE);
+	printf("#define SIZEOF_LONG_DOUBLE\t\t" SIZE_FLAG "\n", LONG_DOUBLE_SIZE);
 #endif
-	printf("#define SIZEOF_ADDRESS\t\t%lu\n", ADDRESS_SIZE);
+	printf("#define SIZEOF_ADDRESS\t\t\t" SIZE_FLAG "\n", ADDRESS_SIZE);
 
-	printf("\n#define ALIGNOF_CHAR\t\t\t%lu\n", CHAR_SIZE);
+	printf("\n#define ALIGNOF_CHAR\t\t\t" SIZE_FLAG "\n", CHAR_SIZE);
 	printf("#define ALIGNOF_SHORT\t\t\t%d\n", alignof_short());
-	printf("#define ALIGNOF_INT\t\t\t\t%d\n", alignof_int());
+	printf("#define ALIGNOF_INT\t\t\t%d\n", alignof_int());
 	printf("#define ALIGNOF_LONG\t\t\t%d\n", alignof_long());
 	printf("#define ALIGNOF_FLOAT\t\t\t%d\n", alignof_float());
 	printf("#define ALIGNOF_DOUBLE\t\t\t%d\n", alignof_double());
@@ -136,6 +147,18 @@ main()
 
 	printf("\n#define CHARS_ARE_%sSIGNED\n", (((char)-1) < 0) ? "" : "UN");
 
+#if !defined(BIG_ENDIAN) && !defined(LITTLE_ENDIAN)
+	if (*p == 1) {
+                puts("#if !defined(BIG_ENDIAN)");
+		puts("#define BIG_ENDIAN");
+                puts("#endif");
+	}
+	else {
+                puts("#if !defined(LITTLE_ENDIAN)");
+		puts("#define LITTLE_ENDIAN");
+                puts("#endif");
+	}
+#endif
 
 	/* This below is commented out since BIG_ENDIAN or LITTLE_ENDIAN
            is allready defined in Linux system here file 
