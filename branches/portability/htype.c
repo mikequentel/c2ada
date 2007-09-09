@@ -86,7 +86,6 @@ alignof_double()
 	return CHAR_SIZE + (sizeof(struct s) - (CHAR_SIZE + DOUBLE_SIZE));
 }
 
-#ifndef sun
 static int
 alignof_long_double()
 {
@@ -97,7 +96,6 @@ alignof_long_double()
 
 	return CHAR_SIZE + (sizeof(struct s) - (CHAR_SIZE + LONG_DOUBLE_SIZE));
 }
-#endif
 
 
 int
@@ -115,12 +113,7 @@ main()
 #define SIZE_FLAG "%u"
 #endif
 
-  /* On Linux, the BIG_ENDIAN, LITTLE_ENDIAN is allready defined
-     in a system header file, no need to try to find what it is ourself
-  */
-#if !defined(LINUX)
 	char *p = (char*) &host_byte_order;
-#endif
 
 	printf("#define BITS_PER_BYTE\t\t\t%d\n\n", NBBY);
 	printf("#define SIZEOF_CHAR\t\t\t" SIZE_FLAG "\n", CHAR_SIZE);
@@ -129,9 +122,7 @@ main()
 	printf("#define SIZEOF_LONG\t\t\t" SIZE_FLAG "\n", LONG_SIZE);
 	printf("#define SIZEOF_FLOAT\t\t\t" SIZE_FLAG "\n", FLOAT_SIZE);
 	printf("#define SIZEOF_DOUBLE\t\t\t" SIZE_FLAG "\n", DOUBLE_SIZE);
-#ifndef sun
 	printf("#define SIZEOF_LONG_DOUBLE\t\t" SIZE_FLAG "\n", LONG_DOUBLE_SIZE);
-#endif
 	printf("#define SIZEOF_ADDRESS\t\t\t" SIZE_FLAG "\n", ADDRESS_SIZE);
 
 	printf("\n#define ALIGNOF_CHAR\t\t\t" SIZE_FLAG "\n", CHAR_SIZE);
@@ -140,9 +131,7 @@ main()
 	printf("#define ALIGNOF_LONG\t\t\t%d\n", alignof_long());
 	printf("#define ALIGNOF_FLOAT\t\t\t%d\n", alignof_float());
 	printf("#define ALIGNOF_DOUBLE\t\t\t%d\n", alignof_double());
-#ifndef sun
 	printf("#define ALIGNOF_LONG_DOUBLE\t\t%d\n", alignof_long_double());
-#endif
 	printf("#define ALIGNOF_ADDRESS\t\t\t%d\n", alignof_address());
 
 	printf("\n#define CHARS_ARE_%sSIGNED\n", (((char)-1) < 0) ? "" : "UN");
@@ -160,23 +149,5 @@ main()
 	}
 #endif
 
-	/* This below is commented out since BIG_ENDIAN or LITTLE_ENDIAN
-           is allready defined in Linux system here file 
-	*/
-#if !defined(LINUX)
-	if (*p == 1) {
-                puts("#if !defined(BIG_ENDIAN)");
-		puts("#define BIG_ENDIAN");
-                puts("#endif");
-	}
-	else {
-                puts("#if !defined(LITTLE_ENDIAN)");
-		puts("#define LITTLE_ENDIAN");
-                puts("#endif");
-	}
-#endif
-
 	return 0;
 }
-
-

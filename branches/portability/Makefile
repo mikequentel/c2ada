@@ -1,28 +1,41 @@
 # $Source: /home/CVSROOT/c2ada/Makefile,v $
 # $Revision: 1.3 $  $Date: 1999/02/09 18:16:51 $
 
-# This variable should point to the "gperf" executable on your
+# This variable can override the "gperf" executable on your
 # system; cf. ftp://ftp.gnu.ai.mit.edu/pub/gnu/cperf-2.1a.tar.gz .
 #
-GPERF		  = /usr/bin/gperf
+GPERF		?= gperf
 
-# This variable should point to the top-level Python distribution
+## This is the install top for Python on your system.
+#
+PYTHON_TOP	?= /usr
+
+## This is the library name, on my system, I had python 1.5, so the
+## library was libpython1.5.so, so I type python1.5 below
+#
+PYTHON_VER	?= python2.4
+
+# This variable can override the top-level Python distribution
 # directory on your system; cf. http://www.python.org .
 #
-PYTHON            = /usr/lib/python2.4
+PYTHON_LIB	?= $(PYTHON_TOP)/lib/$(PYTHON_VER)
 
-## this is the library name, on my system, I had python 1.5, so the
-## library was libpython1.5.so, so I type python1.5 below
-PYTHON_LIB        = python2.4
-
-## this is where python .py stuff is
-PYTHON_INCLUDE    = /usr/include/python2.4
+## This variable can override where python .h stuff is
+#
+PYTHON_INCLUDE	?= $(PYTHON_TOP)/include/$(PYTHON_VER)
 
 # HERE should be set to the directory containing the *.py files
 # in the C2Ada source distribution. The form here simply sets this
 # to the source directory.
 #
-HERE = $(HOME)/sf/c2ada
+HERE		?= $(HOME)/sf/c2ada
+
+# The Make or environment variable YACC should be set to your yacc 
+# equivalent if it's not called 'yacc'. For example,
+#   YACC=bison; export YACC
+# or
+#   make YACC=bison
+YACC		?= yacc
 
 ### no need to change anything below this. Unless you want
 ### to change gcc flags to be non-debug.
@@ -32,25 +45,24 @@ HERE = $(HOME)/sf/c2ada
 # In PYTHONLIBS, the argument in the -L switch is the same as the
 # target path for the "make libainstall" step in installing Python.
 #
-PYTHONLIBS        = -L$(PYTHON)/config \
-		    -l$(PYTHON_LIB)
+PYTHONLIBS	= -L$(PYTHON_LIB)/config \
+		  -l$(PYTHON_VER) \
+		  -lm -ltk -ltcl -lrt
 
-#		    -lm -lnsl -ldl -lm
-
-PYTHON_INCLUDES   = -DHAVE_CONFIG_H -I$(PYTHON_INCLUDE)
+PYTHONINCLUDES	= -DHAVE_CONFIG_H -I$(PYTHON_INCLUDE)
 
 # This is the path used to locate Python scripts and modules used by
 # c2ada. See symset.c
 #
-PYTHON_SCRIPTS_PATH = $(HERE):$(PYTHON)/Lib
-DEF_PPATH = -DPPATH=\"$(PYTHON_SCRIPTS_PATH)\"
+PYTHON_SCRIPTS_PATH = $(HERE):$(PYTHON_LIB)
+DEF_PPATH	= -DPPATH=\"$(PYTHON_SCRIPTS_PATH)\"
 
-GNU_C_OPTS = -g -Wall -Wimplicit -Wreturn-type
-CC = gcc 
-CFLAGS= $(GNU_C_OPTS) -DDEBUG $(PYTHON_INCLUDES) $(DEF_PPATH)
-LINKER		  = gcc -g
+GNU_C_OPTS	= -g -Wall -Wimplicit -Wreturn-type
+CC		= gcc 
+CFLAGS		= $(GNU_C_OPTS) -DDEBUG $(PYTHONINCLUDES) $(DEF_PPATH)
+LINKER		= gcc
 
-MAKEFILE= Makefile
+MAKEFILE	= Makefile
 
 LOCAL_LIBS	= libcbind.a
 
@@ -154,27 +166,27 @@ SCRIPTS		= gen.last \
 #		cdep.o
 
 
-all:	make cbfe
+all:		make cbfe
 
 %c%y:;
 %o%y:;
 
-make::	hostinfo.h
-make::	cpp_perf.c
-make::	ada_perf.c
-make::	c_perf.c
-make::	y.tab.h
-make::	$(OBJS)
-make::	$(COMMON_OBJS)
+make::		hostinfo.h
+make::		cpp_perf.c
+make::		ada_perf.c
+make::		c_perf.c
+make::		y.tab.h
+make::		$(OBJS)
+make::		$(COMMON_OBJS)
 
-make::	$(LOCAL_LIBS)
+make::		$(LOCAL_LIBS)
 
 # OBSOLETE
 # make::	cdep
 # make::	cbpp
 # make::	cbind
 
-make::	cbfe
+make::		cbfe
 
 
 # OBSOLETE RULES
@@ -186,13 +198,14 @@ make::	cbfe
 
 # This is the executable for C2Ada.
 #
-cbfe:	$(FEOBJS) $(LOCAL_LIBS) config.o
-	@echo "LOCAL_LIBS = $(LOCAL_LIBS)" 
-	@echo "LDFLAGS = $(LDFLAGS)" 
-	@echo "LIBS = $(LIBS)" 
-	@echo "PYTHONLIBS = $(PYTHONLIBS)"
+cbfe:		$(FEOBJS) $(LOCAL_LIBS) config.o
+		@echo "LOCAL_LIBS = $(LOCAL_LIBS)" 
+		@echo "LDFLAGS = $(LDFLAGS)" 
+		@echo "LIBS = $(LIBS)" 
+		@echo "PYTHONLIBS = $(PYTHONLIBS)"
 		$(LINKER) $(LDFLAGS) $(FEOBJS) $(LOCAL_LIBS) \
-                $(LIBS) config.o  $(PYTHONLIBS)  -o c2ada
+                $(LIBS) config.o $(PYTHONLIBS) \
+		-o c2ada
 
 #cbpp:	cbpp.o $(LOCAL_LIBS)
 #		$(LINKER) $(LDFLAGS) cbpp.o $(LOCAL_LIBS) $(LIBS) -o $@
@@ -205,7 +218,6 @@ cbfe:	$(FEOBJS) $(LOCAL_LIBS) config.o
 
 htype:	htype.c htype.o
 		$(LINKER) $(LDFLAGS) htype.o $(LIBS) -o $@
-		@ strip $@
 
 libcbind.a:	$(COMMON_OBJS)
 		@ rm -f $@
@@ -253,18 +265,18 @@ cpp_perf.o: cpp_perf.c files.h hash.h cpp.h buffer.h
 ada_perf.o: ada_perf.c
 
 y.tab.h:	grammar.y
-		yacc -d grammar.y
+		$(YACC) -d grammar.y
 
 y.tab.c:	grammar.y
-		echo "one reduce/reduce conflict expected"; yacc grammar.y
+		echo "one reduce/reduce conflict expected"; $(YACC) grammar.y
 
 # Configuration file for Python module set
 
 #config.o : $(PYTHON)/Modules/config.c
 #	$(CC) $(CFLAGS) -DNO_MAIN -c $(PYTHON)/Modules/config.c
 
-config.o : $(PYTHON)/config/config.c
-	$(CC) $(CFLAGS) -DNO_MAIN -c $(PYTHON)/config/config.c
+config.o : $(PYTHON_LIB)/config/config.c
+	$(CC) $(CFLAGS) -DNO_MAIN -c $(PYTHON_LIB)/config/config.c
 
 #--------------------------------------------------------------------------
 # Dependencies
