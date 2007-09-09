@@ -30,12 +30,12 @@ PYTHON_INCLUDE	?= $(PYTHON_TOP)/include/$(PYTHON_VER)
 #
 HERE		?= $(HOME)/sf/c2ada
 
-# The Make or environment variable YACC should be set to your yacc 
-# equivalent if it's not called 'yacc'. For example,
+# YACC should be set to your yacc equivalent if it's not called
+# 'yacc'. For example,
 #   YACC=bison; export YACC
 # or
-#   make YACC=bison
-YACC		?= yacc
+#   make YACC='bison -y'
+YACC		?= foo
 
 ### no need to change anything below this. Unless you want
 ### to change gcc flags to be non-debug.
@@ -47,7 +47,7 @@ YACC		?= yacc
 #
 PYTHONLIBS	= -L$(PYTHON_LIB)/config \
 		  -l$(PYTHON_VER) \
-		  -lm -ltk -ltcl -lrt
+		  $(EXTRA_LIBS)
 
 PYTHONINCLUDES	= -DHAVE_CONFIG_H -I$(PYTHON_INCLUDE)
 
@@ -166,7 +166,7 @@ SCRIPTS		= gen.last \
 #		cdep.o
 
 
-all:		make cbfe
+all:		make c2ada
 
 %c%y:;
 %o%y:;
@@ -186,7 +186,7 @@ make::		$(LOCAL_LIBS)
 # make::	cbpp
 # make::	cbind
 
-make::		cbfe
+make::		c2ada
 
 
 # OBSOLETE RULES
@@ -198,7 +198,7 @@ make::		cbfe
 
 # This is the executable for C2Ada.
 #
-cbfe:		$(FEOBJS) $(LOCAL_LIBS) config.o
+c2ada:		$(FEOBJS) $(LOCAL_LIBS) config.o
 		@echo "LOCAL_LIBS = $(LOCAL_LIBS)" 
 		@echo "LDFLAGS = $(LDFLAGS)" 
 		@echo "LIBS = $(LIBS)" 
@@ -270,13 +270,18 @@ y.tab.h:	grammar.y
 y.tab.c:	grammar.y
 		echo "one reduce/reduce conflict expected"; $(YACC) grammar.y
 
+#--------------------------------------------------------------------------
 # Configuration file for Python module set
-
-#config.o : $(PYTHON)/Modules/config.c
-#	$(CC) $(CFLAGS) -DNO_MAIN -c $(PYTHON)/Modules/config.c
 
 config.o : $(PYTHON_LIB)/config/config.c
 	$(CC) $(CFLAGS) -DNO_MAIN -c $(PYTHON_LIB)/config/config.c
+
+#--------------------------------------------------------------------------
+# Configuration
+Makefile.config: setup
+	./setup
+
+include Makefile.config
 
 #--------------------------------------------------------------------------
 # Dependencies
