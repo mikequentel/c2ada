@@ -1,28 +1,10 @@
 # $Source: /home/CVSROOT/c2ada/Makefile,v $
 # $Revision: 1.3 $  $Date: 1999/02/09 18:16:51 $
 
-# This variable can override the "gperf" executable on your
-# system; cf. ftp://ftp.gnu.ai.mit.edu/pub/gnu/cperf-2.1a.tar.gz .
-#
-GPERF		?= gperf
+## This Makefile required GNU make (gmake on Solaris).
 
-## This is the install top for Python on your system.
-#
-PYTHON_TOP	?= /usr
-
-## This is the library name, on my system, I had python 1.5, so the
-## library was libpython1.5.so, so I type python1.5 below
-#
-PYTHON_VER	?= python2.4
-
-# This variable can override the top-level Python distribution
-# directory on your system; cf. http://www.python.org .
-#
-PYTHON_LIB	?= $(PYTHON_TOP)/lib/$(PYTHON_VER)
-
-## This variable can override where python .h stuff is
-#
-PYTHON_INCLUDE	?= $(PYTHON_TOP)/include/$(PYTHON_VER)
+## The initial target (real dependencies TBD)
+all::
 
 # HERE should be set to the directory containing the *.py files
 # in the C2Ada source distribution. The form here simply sets this
@@ -30,12 +12,56 @@ PYTHON_INCLUDE	?= $(PYTHON_TOP)/include/$(PYTHON_VER)
 #
 HERE		?= $(HOME)/sf/c2ada
 
-# YACC should be set to your yacc equivalent if it's not called
-# 'yacc'. For example,
-#   YACC=bison; export YACC
-# or
-#   make YACC='bison -y'
-YACC		?= foo
+#--------------------------------------------------------------------------
+# Configuration
+Makefile.config: setup
+	./setup
+
+include Makefile.config
+
+## This variable can override the 'ar' executable on your system.
+#
+AR		?= ar
+
+## This variable can override the "gperf" executable on your
+## system; cf. ftp://ftp.gnu.ai.mit.edu/pub/gnu/cperf-2.1a.tar.gz .
+#
+GPERF		?= gperf
+
+## Extra libraries required at link time (support for Python). Only
+## necessary on Solaris (libpython only supplied in archive form, not
+## as shareable object).
+#
+EXTRA_LIBS	?= 
+
+## This variable can override the 'ranlib' executable on your system.
+#
+RANLIB		?= ranlib
+
+## This is the install top for Python on your system.
+#
+PYTHON_TOP	?= /usr
+
+## This variable can override the version of python installed on your
+## system.
+#
+PYTHON_VER	?= python2.4
+
+## This variable can override the top-level Python distribution
+## directory on your system; cf. http://www.python.org .
+#
+PYTHON_LIB	?= $(PYTHON_TOP)/lib/$(PYTHON_VER)
+
+## This variable can override where python .h stuff is
+#
+PYTHON_INCLUDE	?= $(PYTHON_TOP)/include/$(PYTHON_VER)
+
+## YACC should be set to your yacc equivalent if it's not called
+## 'yacc'. For example,
+##   YACC=bison; export YACC
+## or
+##   make YACC='bison -y'
+YACC		?= yacc
 
 ### no need to change anything below this. Unless you want
 ### to change gcc flags to be non-debug.
@@ -166,7 +192,7 @@ SCRIPTS		= gen.last \
 #		cdep.o
 
 
-all:		make c2ada
+all::		make c2ada
 
 %c%y:;
 %o%y:;
@@ -221,8 +247,8 @@ htype:	htype.c htype.o
 
 libcbind.a:	$(COMMON_OBJS)
 		@ rm -f $@
-		ar rc $@ $(COMMON_OBJS)
-		ranlib $@
+		$(AR) rc $@ $(COMMON_OBJS)
+		$(RANLIB) $@
 
 clean::;	- rm -f cbind cbfe cbpp cdep
 clean::;	- rm -f *.o *.d *.pyc
@@ -275,13 +301,6 @@ y.tab.c:	grammar.y
 
 config.o : $(PYTHON_LIB)/config/config.c
 	$(CC) $(CFLAGS) -DNO_MAIN -c $(PYTHON_LIB)/config/config.c
-
-#--------------------------------------------------------------------------
-# Configuration
-Makefile.config: setup
-	./setup
-
-include Makefile.config
 
 #--------------------------------------------------------------------------
 # Dependencies
