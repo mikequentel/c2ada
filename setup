@@ -20,11 +20,14 @@ EXTRA_LIBS =
 EOF
 	;;
     SunOS)
+	# This setup is for Solaris 10 1/06 with tools installed from
+	# the Software Companion disk.
 	cat >>Makefile.config <<EOF
-YACC = "bison -y"
-EXTRA_LIBS = "-lm -ltk -ltcl -lrt"
+EXTRA_LIBS = -L/usr/sfw/lib -ltk8.3 -ltcl8.3 -lm -lrt
+PYTHON_TOP = /usr/sfw
+PYTHON_VER = python2.3
 EOF
 	;;
 esac
 
-touch hostinfo.h
+[ -r hostinfo.h ] || touch hostinfo.h
