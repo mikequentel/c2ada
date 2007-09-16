@@ -8,6 +8,7 @@ EOF
 
 case `uname` in
     Darwin)
+	# This setup is for MAC OS X Tiger, with XCode 2.2.1.
 	cat >>Makefile.config <<EOF
 EXTRA_LIBS =
 PYTHON_TOP = /usr
