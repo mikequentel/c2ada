@@ -9,13 +9,13 @@ EOF
 case `uname` in
     Darwin)
 	cat >>Makefile.config <<EOF
-YACC = yacc
 EXTRA_LIBS =
+PYTHON_TOP = /usr
+PYTHON_VER = python2.3
 EOF
 	;;
     Linux)
 	cat >>Makefile.config <<EOF
-YACC = yacc
 EXTRA_LIBS =
 EOF
 	;;
