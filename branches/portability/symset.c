@@ -12,9 +12,9 @@
  * here useless, purpose in the Python code.
  */
 #undef DEBUG
-#include "Python.h"
-#include "pythonrun.h"
-#include "import.h"
+#include <Python.h>
+#include <pythonrun.h>
+#include <import.h>
 
 static PyObject * pymod_Symbol;
 static PyObject * oSymbol;
@@ -37,10 +37,15 @@ static PyMethodDef PrimSymbolMethods[] = {
 
 static PyObject * pymod_PrimSymbol;
 
+static char * getpythonpath(void);
+
 
 void
 symset_init(void)
 {
+
+    /* We have to set PYTHONPATH before initializing Python. */
+    setenv("PYTHONPATH", getpythonpath(), 1);
 
     Py_Initialize();
 
@@ -49,7 +54,10 @@ symset_init(void)
 	PyObject_GetAttrString(pymod_PrimSymbol, "undone");
 
     pymod_Symbol = PyImport_ImportModule("Symbol");
-    assert(pymod_Symbol); 
+    if (!pymod_Symbol) {
+        fprintf(stderr, "Unable to load Symbol.py\n");
+      exit(1);
+    } 
 
     oSymbol = PyObject_GetAttrString(pymod_Symbol, "oSymbol");
     assert(oSymbol); 
@@ -205,7 +213,7 @@ void set_symmap( symmap_t map, symbol_pt key, symbol_pt value )
 
 
 /*****************************************************/
-char * getpythonpath()
+char * getpythonpath(void)
 {
     char * envpath = getenv("C2ADA_PYTHONPATH");
     if (envpath) {
