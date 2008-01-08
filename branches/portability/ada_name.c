@@ -112,7 +112,8 @@ make_ada_identifier(char * name, char * buf)
     /*
      * Generate a legal Ada identifier from the argument 'name'.
      * Specifically, ignore '$', ignore leading, trailing, or multiple
-     * underscores.
+     * underscores. Since hyphen may come from include directory names
+     * convert it to underscore.
      */
 {
     assert(name != NULL);
@@ -135,6 +136,11 @@ make_ada_identifier(char * name, char * buf)
 	    if (name[1] != '_' && name[1] != 0) {
 		*buf++ = *name;
 	    }
+	    name++;
+	    break;
+	  case '-':
+	    *buf = '_';
+	    buf++;
 	    name++;
 	    break;
 	  default:
