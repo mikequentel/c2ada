@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/print.c,v $ */
-/* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
-
 #include <stdio.h>
 
 #include "gen_stmt.h"
@@ -12,20 +9,20 @@
 
 static int nprinted = 0;
 
-static void 
+static void
 spaces(n)
     int n;
 {
     int i;
 
-    for(i=1; i<=n; i++) 
+    for(i=1; i<=n; i++)
 	if((i > 8) && (i % 4) == 0)
 	    putchar('|');
 	else
 	    putchar(' ');
 }
 
-static int 
+static int
 compar(left, right)
     char **left, **right;
 {
@@ -55,7 +52,7 @@ static void print_node_t(node_pt n, int indent);
 static void print_symbol_t(symbol_pt s, int indent);
 static void print_typeinfo_t(typeinfo_t *t, int indent);
 
-static void 
+static void
 print_unknown(s, val)
     char *s;
     int val;
@@ -112,7 +109,7 @@ nameof_typekind(typekind_t t)
     }
 }
 
-char * 
+char *
 nameof_node_kind(node_kind_t n)
 {
     switch(n) {
@@ -215,8 +212,8 @@ print_stmt_t(stmt_pt s, int indent)
     if(s == NULL) { spaces(indent); printf("(null)\n"); return; }
     if(print_addr("stmt", s, indent)) return;
     spaces(indent);
-    printf("stmt_def line=%d file=%s\n", 
-	    (int) line_number(s->stmt_def), 
+    printf("stmt_def line=%d file=%s\n",
+	    (int) line_number(s->stmt_def),
             file_name(s->stmt_def));
     indent += NEXT;
     spaces(indent);
@@ -225,8 +222,8 @@ print_stmt_t(stmt_pt s, int indent)
     printf("\n");
 
     switch(s->stmt_kind) {
-        case _Labelled: 
-        case _Case: 
+        case _Labelled:
+        case _Case:
 	    spaces(indent);
 	    printf("label.id:\n");
 	    print_node_t(s->stmt.label.id, indent+NEXT);
@@ -235,13 +232,13 @@ print_stmt_t(stmt_pt s, int indent)
 	    print_stmt_t(s->stmt.label.stmt, indent+NEXT);
 	    break;
 
-        case _Default: 
+        case _Default:
 	    spaces(indent);
 	    printf("default_stmt:\n");
 	    print_stmt_t(s->stmt.default_stmt, indent+NEXT);
 	    break;
 
-        case _SList: 
+        case _SList:
 	    spaces(indent);
 	    printf("stmt_list.first:\n");
 	    print_stmt_t(s->stmt.stmt_list.first, indent+NEXT);
@@ -250,7 +247,7 @@ print_stmt_t(stmt_pt s, int indent)
 	    print_stmt_t(s->stmt.stmt_list.rest, indent+NEXT);
 	    break;
 
-        case _FuncDef: 
+        case _FuncDef:
 	    spaces(indent);
 	    printf("funcdef.decl:\n");
 	    print_symbol_t(s->stmt.funcdef.decl, indent+NEXT);
@@ -259,7 +256,7 @@ print_stmt_t(stmt_pt s, int indent)
 	    print_stmt_t(s->stmt.funcdef.body, indent+NEXT);
 	    break;
 
-        case _Compound: 
+        case _Compound:
 	    spaces(indent);
 	    printf("compound.decls:\n");
 	    print_symbol_t(s->stmt.compound.decls, indent+NEXT);
@@ -268,16 +265,16 @@ print_stmt_t(stmt_pt s, int indent)
 	    print_stmt_t(s->stmt.compound.stmts, indent+NEXT);
 	    break;
 
-        case _Expr: 
+        case _Expr:
 	    spaces(indent);
             printf("expr:\n");
             print_node_t(s->stmt.expr, indent+NEXT);
 	    break;
 
-        case _If: 
-        case _Switch: 
-        case _While: 
-        case _Do: 
+        case _If:
+        case _Switch:
+        case _While:
+        case _Do:
 	    spaces(indent);
             printf("controlled.expr:\n");
             print_node_t(s->stmt.controlled.expr, indent+NEXT);
@@ -286,7 +283,7 @@ print_stmt_t(stmt_pt s, int indent)
             print_stmt_t(s->stmt.controlled.stmt, indent+NEXT);
 	    break;
 
-        case _For: 
+        case _For:
 	    spaces(indent);
             printf("for_stmt.e1:\n");
             print_node_t(s->stmt.for_stmt.e1, indent+NEXT);
@@ -301,19 +298,19 @@ print_stmt_t(stmt_pt s, int indent)
             print_stmt_t(s->stmt.for_stmt.stmt, indent+NEXT);
 	    break;
 
-        case _Goto: 
+        case _Goto:
 	    spaces(indent);
             printf("goto_label:\n");
             print_node_t(s->stmt.goto_label, indent+NEXT);
 	    break;
 
-        case _Return: 
+        case _Return:
 	    spaces(indent);
             printf("return_value:\n");
             print_node_t(s->stmt.return_value, indent+NEXT);
 	    break;
 
-        case _Ifelse: 
+        case _Ifelse:
 	    spaces(indent);
             printf("if_else_stmt.expr:\n");
             print_node_t(s->stmt.if_else_stmt.expr, indent+NEXT);
@@ -323,22 +320,22 @@ print_stmt_t(stmt_pt s, int indent)
             print_stmt_t(s->stmt.if_else_stmt.else_stmt, indent+NEXT);
 	    break;
 
-        case _Null: 
-        case _Continue: 
-        case _Break: 
-        default: 
+        case _Null:
+        case _Continue:
+        case _Break:
+        default:
 	    break;
     }
 }
 
-static void 
+static void
 print_node_t(node_pt n, int indent)
 {
     if(n == NULL) { spaces(indent); printf("(null)\n"); return; }
     if(print_addr("node", n, indent)) return;
     spaces(indent);
-    printf("node_def line=%d file=%s\n", 
-	    (int) line_number(n->node_def), 
+    printf("node_def line=%d file=%s\n",
+	    (int) line_number(n->node_def),
             file_name(n->node_def));
     indent += NEXT;
     spaces(indent);
@@ -456,7 +453,7 @@ print_node_t(node_pt n, int indent)
 	    printf("node.cond.fals:\n");
 	    print_node_t(n->node.cond.fals, indent+NEXT);
 	    break;
-	
+
 	default:
 	    printf("unknown node\n");
     }
@@ -475,7 +472,7 @@ print_uns_pair(s, i, indent)
     printf("%s\t%u\n", s, i);
 }
 
-static void 
+static void
 print_typeinfo_t(typeinfo_t *t, int indent)
 {
     if(t == NULL) { spaces(indent); printf("(null)\n"); return; }
@@ -504,7 +501,7 @@ print_typeinfo_t(typeinfo_t *t, int indent)
     print_uns_pair("_anon_int", t->_anon_int, indent);
     switch(t->type_kind) {
 	case array_of:
-	    print_uns_pair("array.elements", 
+	    print_uns_pair("array.elements",
 			   t->type_info.array.elements, indent);
 	    printf("typeinfo.array.size_expr");
 	    print_node_t(t->type_info.array.size_expr, indent+NEXT);
@@ -531,7 +528,7 @@ print_typeinfo_t(typeinfo_t *t, int indent)
     print_typeinfo_t(t->type_next, indent+NEXT);
 }
 
-static void 
+static void
 print_symbol_t(symbol_pt s, int indent)
 {
     if(s == NULL) { spaces(indent); printf("(null)\n"); return; }
@@ -560,7 +557,7 @@ print_symbol_t(symbol_pt s, int indent)
 	spaces(indent); */
     printf("sym_ada_name %s\n", s->sym_ada_name);
     spaces(indent);
-    printf("sym_def line=%d file=%s\n", (int) line_number(s->sym_def), 
+    printf("sym_def line=%d file=%s\n", (int) line_number(s->sym_def),
 	    file_name(s->sym_def));
     spaces(indent);
     printf("sym_type:\n");
@@ -603,59 +600,59 @@ print_symbol_t(symbol_pt s, int indent)
 }
 
 /* Externally visible */
-void 
+void
 print_stmt_kind(stmt_kind_t s)
 {
     printf(nameof_stmt_kind(s));
 }
 
-void 
+void
 print_stmt(stmt_pt s, int indent)
 {
     nprinted = 0;
     print_stmt_t(s, indent);
 }
 
-void 
+void
 print_node(node_pt n, int indent)
 {
     nprinted = 0;
     print_node_t(n, indent);
 }
 
-void 
+void
 print_symbol(symbol_pt s, int indent)
 {
     nprinted = 0;
     print_symbol_t(s, indent);
 }
 
-void 
+void
 print_typekind(typekind_t t)
 {
     printf(nameof_typekind(t));
 }
 
-void 
+void
 print_node_kind(node_kind_t n)
 {
     printf(nameof_node_kind(n));
 }
 
-void 
+void
 print_typeinfo(typeinfo_t *t, int indent)
 {
     nprinted = 0;
     print_typeinfo_t(t, indent);
 }
 
-void 
+void
 print_sym_kind(sym_kind_t s)
 {
     printf(nameof_sym_kind(s));
 }
 
-void 
+void
 print_case_alist(case_alist_pt ap, int indent)
 {
     spaces(indent);
@@ -667,7 +664,7 @@ print_case_alist(case_alist_pt ap, int indent)
     print_case_alist(ap->rest, indent+NEXT);
 }
 
-void 
+void
 print_case_slist(case_slist_pt sp, int indent)
 {
     spaces(indent);
@@ -679,7 +676,7 @@ print_case_slist(case_slist_pt sp, int indent)
     print_case_slist(sp->rest, indent+NEXT);
 }
 
-void 
+void
 print_case_blist(case_blist_pt bp, int indent)
 {
     spaces(indent);
@@ -697,7 +694,7 @@ print_case_blist(case_blist_pt bp, int indent)
     printf("case_blist.last_stmt at %x:\n", (unsigned int) bp->last_stmt);
 }
 
-void 
+void
 print_case_stmt(case_stmt_pt cp, int indent)
 {
     spaces(indent);
@@ -708,11 +705,11 @@ print_case_stmt(case_stmt_pt cp, int indent)
     printf("case_stmt.branches:\n");
     print_case_blist(cp->branches, indent+NEXT);
     spaces(indent);
-    printf("case_stmt.default_branch at %x:\n", 
+    printf("case_stmt.default_branch at %x:\n",
             (unsigned int) cp->default_branch);
 }
 
-void 
+void
 print_macro(m, indent)
     macro_t *m;
     int indent;
@@ -752,7 +749,7 @@ print_macro(m, indent)
     printf("const_value\n");
     print_cpp_eval_result_t(&m->const_value, indent+4);
     spaces(indent);
-    printf("macro_declared_in_header %u\n", 
+    printf("macro_declared_in_header %u\n",
 	(unsigned)m->macro_declared_in_header);
     spaces(indent);
     printf("macro_gened %u\n", (unsigned)m->macro_gened);
@@ -764,7 +761,7 @@ print_macro(m, indent)
     printf("macro_evald %u\n", (unsigned)m->macro_evald);
 }
 
-void 
+void
 print_macro_function(macro_function_t *f, int indent)
 {
     int i;
@@ -785,13 +782,13 @@ print_macro_function(macro_function_t *f, int indent)
     printf("\n");
 }
 
-void 
+void
 print_cpp_eval_result_t (res, indent)
-    cpp_eval_result_t *res; 
+    cpp_eval_result_t *res;
     int indent;
 {
     spaces(indent);
-    printf("eval_result_kind %s\n", 
+    printf("eval_result_kind %s\n",
 	nameof_cpp_eval_result_kind_t(res->eval_result_kind));
     switch(res->eval_result_kind) {
 	case eval_failed:
@@ -809,7 +806,7 @@ print_cpp_eval_result_t (res, indent)
 	    printf("tval\n");
 	    print_typeinfo_t(res->eval_result.tval, indent+4);
 	    break;
-	default: 
+	default:
 	    break;
     }
     spaces(indent);
@@ -819,17 +816,17 @@ print_cpp_eval_result_t (res, indent)
     print_typeinfo_t(res->explicit_type, indent+4);
 }
 
-void 
+void
 print_file_pos (pos)
     file_pos_t pos;
 {
-    printf("%d = file=%s line=%d\n", (int) pos, 
+    printf("%d = file=%s line=%d\n", (int) pos,
            file_name(pos), (int) line_number(pos));
 }
 
-void 
+void
 print_comment_block(bl, indent)
-    struct comment_block *bl; 
+    struct comment_block *bl;
     int indent;
 {
     int i;

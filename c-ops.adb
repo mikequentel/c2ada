@@ -1,6 +1,3 @@
--- $Source: /home/CVSROOT/c2ada/c-ops.adb,v $ 
--- $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ 
-
 with Ada.Unchecked_Conversion;
 with Interfaces;
 
@@ -104,75 +101,75 @@ package body C.Ops is
     function UI is new Ada.Unchecked_Conversion (I.Unsigned_32, Uint);
     function UL is new Ada.Unchecked_Conversion (I.Unsigned_32, Ulong);
 
-    function Shift_Left (Value: Uchar; Amount: Natural) 
+    function Shift_Left (Value: Uchar; Amount: Natural)
 	return Unsigned_Char is
     begin
 	return UC(I.Shift_Left(U8(Value), Amount));
     end Shift_Left;
 
-    function Shift_Left (Value: Ushort; Amount: Natural) 
+    function Shift_Left (Value: Ushort; Amount: Natural)
 	return Unsigned_Short is
     begin
 	return US(I.Shift_Left(U16(Value), Amount));
     end Shift_Left;
 
-    function Shift_Left (Value: Uint; Amount: Natural) 
+    function Shift_Left (Value: Uint; Amount: Natural)
 	return Unsigned_Int is
     begin
 	return UI(I.Shift_Left(U32(Value), Amount));
     end Shift_Left;
 
-    function Shift_Left (Value: Ulong; Amount: Natural) 
+    function Shift_Left (Value: Ulong; Amount: Natural)
 	return Unsigned_Long is
     begin
 	return UL(I.Shift_Left(U32(Value), Amount));
     end Shift_Left;
 
 
-    function Shift_Right (Value: Uchar; Amount: Natural) 
+    function Shift_Right (Value: Uchar; Amount: Natural)
 	return Unsigned_Char is
     begin
 	return UC(I.Shift_Right(U8(Value), Amount));
     end Shift_Right;
 
-    function Shift_Right (Value: Ushort; Amount: Natural) 
+    function Shift_Right (Value: Ushort; Amount: Natural)
 	return Unsigned_Short is
     begin
 	return US(I.Shift_Right(U16(Value), Amount));
     end Shift_Right;
 
-    function Shift_Right (Value: Uint; Amount: Natural) 
+    function Shift_Right (Value: Uint; Amount: Natural)
 	return Unsigned_Int is
     begin
 	return UI(I.Shift_Right(U32(Value), Amount));
     end Shift_Right;
 
-    function Shift_Right (Value: Ulong; Amount: Natural) 
+    function Shift_Right (Value: Ulong; Amount: Natural)
 	return Unsigned_Long is
     begin
 	return UL(I.Shift_Right(U32(Value), Amount));
     end Shift_Right;
 
 
-    function Shift_Right_Arithmetic (Value: Uchar; Amount: Natural) 
+    function Shift_Right_Arithmetic (Value: Uchar; Amount: Natural)
 	return Unsigned_Char is
     begin
 	return UC(I.Shift_Right_Arithmetic(U8(Value), Amount));
     end Shift_Right_Arithmetic;
 
-    function Shift_Right_Arithmetic (Value: Ushort; Amount: Natural) 
+    function Shift_Right_Arithmetic (Value: Ushort; Amount: Natural)
 	return Ushort is
     begin
 	return US(I.Shift_Right_Arithmetic(U16(Value), Amount));
     end Shift_Right_Arithmetic;
 
-    function Shift_Right_Arithmetic (Value: Uint; Amount: Natural) 
+    function Shift_Right_Arithmetic (Value: Uint; Amount: Natural)
 	return Unsigned_Int is
     begin
 	return UI(I.Shift_Right_Arithmetic(U32(Value), Amount));
     end Shift_Right_Arithmetic;
 
-    function Shift_Right_Arithmetic (Value: Ulong; Amount: Natural) 
+    function Shift_Right_Arithmetic (Value: Ulong; Amount: Natural)
 	return Unsigned_Long is
     begin
 	return UL(I.Shift_Right_Arithmetic(U32(Value), Amount));
@@ -220,25 +217,25 @@ package body C.Ops is
     end Shift_Right;
 
 
-    function Shift_Right_Arithmetic (Value: Char;  Amount: Natural) 
+    function Shift_Right_Arithmetic (Value: Char;  Amount: Natural)
 	return Char is
     begin
 	return To_Signed(Shift_Right_Arithmetic(To_Unsigned(Value), Amount));
     end Shift_Right_Arithmetic;
 
-    function Shift_Right_Arithmetic (Value: Short; Amount: Natural) 
+    function Shift_Right_Arithmetic (Value: Short; Amount: Natural)
 	return Short is
     begin
 	return To_Signed(Shift_Right_Arithmetic(To_Unsigned(Value), Amount));
     end Shift_Right_Arithmetic;
 
-    function Shift_Right_Arithmetic (Value: Int;   Amount: Natural) 
+    function Shift_Right_Arithmetic (Value: Int;   Amount: Natural)
 	return Int is
     begin
 	return To_Signed(Shift_Right_Arithmetic(To_Unsigned(Value), Amount));
     end Shift_Right_Arithmetic;
 
-    function Shift_Right_Arithmetic (Value: Long;  Amount: Natural) 
+    function Shift_Right_Arithmetic (Value: Long;  Amount: Natural)
 	return Long is
     begin
 	return To_Signed(Shift_Right_Arithmetic(To_Unsigned(Value), Amount));

@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/print.h,v $ */
-/* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
-
 #ifndef _PRINT_H_
 #define _PRINT_H_
 
@@ -26,9 +23,9 @@ extern void print_case_stmt(case_stmt_pt cp, int indent);
 extern void print_macro(macro_t *m, int indent);
 extern void print_macro_function(macro_function_t *f, int indent);
 extern void print_file_pos(file_pos_t pos);
-extern void print_comment_block 
+extern void print_comment_block
    (struct comment_block *bl, int indent);
-extern void print_cpp_eval_result_t 
+extern void print_cpp_eval_result_t
    (cpp_eval_result_t *res, int indent);
 
 #endif /* _PRINT_H_ */

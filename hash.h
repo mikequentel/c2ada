@@ -1,5 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/hash.h,v $ */
-/* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
 #ifndef _H_HASH_
 #define _H_HASH_
 

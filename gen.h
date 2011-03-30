@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/gen.h,v $ */
-/* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
-
 #ifndef _H_GEN_
 #define _H_GEN_
 
@@ -17,7 +14,7 @@ extern char * int_type_builtin_name( typeinfo_pt typ );
 extern char * type_nameof( typeinfo_pt, int use_parent_type, int is_param);
 
 extern void gen_var_or_field(
-    symbol_t *sym, int tabpos, int colonpos, int import, 
+    symbol_t *sym, int tabpos, int colonpos, int import,
     char * rename, int hidden);
 
 extern void print_value( host_int_t val, int base );
@@ -38,8 +35,8 @@ extern void print_string_value( char* val,
 extern void print_char_value( int val );
 
 extern void subtype_decl(
-    char *subtype_name, 
-    char *package_name, 
+    char *subtype_name,
+    char *package_name,
     char *type_name,
     int indent,
     node_t *ident,
@@ -48,7 +45,7 @@ extern void subtype_decl(
 extern void gen_local_func(symbol_pt sym, int indent);
 
 extern void gen_subp(
-    symbol_t *sym, char *rename, 
+    symbol_t *sym, char *rename,
     int is_spec, int is_inline, int is_interfaced);
 
 extern void print_comment( char * );

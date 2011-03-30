@@ -1,5 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/ada_name.h,v $ */
-/* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
 #ifndef _H_ADA_NAME_
 #define _H_ADA_NAME_
 

@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/anonymous.c,v $ */
-/* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
-
 /*
  * Functions to generate anonymous Ada types
  */
@@ -88,11 +85,11 @@ typeinfo_pt
 find_anonymous_type(typeinfo_pt typ)
 {
     typeinfo_pt t;
-    
+
     assert(typ != NULL);
     assert(typ->type_hash != 0);
-    
-    for (t = anonymous_types[typ->type_hash & (TYPE_HASH_MAX-1)]; 
+
+    for (t = anonymous_types[typ->type_hash & (TYPE_HASH_MAX-1)];
 	 t; t = t->type_anonymous_list) {
 
 	if (same_ada_type(t, typ)) {
@@ -112,7 +109,7 @@ find_anonymous_type(typeinfo_pt typ)
 	    }
 	}
     }
-    
+
     return NULL;
 }
 
@@ -201,7 +198,7 @@ init_anonymous_types(void)
 		     "System.Address",
 		     TRUE);
 
-	
+
     /* void (*)(void) */
     typ = add_pointer_type(add_function_type(typeof_void()));
     define_anon_type(typ,
@@ -260,7 +257,7 @@ get_anonymous_type(typeinfo_pt typ)
 	return basetype;
 
 #if 0
-	if ( typ->type_kind != pointer_to || 
+	if ( typ->type_kind != pointer_to ||
 	     basetype->intrinsic ||
 	     in_current_unti(basetype->sym_def) ) {
 
@@ -274,8 +271,8 @@ get_anonymous_type(typeinfo_pt typ)
 	    }
 	}
 #endif
-	    
-	
+
+
     }
 
     if (type_is_func_ptr) {
@@ -286,7 +283,7 @@ get_anonymous_type(typeinfo_pt typ)
 
 	typeinfo_pt rtyp;
 	symbol_pt   rsym;
-	
+
 
 	rtyp = typ->type_next;
 	assert(rtyp != NULL);
@@ -304,7 +301,7 @@ get_anonymous_type(typeinfo_pt typ)
 	    assert(rsym->sym_ident->node_kind == _Ident);
 	    assert(rsym->sym_ident->node.id.name != NULL);
 	    rsym->sym_ada_name =
-		ada_name(rsym->sym_ident->node.id.name, 
+		ada_name(rsym->sym_ident->node.id.name,
 			 pos_unit(rsym->sym_def));
 	}
 
@@ -340,7 +337,7 @@ get_anonymous_type(typeinfo_pt typ)
 		basetyp = basetyp->type_next;
 	    }
 	    assert(basetyp->type_kind != array_of);
-	    sprintf(buf, "%s_%dd_array", 
+	    sprintf(buf, "%s_%dd_array",
 		    type_nameof(basetyp, 0, 0), ndim);
 	}
 	p = strrchr(buf, '.');
@@ -370,6 +367,6 @@ get_anonymous_type(typeinfo_pt typ)
     basetype->sym_ada_name =
 	ada_name(basetype->sym_ident->node.id.name, pos_unit(yypos));
     basetype->private = private;
-	
+
     return basetype;
 }

@@ -1,5 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/buffer.c,v $ */
-/* $Revision: 1.2 $ $Date: 1999/02/03 19:45:03 $ $Author: nabbasi $ */
 /*
  * General purpose unbounded character buffers.  This allows
  * us to buffer our scanning without arbitrary limitations

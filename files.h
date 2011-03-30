@@ -1,5 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/files.h,v $ */
-/* $Revision: 1.2 $ $Date: 1999/02/03 19:45:04 $ $Author: nabbasi $ */
 /*
  * Routines for dealing with files and file names.
  *

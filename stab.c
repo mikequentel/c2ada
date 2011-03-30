@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/stab.c,v $ */
-/* $Revision: 1.2 $ $Date: 1999/02/03 19:45:04 $ $Author: nabbasi $ */
-
 #include <assert.h>
 #include <string.h>
 #include <sys/types.h>
@@ -76,7 +73,7 @@ new_scope_id(scope_kind_t kind)
 	}
 
 	if (!free || free_index > SCOPE_INFO_BLOCKSIZE-1) {
-		free = (scope_info_t*) allocate(sizeof(scope_info_t) * 
+		free = (scope_info_t*) allocate(sizeof(scope_info_t) *
 										SCOPE_INFO_BLOCKSIZE);
 		free_index = 0;
 	}
@@ -150,7 +147,7 @@ find_sym(name)
 	for (decl = hash_table[index]; decl; decl = decl->sym_hash_list) {
 
 		assert(decl->sym_hash_list != decl);
-		if (decl->sym_hash == hash && 
+		if (decl->sym_hash == hash &&
 			!strcmp(name,decl->sym_ident->node.id.name)) {
 
 			return decl;
@@ -274,19 +271,19 @@ next_param()
 
 
 
-scope_kind_t 
+scope_kind_t
 scope_kind(scope_id_t scope)
 {
 	return scope_tab[scope]->kind;
 }
 
-scope_id_t   
+scope_id_t
 scope_parent(scope_id_t scope)
 {
 	return scope_tab[scope]->parent;
 }
 
-symbol_pt   
+symbol_pt
 scope_symbol( scope_id_t scope)
 {
 	return scope_tab[scope]->sym;
@@ -298,7 +295,7 @@ scope_level( scope_id_t scope )
     return scope_tab[scope]->level;
 }
 
-symbol_pt   
+symbol_pt
 scope_parent_func( scope_id_t scope)
 {
 	symbol_pt sym;
@@ -308,19 +305,19 @@ scope_parent_func( scope_id_t scope)
 	return 0;
 }
 
-void 
+void
 set_scope_kind( scope_id_t scope, scope_kind_t kind)
 {
 	scope_tab[scope]->kind = kind;
 }
 
-void 
+void
 set_scope_parent( scope_id_t scope, scope_id_t parent)
 {
 	scope_tab[scope]->parent = parent;
 }
 
-void 
+void
 set_scope_symbol( scope_id_t scope, symbol_pt sym)
 {
     assert(scope!=0);

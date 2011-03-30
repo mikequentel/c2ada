@@ -1,12 +1,10 @@
-/* $Source: /home/CVSROOT/c2ada/units.h,v $ */
-/* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
 #ifndef _H_UNITS_
 #define _H_UNITS_
 
 #include "boolean.h"
 #include "comment.h"
 
-/* Important note: The word "unit" should really be "package" in 
+/* Important note: The word "unit" should really be "package" in
  * these names, including "unit_n", due to a really embarassing
  * terminological lapse. There's a unique unit_n for each Ada package
  * in the output.  This terminology dates back to the "cbind" version

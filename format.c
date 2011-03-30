@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/format.c,v $ */
-/* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
-
 #include <stdarg.h>
 #include <stdio.h>
 #include <ctype.h>
@@ -91,7 +88,7 @@ allow_break_after(char c)
 	return TRUE;
     }
 }
-    
+
 
 static void
 put(char c)
@@ -117,7 +114,7 @@ put(char c)
 		    put('\n');
 		}
 	    }
-		
+
 	}
     }
 }
@@ -222,4 +219,4 @@ putf(char *s, ...)
     }
     va_end(ap);
 }
-	
+

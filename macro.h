@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/macro.h,v $ */
-/* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
-
 #ifndef _H_MACRO_
 #define _H_MACRO_
 
@@ -52,7 +49,7 @@ extern macro_t *unit_macros[];
 
 extern void macro_init(int);
 extern void macro_undef(char*);
-extern void macro_def(char*, char*, int, int, 
+extern void macro_def(char*, char*, int, int,
 				  char **, file_pos_t, char*);
 extern macro_t *macro_find(char*);
 

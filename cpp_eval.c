@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/cpp_eval.c,v $ */
-/* $Revision: 1.2 $ $Date: 1999/02/03 19:45:03 $ $Author: nabbasi $ */
-
 #include <assert.h>
 #include <sys/types.h>
 #include <ctype.h>
@@ -64,24 +61,24 @@ typedef struct {
     int                c;
     int                recover;
     jmp_buf	       exception;
-    
+
     tokval_t           curval;
     tokval_t           nextval;
     tokclass_t         curtok;
     tokclass_t         nexttok;
 } cpp_eval_state_t, *cpp_eval_state_pt;
 
-	
+
 
 static int
 promote(l,r)
     tokval_t *l, *r;
 {
-    switch(l->eval_result_kind) 
+    switch(l->eval_result_kind)
     {
       case eval_int:
 
-	switch(r->eval_result_kind) 
+	switch(r->eval_result_kind)
         {
 	  case eval_int:
 	    return eval_int;
@@ -90,13 +87,13 @@ promote(l,r)
 	    l->eval_result.fval = (host_float_t) l->eval_result.ival;
 	    return eval_float;
 	  default:
-            break;  
+            break;
 	}
         break;
 
       case eval_float:
 
-	switch(r->eval_result_kind) 
+	switch(r->eval_result_kind)
         {
 	  case eval_int:
 	    r->eval_result_kind = eval_float;
@@ -444,13 +441,13 @@ scan_id(int c, cpp_eval_state_pt s)
     macro_t * m ;
     typeinfo_pt type;
 
-    
+
     while (isalnum(c) || c=='_') {
 	*cp++ = c;
 	c = getc(s);
     }
     *cp = '\0';
-    
+
     m = macro_find(id);
 
     if (m && m->macro_evald) {
@@ -466,7 +463,7 @@ scan_id(int c, cpp_eval_state_pt s)
 	    s->nexttok = tok_string;
 	    break;
 	default:
-	case eval_failed: 
+	case eval_failed:
 	    s->nexttok = tok_error;
 	    break;
 	}
@@ -519,7 +516,7 @@ skip_cpp_comment(int c, cpp_eval_state_pt s)
 	}
 	if ((c == 0) || is_eof(c))
 	    return c;
-	else if (is_eol(c)) 
+	else if (is_eol(c))
 	    return getc(s);
 	else
 	    c = getc(s);
@@ -727,7 +724,7 @@ term(cpp_eval_state_pt s)
 		return val;
 	    }
 	}
-		    
+
 	val = eval(s);
 
 	if (expect(')',s)) {
@@ -762,7 +759,7 @@ f10(cpp_eval_state_pt s)
 	}
 
 	advance(s);
-      
+
 	r = term(s);
 
 	switch (promote(&l,&r)) {
@@ -831,7 +828,7 @@ f9(cpp_eval_state_pt s)
 	}
 
 	advance(s);
-      
+
 	r = f10(s);
 
 	switch (promote(&l,&r)) {
@@ -882,7 +879,7 @@ f8(cpp_eval_state_pt s)
 	}
 
 	advance(s);
-      
+
 	r = f9(s);
 
 	if (IS_EVAL_INT(l) & IS_EVAL_INT(r)) {
@@ -924,7 +921,7 @@ f7(cpp_eval_state_pt s)
 	}
 
 	advance(s);
-      
+
 	r = f8(s);
 
 
@@ -988,7 +985,7 @@ f6(cpp_eval_state_pt s)
 	}
 
 	advance(s);
-      
+
 	r = f7(s);
 
 	switch (promote(&l,&r)) {
@@ -1029,7 +1026,7 @@ f5(cpp_eval_state_pt s)
 	}
 
 	advance(s);
-      
+
 	r = f6(s);
 
 	if (IS_EVAL_INT(l) & IS_EVAL_INT(r)) {
@@ -1055,7 +1052,7 @@ f4(cpp_eval_state_pt s)
 	}
 
 	advance(s);
-      
+
 	r = f5(s);
 
 	if (IS_EVAL_INT(l) & IS_EVAL_INT(r)) {
@@ -1081,7 +1078,7 @@ f3(cpp_eval_state_pt s)
 	}
 
 	advance(s);
-      
+
 	r = f4(s);
 
 	if (IS_EVAL_INT(l) && IS_EVAL_INT(r)) {
@@ -1106,7 +1103,7 @@ f2(cpp_eval_state_pt s)
 	}
 
 	advance(s);
-      
+
 	r = f3(s);
 
 	if (IS_EVAL_INT(l) && IS_EVAL_INT(r)) {
@@ -1132,7 +1129,7 @@ f1(cpp_eval_state_pt s)
 	}
 
 	advance(s);
-      
+
 	r = f2(s);
 
 	if (IS_EVAL_INT(l) && IS_EVAL_INT(r)) {
@@ -1148,27 +1145,27 @@ static tokval_t
 eval(cpp_eval_state_pt s)
 {
     tokval_t cond,tru,fals,tmp;
-    
+
     tmp = f1(s);
 
     for (;;) {
 	if (s->curtok != '?') {
 	    return tmp;
 	}
-	
+
 	advance(s);
-	
+
 	tru = eval(s);
-	
+
 	if (!expect(':',s)) {
 	    MAKE_FAIL(tmp);
 	    return tmp;
 	}
 
 	advance(s);
-	
+
 	fals = eval(s);
-	
+
 	if (IS_EVAL_INT(cond)) {
 	    tmp = (EVAL_INT(cond) != 0) ? tru : fals;
 	}
@@ -1189,7 +1186,7 @@ cpp_eval(char * str)
     cpp_control_state_t new_state;
     cpp_eval_state_t    state = state0;
     cpp_eval_state_pt   s = &state;
-    
+
 
     assert(str != NULL);
 

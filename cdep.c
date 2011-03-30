@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/cdep.c,v $ */
-/* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
-
 /*
  * Routines to gen makefile dependencies for C source
  */
@@ -305,7 +302,7 @@ usage(prog)
 	fputs("\t\t\tDisplay all predefined macros.\n", stderr);
 	fputs("\t\t-Spath\n", stderr);
 	fputs("\t\t\tSuppress dependencies for path.\n", stderr);
-	
+
 	return 1;
 }
 

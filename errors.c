@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/errors.c,v $ */
-/* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
-
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>

@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/allocate.c,v $ */
-/* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
-
 /*
  * Ridiculous heap routines
  */
@@ -51,7 +48,7 @@ new_strf(char * str, ... )
     }
     return new_string(buf);
 }
-    
+
 
 void*
 allocate(size)

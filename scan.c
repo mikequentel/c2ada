@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/scan.c,v $ */
-/* $Revision: 1.2 $ $Date: 1999/02/03 19:45:04 $ $Author: nabbasi $ */
-
 #include <assert.h>
 #include <stdio.h>
 #include <memory.h>
@@ -236,13 +233,13 @@ grok_ident(void)
     struct resword *r;
     symbol_t *sym;
 
-    
+
 
     for (p = id; is_alpha_numeric(yyc); yyc = cpp_getc()) {
 	*p++ = yyc;
     }
     *p = 0;
-	
+
     r = in_word_set(id, (int)(p-id));
     if (r != NULL) {
 	return r->token;
@@ -688,7 +685,7 @@ scan_cpp_comment(c)
 
 static void
 grok_directive(void)
-    /* 
+    /*
      * The only directive expected at this point (post-preprocessing)
      * is of the form
      *	 # <linenumber> <filename> <nesting level>

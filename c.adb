@@ -1,5 +1,3 @@
--- $Source: /home/CVSROOT/c2ada/c.adb,v $ 
--- $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ 
 with Ada.Unchecked_Conversion;
 
 package body C is
