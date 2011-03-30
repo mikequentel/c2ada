@@ -1,5 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/il.h,v $ */
-/* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
 /*
  * Parse tree representation types
  */
@@ -219,7 +217,7 @@ typedef struct typeinfo_t {
     unsigned int	_inline:1; 	/* inline function */
     unsigned int        _boolean:1;     /* special marker for
 					     * Ada-output boolean type */
-    
+
     union {          /* type_info. */
 	struct {     /*     array. */
 	    int                 elements;
@@ -228,14 +226,14 @@ typedef struct typeinfo_t {
 	typeinfo_pt         struct_fields;
 	symbol_pt           formals;
 	}	        type_info;
-	
+
 	unsigned int	_sizeof;
 	unsigned int	_alignof;
-	
+
 	unsigned int	type_hash; 	/* Comparison heuristic */
-	
+
 	symbol_pt	type_base;
-	
+
 	typeinfo_pt	type_anonymous_list;
 	typeinfo_pt	type_next;
 } typeinfo_t;
@@ -263,7 +261,7 @@ typedef struct symbol_t {
     unsigned char	sym_scope;
 
     unsigned int	intrinsic:1; 	/* intrinsic/builtin symbol */
-    
+
     unsigned int	_volatile:1;
     unsigned int	_const:1;
     unsigned int	_inline:1;         /* inline function */
@@ -297,12 +295,12 @@ typedef struct symbol_t {
 					 * a return statement.
 					 */
     unsigned int        private:1;      /* configured as private */
-    unsigned int        declare_in_spec:1; 
+    unsigned int        declare_in_spec:1;
                                         /* configured to ensure sym
 					 * has a declaration in the Ada spec
 					 */
 
-    int			traversal_unit;	/* heuristic to eliminate 
+    int			traversal_unit;	/* heuristic to eliminate
 						   redundant unit traversals */
 
     node_pt		sym_ident;	/* C name - node saved for comments */
@@ -314,7 +312,7 @@ typedef struct symbol_t {
     union {          /* sym_value. */
 	node_pt		    initializer;
 	host_int_t	    intval;
-	struct stmt_t       *body;          /* "value" of func def is 
+	struct stmt_t       *body;          /* "value" of func def is
 						   its body */
 	pkg_def_pt          pkg_def;
 	symbol_pt           aliased_sym;   /* If this->aliases is set,
@@ -326,7 +324,7 @@ typedef struct symbol_t {
 
     comment_block_pt	comment;        /* block comment */
 
-    symbol_pt		sym_tags; 	/* List of struct/union fields 
+    symbol_pt		sym_tags; 	/* List of struct/union fields
 						   or enum literals */
 
     struct symbol_t	*sym_parse_list;/* List used by front end */

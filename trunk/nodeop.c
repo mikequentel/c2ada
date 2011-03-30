@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/nodeop.c,v $ */
-/* $Revision: 1.2 $ $Date: 1999/02/03 19:45:04 $ $Author: nabbasi $ */
-
 #include <assert.h>
 #include <stdarg.h>
 #include <memory.h>
@@ -180,7 +177,7 @@ non_assign_op( node_kind_t op )
 /* operations on node-linked lists */
 
 node_pt
-reshape_list(node_pt e)  
+reshape_list(node_pt e)
     /* turn left-recursive list into right-recursive list:
      * (((a,b),c),d) => (a,(b,(c,d)))
      * The parser builds left-recursive lists, but right-recursive
@@ -425,11 +422,11 @@ reduce_binary(n)
 	promote(n);
 	l = n->node.binary.l;	assert(l != NULL);
 	r = n->node.binary.r;	assert(r != NULL);
-	if (is_constant(l)) {	
+	if (is_constant(l)) {
 	    assert(is_constant(r)); /* because distributive() */
 	    if (is_const_int(l)) {
 		n->node_kind = _Int_Number;
-		n->node.ival = const_int_val(l) + 
+		n->node.ival = const_int_val(l) +
 		    const_int_val(r);
 	    }
 	    else {
@@ -443,10 +440,10 @@ reduce_binary(n)
 	promote(n);
 	l = n->node.binary.l;	assert(l != NULL);
 	r = n->node.binary.r;	assert(r != NULL);
-	if (is_constant(l) && is_constant(r)) {	
+	if (is_constant(l) && is_constant(r)) {
 	    if (is_const_int(l)) {
 		n->node_kind = _Int_Number;
-		n->node.ival = const_int_val(l) - 
+		n->node.ival = const_int_val(l) -
 		    const_int_val(r);
 	    }
 	    else {
@@ -461,11 +458,11 @@ reduce_binary(n)
 	promote(n);
 	l = n->node.binary.l;	assert(l != NULL);
 	r = n->node.binary.r;	assert(r != NULL);
-	if (is_constant(l)) {	
+	if (is_constant(l)) {
 	    assert(is_constant(r)); /* because distributive() */
 	    if (is_const_int(l)) {
 		n->node_kind = _Int_Number;
-		n->node.ival = const_int_val(l) * 
+		n->node.ival = const_int_val(l) *
 		    const_int_val(r);
 	    }
 	    else {
@@ -479,11 +476,11 @@ reduce_binary(n)
 	promote(n);
 	l = n->node.binary.l;	assert(l != NULL);
 	r = n->node.binary.r;	assert(r != NULL);
-	if (is_constant(l) && is_constant(r)) {	
+	if (is_constant(l) && is_constant(r)) {
 	    if (is_const_int(l)) {
 		if (const_int_val(r) != 0) {
 		    n->node_kind = _Int_Number;
-		    n->node.ival = const_int_val(l) / 
+		    n->node.ival = const_int_val(l) /
 			const_int_val(r);
 		    free_node(l); free_node(r);
 		}
@@ -500,10 +497,10 @@ reduce_binary(n)
     case _Rem:
 	l = n->node.binary.l;	assert(l != NULL);
 	r = n->node.binary.r;	assert(r != NULL);
-	if (is_const_int(l) && is_const_int(r)) {	
+	if (is_const_int(l) && is_const_int(r)) {
 	    if (const_int_val(r) != 0) {
 		n->node_kind = _Int_Number;
-		n->node.ival = const_int_val(l) % 
+		n->node.ival = const_int_val(l) %
 		    const_int_val(r);
 		free_node(l); free_node(r);
 	    }

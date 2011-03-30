@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/gen_macros.c,v $ */
-/* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
-
 #include <assert.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -67,7 +64,7 @@ macro_enq(m)
     }
 }
 
-static void 
+static void
 dump_macros(list, max)
     macro_t *list;
     int max;
@@ -80,14 +77,14 @@ dump_macros(list, max)
 	fprintf(stderr, "name <%s>, ada_name <%s>, body <%s>, ",
 	    m->macro_name, m->macro_ada_name, m->macro_body);
 	fprintf(stderr, "body_len %d, params %d\n",
-	    m->macro_body_len, m->macro_params); 
+	    m->macro_body_len, m->macro_params);
 	if(i++ >= max)
 	    break;
     }
     fprintf(stderr, "----------- end macro dump --------\n");
 }
 
-void 
+void
 gen_macro_warnings()
 {
     extern int macro_warnings;
@@ -95,8 +92,8 @@ gen_macro_warnings()
 
     if(macro_warnings) {
 	for(m=unknown_macro_list; m; m = m->macro_next) {
-	    printf("%s untranslated, %s line %d\n", 
-		   m->macro_name, 
+	    printf("%s untranslated, %s line %d\n",
+		   m->macro_name,
 		   file_name(m->macro_definition),
 		   (int) line_number(m->macro_definition));
 	}
@@ -104,7 +101,7 @@ gen_macro_warnings()
     unknown_macro_list = NULL;
 }
 
-static int 
+static int
 could_be_ada_ident(s)
     register char *s;
 {
@@ -113,7 +110,7 @@ could_be_ada_ident(s)
     return is_alpha_numeric( (int) s[-2]);
 }
 
-static void 
+static void
 add_to_unknown_list(unknown)
     macro_t *unknown;
 {
@@ -130,7 +127,7 @@ add_to_unknown_list(unknown)
     unknown->macro_next = NULL;
 }
 
-static void 
+static void
 gen_const_char(name, val)
     char *name, val;
 {
@@ -254,7 +251,7 @@ static void
 gen_const_bool(name)
     char *name;
 {
-    
+
     indent_to(4);
     put_string(name);
     MAX_INDENT(max_const_name_indent);
@@ -282,7 +279,7 @@ parse_macro( char * body )
 
 process_macro_expression( node_pt expr )
 {
-    
+
 }
 #endif
 
@@ -333,11 +330,11 @@ gen_mconst(m, import)
 	gen_comment(m);
 	return TRUE;
     }
-    
+
 
     if (strstr(m->macro_name, "NULL") != NULL) {
-	warning(file_name(m->macro_definition), 
-		line_number(m->macro_definition), 
+	warning(file_name(m->macro_definition),
+		line_number(m->macro_definition),
 		"macro %s contains NULL", m->macro_name);
     }
 
@@ -354,9 +351,9 @@ gen_mconst(m, import)
 	} else {
 	    tname = 0;
 	}
-	gen_const_synonym(m->macro_ada_name, tname, 
-	    packaged_name(mbody->macro_ada_name, 
-			  m->macro_definition, 
+	gen_const_synonym(m->macro_ada_name, tname,
+	    packaged_name(mbody->macro_ada_name,
+			  m->macro_definition,
 			  mbody->macro_definition));
 	gen_comment(m);
 	return TRUE;
@@ -368,7 +365,7 @@ gen_mconst(m, import)
     }
 
 
-    if (EVAL_FAILED(result) && 
+    if (EVAL_FAILED(result) &&
 	(ada_version >= 1995) &&
 	(m->macro_body[0] == 'L') && (m->macro_body[1] == '"')) {
 	    is_wide_string = 1;
@@ -404,7 +401,7 @@ gen_mconst(m, import)
 		t = grok_coercion(buf);
 		if (t != NULL) {
 		    strcpy(buf, m->macro_body);
-		    memset(&buf[leftparen-m->macro_body], 
+		    memset(&buf[leftparen-m->macro_body],
 			   ' ', rightparen-leftparen+1);
 		    result = cpp_eval(buf);
 		    tname = type_nameof(t, 0, 0);
@@ -446,7 +443,7 @@ after_coercion:
     }
     if (IS_EVAL_STRING(result)) {
 	if (import == -1) {
-	    gen_char_array(m->macro_ada_name, EVAL_STRING(result), 
+	    gen_char_array(m->macro_ada_name, EVAL_STRING(result),
 			     is_wide_string, TRUE);
 	} else {
 	    char buf[20];
@@ -459,8 +456,8 @@ after_coercion:
     }
     return FALSE;
 }
- 
-static void 
+
+static void
 do_macro_body(buf, ret, coercion, fname, all, params)
     char *buf, *ret, *coercion, *fname, *all, *params;
 {
@@ -508,8 +505,8 @@ copy_nth_param(func_sym, n, new_param_name)
     symbol_t *param;
     int i;
 
-    for (param = func_sym->sym_tags, i = 0; 
-	 param != NULL; 
+    for (param = func_sym->sym_tags, i = 0;
+	 param != NULL;
 	 param = param->sym_parse_list, i++) {
 	if(i == n) {
 	    param = copy_sym(param);
@@ -538,7 +535,7 @@ gen_macro_func(func_sym, m, import)
     is_pointer = m->macro_func->mf_is_pointer;
     if(is_pointer) {
 	assert((func_sym->sym_type != NULL) &&
-	       (func_sym->sym_type->type_kind == pointer_to) && 
+	       (func_sym->sym_type->type_kind == pointer_to) &&
 	       (func_sym->sym_type->type_next != NULL) &&
 	       (func_sym->sym_type->type_next->type_kind == function_type) &&
 	       (func_sym->sym_type->type_base != NULL));
@@ -558,7 +555,7 @@ gen_macro_func(func_sym, m, import)
 	macro_sym->sym_type = copy_type(func_sym->sym_type);
 	coercion = grok_coercion(m->macro_func->mf_coercion);
 	if(coercion == NULL) {
-	    error(__FILE__, __LINE__, 
+	    error(__FILE__, __LINE__,
 		  "type coercion (%s)", m->macro_func->mf_coercion);
 	/* } else if (coercion->type_kind == pointer_to) { */
 	    /* macro_sym->sym_type = coercion; */
@@ -580,20 +577,20 @@ gen_macro_func(func_sym, m, import)
 		name2 = m->macro_func->mf_params[j];
 		if(match_param_name(name1, name2)) {
 		    if(is_pointer)
-			mparam = copy_nth_param(func_sym->sym_type->type_base, 
+			mparam = copy_nth_param(func_sym->sym_type->type_base,
 						j, name1);
 		    else
 			mparam = copy_nth_param(func_sym, j, name1);
 		    break;
 		}
 	    }
-	    if(mparam == NULL) 
+	    if(mparam == NULL)
 		mparam = bogus_param(name1);
 	    else
 		mparam->sym_ada_name = ada_name(mparam->sym_ada_name, -1);
-	    if(i == 0) 
+	    if(i == 0)
 		macro_sym->sym_tags = mparam;
-	    else 
+	    else
 		last_mparam->sym_parse_list = mparam;
 	    last_mparam = mparam;
 	}
@@ -602,14 +599,14 @@ gen_macro_func(func_sym, m, import)
     }
     name1 = func_sym->sym_ident->node.str.form;
     name2 = strchr(strstr(rhsname, name1) + strlen(name1), '(');
-    name1 = packaged_name(func_sym->sym_ada_name, 
+    name1 = packaged_name(func_sym->sym_ada_name,
 			  m->macro_definition, func_sym->sym_def);
     do_macro_body(body_buf, (is_function(func_sym)? "return": ""),
 		  coercion_name(has_coercion, coercion),
 		  name1, (is_pointer? ".all": ""), name2);
     macro_sym->has_initializer = 1;
     macro_sym->sym_value.body = new_stmt_Compound(
-	m->macro_definition, NULL, 
+	m->macro_definition, NULL,
 	new_stmt_MacroBody(m->macro_definition, body_buf));
 
     if (m->macro_declared_in_header) {
@@ -631,7 +628,7 @@ check_interf(m, sym)
     macro_t *m;
     symbol_t *sym;
 {
-    /* 
+    /*
      * if a macro and a function have the same name,
      * import the function before declaring the macro
      */
@@ -718,7 +715,7 @@ gen_macro_constants(m, import)
     int import;
 {
     while(m != NULL) {
-	if(m->macro_valid && !m->macro_gened) 
+	if(m->macro_valid && !m->macro_gened)
 	    m->macro_gened = gen_mconst(m, import);
 	m = m->macro_next;
     }
@@ -730,7 +727,7 @@ import_macro_constants()
     int i;
     int uord;
 
-    if (!should_import()) 
+    if (!should_import())
 	return;
 
     for (i = 0; ; i++) {
@@ -748,11 +745,11 @@ void gen_macro_types(m, import)
 
     while(m != NULL) {
 	if ((m->macro_valid && !m->macro_gened) &&
-	    (m->macro_func == NULL) && 
+	    (m->macro_func == NULL) &&
 	    (m->macro_params == -1) &&
 	    (t = grok_coercion(m->macro_body)) != NULL) {
 	    output_to(m->macro_declared_in_header);
-	    subtype_decl(m->macro_name, NULL, type_nameof(t, 0, 0), 
+	    subtype_decl(m->macro_name, NULL, type_nameof(t, 0, 0),
 			 4, NULL, m->macro_definition);
 	    m->macro_gened = 1;
 	}
@@ -768,7 +765,7 @@ void gen_macro_vars(macro_t * m, int import, int colonpos)
 	if (m->macro_valid && !m->macro_gened && (m->macro_body != NULL)) {
 	    /* for #define var2 var, generate "var2: integer renames var1 */
 	    output_to(m->macro_declared_in_header);
-	    if ((m->macro_func == NULL) && 
+	    if ((m->macro_func == NULL) &&
 		((sym = find_sym(m->macro_body)) != NULL) &&
 		(sym->sym_kind == var_symbol)) {
 
@@ -780,7 +777,7 @@ void gen_macro_vars(macro_t * m, int import, int colonpos)
 		msym->comment = m->comment;
 		msym->emitted = FALSE;
 
-		gen_var_or_field(msym, 4, colonpos, import, 
+		gen_var_or_field(msym, 4, colonpos, import,
 				 combined_name(sym->sym_ada_name, import), 0);
 
 		m->macro_gened = 1;
@@ -813,11 +810,11 @@ void gen_macro_funcs(m, import)
 	       (sym->sym_kind == func_symbol) &&
 	       !strcmp(sym->sym_ident->node.id.name, m->macro_func->mf_fname)) {
 		/* recognize #define func1(...) func2(...), */
-		check_interf(m, sym); 
+		check_interf(m, sym);
 		gen_macro_func(sym, m, import);
 		m->macro_gened = 1;
 
-	    } else if ((m->macro_func == NULL) && 
+	    } else if ((m->macro_func == NULL) &&
 		       ((sym = find_sym(m->macro_body)) != NULL) &&
 		       (sym->sym_kind == func_symbol)) {
 
@@ -847,7 +844,7 @@ void gen_macro_funcs(m, import)
     }
 }
 
-void 
+void
 finish_macros(m)
     macro_t *m;
 {
@@ -962,12 +959,12 @@ new_str(loc1, loc2)
     return p;
 }
 
-static void 
+static void
 init_regex()
 {
     static int first_time = 1;
 
-    if(!first_time) 
+    if(!first_time)
 	return;
 
 #   ifdef DEBUG
@@ -1037,7 +1034,7 @@ skip_parens(loc, max)
 		break;
 	}
 	if (++p >= max) {
-	    if (paren_count != 0) 
+	    if (paren_count != 0)
 		/* unbalanced(loc); return p; */
 		return NULL;
 	    return p;
@@ -1237,7 +1234,7 @@ grok_coercion(coercion_name)
     return NULL;	/* one that gets here is "void * const" */
 }
 
-static char * 
+static char *
 no_empty_params(params)
     char *params;
 {
@@ -1247,7 +1244,7 @@ no_empty_params(params)
 	return params;
 }
 
-static int 
+static int
 match_param_name(formal_name, body_name)
     char *formal_name, *body_name;
 {

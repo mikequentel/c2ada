@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/errors.h,v $ */
-/* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
-
 #ifndef _H_ERRORS_
 #define _H_ERRORS_
 
@@ -14,7 +11,7 @@ typedef enum {
 } report_t;
 
 extern void vreport(report_t severity,
-		    char* filename, 
+		    char* filename,
 		    int   linenum,
 		    char *format,
 		    va_list ap);

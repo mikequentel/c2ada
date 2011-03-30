@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/ada_name.c,v $ */
-/* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
-
 /*
  * The routines here generate legal Ada identifiers from
  * C identifiers.  All the klugy unique name munging is
@@ -8,7 +5,7 @@
  */
 #include <assert.h>
 #include <string.h>
-#include <stdio.h>  
+#include <stdio.h>
 #include <ctype.h>
 #include <sys/types.h>
 
@@ -302,7 +299,7 @@ ada_name( char * name, int ord )
 	sprintf(buf, "c_%s", name);
 
     } else {
-	
+
 	switch (name[0]) {
 	  case ENUM_PREFIX:
 	    strcpy(buf, "enum_");
@@ -345,7 +342,7 @@ tail(char *id)
     /*
      * Return the rightmost component name of an Ada name; i.e.
      * return the largest rightmost segment of id that
-     * doesn't contain a '.' 
+     * doesn't contain a '.'
      */
 {
     char * p = id + strlen(id) - 1;
@@ -354,4 +351,4 @@ tail(char *id)
     }
     return id;
 }
-    
+

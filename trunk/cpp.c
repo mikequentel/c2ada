@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/cpp.c,v $ */
-/* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
-
 /*
  * Routines to implement a C preprocessor
  */
@@ -375,7 +372,7 @@ in_system_search_path( char * path )
     }
     return 0;
 }
-    
+
 
 
 static cpp_file_t*
@@ -444,10 +441,10 @@ attempt_open_buf( buffer_t * lbuf )
 
 static cpp_file_t *
 attempt_open_w_searchpaths(char * name,
-                           buffer_t * lbuf, 
+                           buffer_t * lbuf,
                            char *dirs[],
                            int ndirs)
-    /* 
+    /*
      * Try to find a filename <name> in any of the <ndirs> directories
      * <dirs>. <lbuf> is a scratch buffer.
      */
@@ -465,9 +462,9 @@ attempt_open_w_searchpaths(char * name,
     }
     return 0;
 }
-        
-        
-        
+
+
+
 
 static void
 push_file(buffer_t *buf, cpp_file_t * f)
@@ -606,7 +603,7 @@ next_char(void)
     int                       result;
 
 top:
-    if (cp == NULL) 
+    if (cp == NULL)
     return 0;
 
     kind = cp->scan_kind;
@@ -620,7 +617,7 @@ top:
             set_cur_unit_trailer_comment(fetch_comment_block());
             cp = curpos = next;
             if (next != NULL) {
-                current_unit_is_header = 
+                current_unit_is_header =
                     next->scan.file->is_header;
             }
             goto top; /* return next_char(); */
@@ -650,7 +647,7 @@ top:
         }
         break;
     }
-    
+
     return result;
 }
 
@@ -755,9 +752,9 @@ scan_cpp_comment(buf, c)
             c = next_char();
             break;
           case END_OF_LINE:
-            incline(0); 
+            incline(0);
             cond_add(buf,c);
-            c = next_char(); 
+            c = next_char();
             return c;
           default:
             UNHANDLED();
@@ -836,7 +833,7 @@ scan_c_comment(buffer_t * buf, boolean want_delim)
 
 static int
 scan_to_end(buffer_t *buf, buffer_t *cbuf, int c)
-    /* Scan to the end of the current line 
+    /* Scan to the end of the current line
      * <buf> is the buffer to copy non-comment part of line to;
      * <cbuf> the buffer to copy comments to.
      * <buf> and <cbuf> may be the same.
@@ -1196,7 +1193,7 @@ grok_define( buffer_t * buf, int c )
     int body_len;
     macro_t *found;
     char * eol_comment;
-    
+
     /* scan identifier to be defined */
     c = skip_white(c);
 
@@ -1332,7 +1329,7 @@ grok_define( buffer_t * buf, int c )
 	    unget_char();
 	    return push_string(replace);
 	}
-	    
+
     }
 
     /* define the macro */
@@ -1577,7 +1574,7 @@ pathname_head(buffer_t *buf, char * path)
 static int
 search_for_file(buffer_t * buf, buffer_t * lbuf, char * name, boolean stdinc)
     /*
-     * Attempt to open file with name <name>. If <stdinc> is true, 
+     * Attempt to open file with name <name>. If <stdinc> is true,
      * only search the "system" standard directories.
      * <buf> is the source code input buffer,
      * <lbuf> is a scratch buffer.
@@ -2168,7 +2165,7 @@ grok_defined(buf, lbuf, c)
     }
 
     name = local_copy(lbuf, ident, sizeof(ident));
-    
+
     add(buf, ' ');
 
     if (macro_find(name)) {
@@ -2191,7 +2188,7 @@ static boolean
 is_const_macro(macro_t * mac)
     /* Test whether macro represents a constant value */
 {
-    
+
     if (!do_const_macros) return FALSE;
     if (mac->macro_params != -1) return FALSE;
     if (!mac->macro_eval_tried) {
@@ -2205,10 +2202,10 @@ is_const_macro(macro_t * mac)
 	    mac->const_value.eval_result_kind = eval_failed;
 	    mac->macro_evald = FALSE;
 	}
-	    
+
     }
     return mac->macro_evald;
-}   
+}
 
 static int
 grok_ident( buffer_t * buf, int c )

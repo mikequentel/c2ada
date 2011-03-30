@@ -1,6 +1,4 @@
 <html>
-<!-- $Source: /home/CVSROOT/c2ada/c2ada.html,v $ -->
-<!-- $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ -->
 
 <head>
 <title> C2Ada - a translator from C to Ada </title>
@@ -16,28 +14,28 @@
 
 
 <p>
-<cite>C2Ada</cite> is a translator from the C programming language to 
+<cite>C2Ada</cite> is a translator from the C programming language to
 the
 <A HREF="http://www.inmet.com/ada9X.html"> Ada 95 </A>
-programming language.  
+programming language.
 It is written in C and is hosted on Unix. (We are aware of an OS/2 port.)
 
 <p>
 <cite>C2Ada</cite> was recently used by Intermetrics to produce Ada 95
-bindings to 
+bindings to
 <a href="http://www.inmet.com/~mg/x11ada/x11ada.html"> X Windows</a>,
-<a href="http://www.inmet.com/~mg/win32ada/win32ada.html"> 
-    Microsoft Windows</a>, 
-and GCCS. 
+<a href="http://www.inmet.com/~mg/win32ada/win32ada.html">
+    Microsoft Windows</a>,
+and GCCS.
 
 <p>Using <cite>C2Ada</cite> is a way to lessen the work in translating C headers
 into Ada, to produce a <b>binding</b>, and in translating whole
 C programs into Ada, producing a <b>translation</b>.  <cite>C2Ada</cite> can
 do about 80% to 90% of the work automatically but it still takes
-some manual work to do the last 10% or 20%. 
+some manual work to do the last 10% or 20%.
 
-<p>The technology for translating C headers is more mature than 
-the technology for translating C functions and statments. 
+<p>The technology for translating C headers is more mature than
+the technology for translating C functions and statments.
 <cite>C2Ada</cite> does not translate C++, just C.
 
 <p>If your browser supports Java click
@@ -55,29 +53,29 @@ the technology for translating C functions and statments.
      known bugs</a>
 <li> <a href="#releases"> release notes </a> on the various versions
      of <cite>C2ada</cite>
-<li> <a href="#copyright"> <cite>C2Ada</cite> copyright and 
+<li> <a href="#copyright"> <cite>C2Ada</cite> copyright and
      warranty disclaimer</a>
 </nl> <p>
 
 <a name="origins"> </a>
 <h2> <cite>C2Ada</cite> origins and authors </h2>
 <cite>C2Ada</cite> is based on the <cite>cbind</cite> program
-written by 
+written by
 <A HREF="mailto:mjs@rational.com"> Mark Schimmel </A>
 of
 <A HREF="http://www.rational.com"> Rational Software Corporation</A>.
 Some versions of <cite>cbind</cite> can be found on
-<a href="ftp://ftp.rational.com/public/tools/cbind/"> 
+<a href="ftp://ftp.rational.com/public/tools/cbind/">
     the Rational ftp server</a>.
-<cite>cbind</cite> translated C <b>header</b> files into Ada package 
+<cite>cbind</cite> translated C <b>header</b> files into Ada package
 specifications. <p>
 
-<cite>C2Ada</cite> was written starting with the above sources, by 
+<cite>C2Ada</cite> was written starting with the above sources, by
 <A HREF="mailto:rgh@inmet.com"> Randy Hudson </A> and
 <A HREF="mailto:mg@inmet.com"> Mitch Gart </A> of
 <A HREF="http://www.inmet.com"> Intermetrics.</A>
 <cite>C2Ada</cite> translates C <b>headers</b> into Ada package specifications
-and also translates C <b>functions and statements</b> 
+and also translates C <b>functions and statements</b>
 into Ada package bodies. <p>
 
 <hr>
@@ -91,14 +89,14 @@ To download and build <cite>C2Ada</cite>:
      (<cite>C2Ada</cite> was developed with version 1.3);
      make the <cite>libainstall</cite> target as well
 
-<LI> download and build 
+<LI> download and build
      <a href="ftp://ftp.gnu.ai.mit.edu/pub/gnu/cperf-2.1a.tar.gz">
-     gperf</a> 
+     gperf</a>
 
 <LI> <code>mkdir c2ada; cd c2ada</code> (You may use another directory
      name if you wish.)
 
-<LI> download the <cite>C2Ada</cite> sources 
+<LI> download the <cite>C2Ada</cite> sources
      <A HREF="c2ada.tar.gz"> <cite>c2ada.tar.gz</cite> </A>
      into the current directory you just created
 
@@ -106,9 +104,9 @@ To download and build <cite>C2Ada</cite>:
 
 <LI> adjust the <code>PYTHON</code> and <code>GPERF</code>
      variables in <cite>Makefile</cite> to point to the executables
-     that were created in the previous steps 
+     that were created in the previous steps
 
-<LI> <code>make</code> (this will create <cite>cbfe</cite>, the 
+<LI> <code>make</code> (this will create <cite>cbfe</cite>, the
      <cite>C2Ada</cite> executable)
 
 </NL>
@@ -201,13 +199,13 @@ I="-Igccs/ -Igccs/AcctGrps/"
 P="-Pconfig-gccs"
 PP="-pp gccs"
 
-$c2ada/cbfe -C $P $PP -sih -src -ap -gnat -95 -mwarn -mf $I test.h 
+$c2ada/cbfe -C $P $PP -sih -src -ap -gnat -95 -mwarn -mf $I test.h
 </pre>
 
 The <cite>cbfe</cite> command is run from the Unix command line with a series
-of switches, mentioned above, on the file <cite>test.h</cite>.  This file 
+of switches, mentioned above, on the file <cite>test.h</cite>.  This file
 <cite>test.h</cite>
-was written to have a series of C <code>#define</code> and 
+was written to have a series of C <code>#define</code> and
 <code>#include</code> statements
 which cause the right constants to be set for the binding, and
 cause the right files to be brought into the binding. <p>
@@ -216,12 +214,12 @@ cause the right files to be brought into the binding. <p>
 <h3> Parent package </h3>
 
 The <code>-pp gccs</code> switch says that the "parent package" of most other
-packages will be named <code>gccs</code>.  
+packages will be named <code>gccs</code>.
 (Using GNAT conventions, the package's
-Ada name is <code>package gccs</code>, the file <cite>gccs.ads</cite> contains 
-its specification, and the file <cite>gccs.adb</cite> 
+Ada name is <code>package gccs</code>, the file <cite>gccs.ads</cite> contains
+its specification, and the file <cite>gccs.adb</cite>
 contains its body.)  If no <code>-pp</code> command line
-option is given the default is a package named <code>C</code> 
+option is given the default is a package named <code>C</code>
 in file <cite>c.ads</cite>.
 
 <p>Another gloss of the <code>-pp</code> switch is that it defines
@@ -236,7 +234,7 @@ and
 <cite>c-ops.adb</cite>
 which contain these definitions. These names reflect the default
 predefined package name <cite>C</cite>.  The user can make modified
-copies of these files to define a parent package for a particular 
+copies of these files to define a parent package for a particular
 C-to-Ada translation project.
 
 
@@ -244,7 +242,7 @@ C-to-Ada translation project.
 
 A useful feature of Ada 95 is parent-child package hierarchies.
 <cite>C2Ada</cite> translates Unix directory hierarchies into
-Ada 95 parent-child library hierarchies.  
+Ada 95 parent-child library hierarchies.
 If a C source file contains the lines
 
 <code><pre>
@@ -254,7 +252,7 @@ If a C source file contains the lines
 </pre></code>
 
 and the parent package is set to gccs, the Ada package names
-that will be generated are 
+that will be generated are
 
 <pre>
 package name1;
@@ -276,9 +274,9 @@ by whitespace:
 gccs/string.h StringPkg stringpkg.ads stringpkg.adb
 </pre>
 
-This line says that a C <code>#include</code> file <cite>gccs/string.h</cite> 
-will be mapped into Ada name "package StringPkg", and the Ada 
-code that is generated will go into files <cite>stringpkg.ads</cite> 
+This line says that a C <code>#include</code> file <cite>gccs/string.h</cite>
+will be mapped into Ada name "package StringPkg", and the Ada
+code that is generated will go into files <cite>stringpkg.ads</cite>
 and <cite>stringpkg.adb</cite>. <p>
 
 <a name="env-vars"></a>
@@ -287,7 +285,7 @@ and <cite>stringpkg.adb</cite>. <p>
 <cite>C2Ada</cite> requires no environment variables to be set.  The
 build procedure predefines a path along which to find the required
 Python modules.  These modules fall into two categories and two
-corresponding directories: 
+corresponding directories:
 
 <ol>
 
@@ -308,10 +306,10 @@ include the directories that contain the source and library modules.
 
 <cite>C2Ada</cite> can automatically translate some C macros into Ada
 but it has a hard time with some others.  There are two ways to get
-good translations of macros.  One is 
+good translations of macros.  One is
 <a href="#macros"> Configuring C Macro Translations</a>.
 The other is explained here.
-The idea is to change the C source to use C++ inline function syntax.  
+The idea is to change the C source to use C++ inline function syntax.
 For example
 
 <pre>
@@ -333,14 +331,14 @@ function max (a, b: integer) return integer;
 pragma inline(max);
 </pre>
 
-... and a body for max, in the Ada package body, that does the right thing. 
+... and a body for max, in the Ada package body, that does the right thing.
 <cite>C2Ada</cite> cannot guess the types of the parameters and
 the type of the function result but if this information is supplied
 by the user <cite>C2Ada</cite> can do the rest. <p>
 
 <h2>Other options </h2>
 
-Typing the command <code>cbfe</code> with no options causes it to 
+Typing the command <code>cbfe</code> with no options causes it to
 print a full list of its options.
 
 <hr>
@@ -364,7 +362,7 @@ C <cite>main()</cite>;
 
 <cite>predef</cite> is the name of the predefined Ada package;
 
-<cite>unit</cite> is the name of the output compilation unit 
+<cite>unit</cite> is the name of the output compilation unit
 (an Ada procedure);
 
 <cite>filename</cite> is the pathname to which the unit is written --
@@ -491,14 +489,14 @@ the.source("whatever.c")
 
 <blockquote>
 (Methods are invoked by enclosing the comma-separated argument list in
-parentheses.) 
+parentheses.)
 </blockquote>
 
 <p>This construct always designates the same <cite>C_source</cite>
 object, which is created the first time the file name is used in this
 construct.
 
-<p>In this version of <cite>C2Ada</cite>, 
+<p>In this version of <cite>C2Ada</cite>,
 he argument to <cite>the.source</cite> must be the pathname of the file
 exactly as it is used to open the file.  For instance, if the C source
 contains the include directive
@@ -540,7 +538,7 @@ information about the denoted macro.
 
 <dd>The source should be a <cite>.h</cite> file: then
 <cite>filename</cite> should be the <cite>.c</cite> file which it
-interfaces. 
+interfaces.
 
 <dt><code>unchecked_conversions_to_spec</code>
 
@@ -553,7 +551,7 @@ Ada package's spec rather than body.
 
 <h3>Configuring C modules</h3>
 
-<P>A common style in C code is to write a module as a file 
+<P>A common style in C code is to write a module as a file
 <code>whatever.c</code>, then write an interface for that module as an
 include file <code>whatever.h</code>.  (Of course, nothing in C
 requires, or particularly supports, doing things this way.)
@@ -680,7 +678,7 @@ private
 
     type Handle is access all struct_example;
     null_Handle : constant Handle := null;
-    
+
 </pre>
 
 <p>The configuration statement for <cite>struct example</cite> causes
@@ -693,7 +691,7 @@ is declared.
 <p>Similarly, the configuration statement for <cite>Handle</cite>
 causes a private type, and a null value for the access type, to be
 declared; the private part contains the requisite declarations and
-definitions. 
+definitions.
 
 <h3>Configuring visible function declarations</h3>
 
@@ -711,7 +709,7 @@ object is used to override this default behavior.  If the function
 <cite>func</cite> is defined in the source file
 <cite>whatever.c</cite>, then a statement like this will cause a
 declaration of the function to be placed in the resulting Ada package
-spec: 
+spec:
 
 <pre>
 the.source('whatever.c').decl('func').declare_in_spec = True
@@ -721,7 +719,7 @@ the.source('whatever.c').decl('func').declare_in_spec = True
 <H2>Configuring C Macro Translations</h2>
 
 Specifying a C macro in the configuration file indicates an intention
-to replace the macro's <code>#define</code> directive with a C declaration.  
+to replace the macro's <code>#define</code> directive with a C declaration.
 the attribute(s) specified for the macro determine how to rewrite the
 <code>#define</code> directive as a C declaration.
 
@@ -736,7 +734,7 @@ file. (Note, however
 
 <dt><code>replacement</code>
 
-<dd>The text which should completely replace the <code>#define</code> 
+<dd>The text which should completely replace the <code>#define</code>
 directive:
 the preprocessor deletes the <code>#define</code> directive and forwards the
 replacement text to the C parser.
@@ -798,7 +796,7 @@ variable requires no declaration.)
 inline short int AccessCount(struct info * x) { return (x)->count; }
 </pre>
 
-<p> 
+<p>
 <code>inline</code> is a special extension to the ANSI C syntax
 accepted by <cite>C2Ada</cite> to tag functions whose translations
 should be given a <cite>pragma Inline</cite> declaration in Ada.
@@ -810,7 +808,7 @@ should be given a <cite>pragma Inline</cite> declaration in Ada.
 <h2>Environment restrictions</h2>
 
 <p>The <cite>C2Ada</cite> code was developed on SunOs 4.1.3 using the
-Gnu C compiler <cite>gcc</cite>.  
+Gnu C compiler <cite>gcc</cite>.
 (In principle, there's no reason to think that the code
 can't be built and run in other environments.)
 
@@ -830,7 +828,7 @@ translation are:
 <li>The attribute <code>'unrestricted_access</code>.
 
 <li>The pragma <code>Unchecked_Union</code>. Note that as of this
-writing, this feature has only been implemented in GNAT on Intel platforms.  
+writing, this feature has only been implemented in GNAT on Intel platforms.
 This affects any C source code containing unions.
 
 <li>Generated files have extension <cite>.ads</cite> for package specs
@@ -882,7 +880,7 @@ evaluation used as the Ada bound, rather than being translated
 symbolically.
 
 <li>A <code>sizeof</code> operator in an array size expression will
-lead to the generation of an absurd Ada array bound. For instance, 
+lead to the generation of an absurd Ada array bound. For instance,
 
 <pre>
 int a[] = {1,3,5,7,9,11};
@@ -975,7 +973,7 @@ re-make.  The required edit is to change the line
 PYTHON_SCRIPTS_PATH = $(HERE)
 </pre>
 
-to 
+to
 
 <pre>
 PYTHON_SCRIPTS_PATH = $(HERE):$(PYTHON)/Lib
@@ -990,8 +988,8 @@ environment variable.
 <a name="copyright"> </a>
 <h2>Copyright and Warranty Disclaimer </h2>
 
-The <cite>C2Ada</cite> source code is NOT copyrighted but is 
-instead published to the public domain as free software.  
+The <cite>C2Ada</cite> source code is NOT copyrighted but is
+instead published to the public domain as free software.
 Any attempt to copyright the source code will be refutable
 in a court of law. <p>
 

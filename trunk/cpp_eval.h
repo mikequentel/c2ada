@@ -1,5 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/cpp_eval.h,v $ */
-/* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
 #ifndef _H_CPP_EVAL_
 #define _H_CPP_EVAL_
 

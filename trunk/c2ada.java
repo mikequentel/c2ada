@@ -1,9 +1,6 @@
-// $Source: /home/CVSROOT/c2ada/c2ada.java,v $ 
-// $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ 
+import java.applet.*;
+import java.awt.*;
 
-import java.applet.*;    
-import java.awt.*; 
- 
 public class c2ada extends NoFlickerApplet {
 // public class c2ada extends Applet {
 
@@ -64,7 +61,7 @@ public class c2ada extends NoFlickerApplet {
 		// System.out.println("repainting");
 		doit(getGraphics());
 		return true;
-	    } 
+	    }
 	}
 	return false;
     }
@@ -84,19 +81,19 @@ public class c2ada extends NoFlickerApplet {
  * without fee is hereby granted, provided that the above copyright
  * notice appear in all copies and that both that copyright notice and
  * this permission notice appear in supporting documentation, and that
- * the name of Matthew Gray or net.Genesis not be used in advertising or 
- * publicity pertaining to distribution of the software without specific, 
- * written prior permission.  I make no representations about the 
- * suitability of this software for any purpose.  It is provided "as is" 
+ * the name of Matthew Gray or net.Genesis not be used in advertising or
+ * publicity pertaining to distribution of the software without specific,
+ * written prior permission.  I make no representations about the
+ * suitability of this software for any purpose.  It is provided "as is"
  * without express or implied warranty.
  */
- 
+
 // public class NoFlickerApplet extends Applet {
 class NoFlickerApplet extends Applet {
   private Image offScreenImage;
   private Graphics offScreenGraphics;
   private Dimension offScreenSize;
-  
+
   public final synchronized void update (Graphics theG) {
       Dimension d = size();
       if((offScreenImage == null) || (d.width != offScreenSize.width) ||

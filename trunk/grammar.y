@@ -1,5 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/grammar.y,v $ */
-/* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
 %{
 /*
 ** This is a bare-bones prototype for an ANSI C parser.
@@ -193,7 +191,7 @@ NS_id: /* { new_declaration(name_space_decl); } */
 ;
 
 /* Begin a new declaration of a parameter */
-NS_new_parm: { td(); } 
+NS_new_parm: { td(); }
 ;
 
 /* Remember that declarators while define typedef-names. */
@@ -217,7 +215,7 @@ NS_ptr_decl: /* { pointer_declarator(); } */
  * does not flag a syntax error. We therefore use the following
  * production...
  */
- 
+
 identifier
         : NS_ntd TYPEDEF_NAME NS_td     {$$ = id_from_typedef($2);}
         | IDENTIFIER
@@ -227,7 +225,7 @@ identifier
  *****************  The C grammar per se. *******************
  ************************************************************/
 
-/* 
+/*
  * What follows is based on the grammar in _The C Programming Language_,
  * Kernighan & Ritchie, Prentice Hall 1988. See the README file.
  */
@@ -329,9 +327,9 @@ type_adjective
     | LONG                          {$$ = TYPEMOD_LONG;}
     | SIGNED                        {$$ = TYPEMOD_SIGNED;}
     | UNSIGNED                      {$$ = TYPEMOD_UNSIGNED;}
-    ;            
-            
-type_qualifier            
+    ;
+
+type_qualifier
     : CONST                         {$$ = TYPEMOD_CONST;}
     | VOLATILE                      {$$ = TYPEMOD_VOLATILE;}
     ;
@@ -386,9 +384,9 @@ struct_declarator
     : declarator
     | ':' constant_expression                       {$$ = new_node(_Bit_Field, 0, $2);}
     | declarator ':' constant_expression            {$$ = new_node(_Bit_Field, $1, $3);}
-    ;    
-    
-enum_specifier    
+    ;
+
+enum_specifier
     : ENUM '{' enumerator_list opt_comma '}'        {$$ = anonymous_enum($3);}
     | ENUM identifier '{' enumerator_list opt_comma '}'
                                                     {$$ = named_enum($2, $4);}
@@ -398,9 +396,9 @@ enum_specifier
 enumerator_list
     : enumerator
     | enumerator_list ',' enumerator                {$$ = concat_symbols($1,$3);}
-    ;        
-        
-enumerator        
+    ;
+
+enumerator
     : IDENTIFIER                                    {$$ = grok_enumerator($1,0);}
     | IDENTIFIER '=' constant_expression            {$$ = grok_enumerator($1,$3);}
     ;
@@ -474,8 +472,8 @@ type_qualifier_list
     ;
 
 parameter_type_list
-    : parameter_list            	{$$ = $1;} 
-    | parameter_list ',' ELLIPSIS       {$$ = concat_ellipsis($1);} 
+    : parameter_list            	{$$ = $1;}
+    | parameter_list ',' ELLIPSIS       {$$ = concat_ellipsis($1);}
     ;
 
 parameter_list
@@ -499,7 +497,7 @@ identifier_list
 
 initializer
     : assignment_expression
-    | '{' initializer_list '}'  
+    | '{' initializer_list '}'
                          {$$ = new_node(_Aggregate,reshape_list($2));}
     | '{' initializer_list ',' '}'
                          {$$ = new_node(_Aggregate,reshape_list($2));}
@@ -525,7 +523,7 @@ abstract_declarator
 direct_abstract_declarator
     : lpar abstract_declarator rpar
                            {$$ = $2;}
-    | lbra rbra                                      
+    | lbra rbra
                            {$$ = new_node(_Array_Index, 0, 0);}
     | lbra constant_expression rbra
                            {$$ = new_node(_Array_Index, 0, $2);}
@@ -533,11 +531,11 @@ direct_abstract_declarator
                            {$$ = new_node(_Array_Index, $1, 0);}
     | direct_abstract_declarator lbra constant_expression rbra
                            {$$ = new_node(_Array_Index, $1, $3);}
-    | lpar rpar                            
+    | lpar rpar
                            {$$ = new_node(_Func_Call, 0, 0);}
-    | lpar  parameter_type_list rpar    
+    | lpar  parameter_type_list rpar
                            {$$ = new_node(_Func_Call, 0, new_node(_Sym,$2));}
-    | direct_abstract_declarator lpar rpar           
+    | direct_abstract_declarator lpar rpar
                            {$$ = new_node(_Func_Call, $1, 0);}
     | direct_abstract_declarator lpar  parameter_type_list rpar
                            {$$ = new_node(_Func_Call, $1, new_node(_Sym,$3));}
@@ -551,13 +549,13 @@ rpar
     : NS_scope_pop ')'
     ;
 
-lbra 
+lbra
     : NS_td  '['
     ;
 
 rbra
     : NS_ntd ']'
-    ;  
+    ;
 
 statement
     : labeled_statement
@@ -642,8 +640,8 @@ iteration_statement
 opt_expr
     : expression
     | /* nothing */ { $$ = (node_t *) 0; }
-         
-         
+
+
 
 jump_statement
     : GOTO .pos identifier ';'   { $$ = new_stmt_Goto( $2, $3 ); }
@@ -780,10 +778,10 @@ unary_operator
 postfix_expression
     : primary_expression
 
-    | postfix_expression '[' expression ']' 
+    | postfix_expression '[' expression ']'
                             {$$ = new_node(_Array_Index, $1, $3);}
 
-    | postfix_expression '(' ')' 
+    | postfix_expression '(' ')'
                             {$$ = new_node(_Func_Call, $1, 0);}
 
     | postfix_expression '(' argument_expression_list ')'
@@ -811,7 +809,7 @@ primary_expression
 
 argument_expression_list
     : assignment_expression
-    | argument_expression_list ',' assignment_expression    {$$ = new_node(_List, $1, $3);} 
+    | argument_expression_list ',' assignment_expression    {$$ = new_node(_List, $1, $3);}
     ;
 
 constant

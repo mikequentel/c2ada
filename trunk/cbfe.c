@@ -1,7 +1,5 @@
-/* $Source: /home/CVSROOT/c2ada/cbfe.c,v $ */
-/* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
 /*
- * Main for cbind translator
+ * Main for c2ada translator
  */
 
 #include <stdio.h>
@@ -69,7 +67,7 @@ usage(prog)
     fprintf(stderr, "Usage: %s [flags] input files\n", prog);
     fputs("  flags:\n\n", stderr);
     show_flag("-Dname[=value]",
-	      "Define a macro with an optional value.  By default\n" 
+	      "Define a macro with an optional value.  By default\n"
 	      "\t\t\tmacros will be defined with the value 1.");
     show_flag("-Uname", "Undefine a builtin macro.");
     show_flag("-Idir", "Add a search path for finding include files.");
@@ -97,7 +95,7 @@ usage(prog)
     show_flag("-mf", "Map file cbind.map used to map unit names.");
     show_flag("-Pfilename", "project configuration file name");
     show_flag("-Opathname", "output directory (default=bindings)");
-	
+
     return 1;
 }
 

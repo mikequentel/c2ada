@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/units.c,v $ */
-/* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
-
 #include <assert.h>
 #include <limits.h>
 #include <string.h>
@@ -69,7 +66,7 @@ typedef struct {
 
     comment_block_pt    header_comment;         /* comment at beginning */
     comment_block_pt    trailer_comment;        /* comment at unit end  */
-	
+
 } unit_t;
 
 /* OUTPUT FILE DESCRIPTORS */
@@ -119,7 +116,7 @@ set_reference(unit_ref_t ref, unit_n ord)
 
     index = ord / BITS_PER_INT;
     assert(index < UNIT_SET_SIZE);
-    
+
     bit = 1 << (ord % BITS_PER_INT);
 
     ref[index] |= bit;
@@ -152,7 +149,7 @@ set_ellipsis(unit_n unit)
     table[unit]->unit_has_ellipsis = TRUE;
 }
 
-boolean  
+boolean
 has_ellipsis(unit_n unit)
 {
     assert(valid_unit(unit));
@@ -172,7 +169,7 @@ unit_has_private_part( unit_n unit )
     assert(valid_unit(unit));
     return table[unit]->unit_has_private_part;
 }
-    
+
 
 void
 set_unchecked_conversion(unit_n unit, boolean in_spec)
@@ -250,7 +247,7 @@ ref_merge(unit_ref_t r1, unit_ref_t r2)
     for (i = 0; i < UNIT_SET_SIZE; i++) {
 	r1[i] |= r2[i];
     }
-}	
+}
 
 static void
 merge_direct_refs(void)
@@ -301,7 +298,7 @@ gen_unit_name(path)
     int  prefix_len;
 
     if ( (prefix_len = in_system_search_path(path)))  {
-	    
+
 	p = buf;
 	path += prefix_len;
     } else {
@@ -333,7 +330,7 @@ gen_unit_name(path)
 	case '/':
 	    while (path[1] == '/')
 		path++;
-	    if (ada_version >= 1995) 
+	    if (ada_version >= 1995)
 		/* Convert directory structure into child packages */
 		*p++ = '.';
 	    else
@@ -347,7 +344,7 @@ gen_unit_name(path)
  after_loop:
 
     *p = 0;
-    
+
     make_ada_identifier(buf, res);
     return new_string(res);
 }
@@ -372,8 +369,8 @@ static char * bindings_dir(void);
 static unit_map *
 decode_unit_map(void)
 {
-    /* 
-     * Map file cbind.map used to map unit names 
+    /*
+     * Map file cbind.map used to map unit names
      * This file is expected to be broken into lines
      *
      *	include_file_name package_name spec_file_name body_file_name
@@ -411,7 +408,7 @@ dump_unit_map(unit_map *first)
     printf("include name\tpackage name\tspec name\tbody name\n");
     printf("------------\t------------\t---------\t---------\n");
     while(first) {
-	printf("%s\t%s\t%s\t%s\n", first->include_name, 
+	printf("%s\t%s\t%s\t%s\n", first->include_name,
 	       first->package_name, first->spec_name, first->body_name);
 	first = first->next;
     }
@@ -473,11 +470,11 @@ initialize_unit(unit_n ord, file_id_t file)
 	    strcat(buf2, ".bdy.a");
 	    break;
 
-	case GNAT: 
+	case GNAT:
 	    {
 		char *p;
 		char  c;
-		
+
 		for( p = start_unit; (c = *p) != '\0'; p++ ) {
 		    if (c == '.') {
 			if (p-start_unit >= 2) {
@@ -551,13 +548,13 @@ unit_included(file_pos_t pos, int nest)
     unit_t *unit;
     int ord;
     int uord;
-    
+
     if (! auto_package) return;
     if (nest < 1) return;
     if (nest >= MAX_NEST) return;
-    
+
     ord = pos_unit(pos);
-    
+
     if (nest > nest_level) {
 
 	uord = nesting_table[nest_level];
@@ -566,7 +563,7 @@ unit_included(file_pos_t pos, int nest)
 	set_reference(unit->direct_ref, ord);
 /*	set_reference(unit->unit_ref, ord); */
     }
-    
+
     nest_level = nest;
     nesting_table[nest] = ord;
 }
@@ -597,7 +594,7 @@ bindings_dir()
     }
     return result;
 }
-    
+
 
 boolean
 set_unit(unit_n ord)
@@ -631,7 +628,7 @@ set_unit(unit_n ord)
 	syserr(unit->unit_body_path, 0);
 	return 1;
     }
-	
+
     output_to_spec(); /* start out with spec in new unit */
 
     inform(0, 0, "Generating %s %s", unit->unit_path, unit->unit_body_path);
@@ -727,7 +724,7 @@ cur_unit_path()
 
 static boolean program_has_const_string = FALSE;
 
-void 
+void
 set_cur_unit_has_const_string(void)
 {
     unit_t *unit;
@@ -745,7 +742,7 @@ set_cur_unit_has_const_string(void)
     }
 }
 
-int 
+int
 cur_unit_has_const_string(void)
 {
     unit_t *unit;
@@ -763,7 +760,7 @@ cur_unit_has_const_string(void)
 
 static int is_child_of_predef;
 
-void 
+void
 set_cur_unit_is_child_of_predef()
 {
     char *unit = cur_unit_name();
@@ -776,7 +773,7 @@ set_cur_unit_is_child_of_predef()
 	((!strncmp(predef_pkg, unit, i)) && (unit[i] == '.'));
 }
 
-int  
+int
 cur_unit_is_child_of_predef()
 {
     return is_child_of_predef;
@@ -792,7 +789,7 @@ nth_element(unit_ref_t set1, unit_ref_t set2, int n)
     unit_n last = unit_count;
 
     for (count = 0, i = 0; i < last; i++) {
-	if (is_referenced(set1,i) && 
+	if (is_referenced(set1,i) &&
 	    !(set2 && is_referenced(set2,i))) {
 
 	    if (count == n) {
@@ -842,12 +839,12 @@ nth_body_ref_unit_ord(int n)
     clear_reference(unit->from_body, current_unit());
     return nth_element(unit->from_body, unit->unit_ref, n);
 }
-    
+
 
 
 /* Switch output to the current spec or body */
 
-void 
+void
 output_to_spec(void)
 {
     extern void format_to_spec();
@@ -856,7 +853,7 @@ output_to_spec(void)
     format_to_spec();
 }
 
-void 
+void
 output_to_body()
 {
     extern void format_to_body();
@@ -945,7 +942,7 @@ file_unit( file_id_t file )
     file_id_t     partner;
 
     if (file_unit_map[0]== -2) {
-	/* This is a special signal that <file_unit_map> 
+	/* This is a special signal that <file_unit_map>
 	 * hasn't been initialized */
 	int i;
 	for (i=0; i<MAX_UNIQ_FNAMES; i++) file_unit_map[i] = -1;
@@ -980,4 +977,4 @@ pos_in_current_unit(file_pos_t pos)
 {
     return pos_unit(pos)==current_unit();
 }
-	
+

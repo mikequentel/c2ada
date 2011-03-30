@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/types.c,v $ */
-/* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
-
 /*
  * Most of the semantic routines are found here.
  */
@@ -81,7 +78,7 @@ set_hash_for_type(typ)
     assert(typ != NULL);
 
     hash += 7 * typ->type_kind;
-    /* hash += typ->_sizeof; 
+    /* hash += typ->_sizeof;
        commented out so arrays of different sizes get the same hash value */
     hash += typ->_alignof;
 
@@ -309,7 +306,7 @@ equal_formals( typeinfo_pt t1, typeinfo_pt t2 )
     }
     return !s1 && !s2;
 }
-	
+
 /*
  * Type comparison routine.
  */
@@ -526,14 +523,14 @@ init_common_types(void)
     t->_short = TRUE;
     t->_sizeof = SIZEOF_SHORT;
     t->_alignof = ALIGNOF_SHORT;
-    
+
     /* unsigned short int */
     type[I_unsigned_short] = t = typeof_int();
     t->_short = TRUE;
     t->_unsigned = TRUE;
     t->_sizeof = SIZEOF_SHORT;
     t->_alignof = ALIGNOF_SHORT;
-    
+
 
     /* int */
     type[I_int] = typeof_int();
@@ -630,7 +627,7 @@ typeinfo_pt type_char_array(void) {return type[I_char_array];}
 
 typeinfo_pt
 typeof_char_array(void)
-    /* 
+    /*
      * return a type equivalent to "char[]"
      */
 {
@@ -857,7 +854,7 @@ type_sizeof(typ)
     return typ->_sizeof;
 }
 
-static void 
+static void
 warn_negative_array(elem, nelem)
     node_t *elem;
     host_int_t nelem;
@@ -887,7 +884,7 @@ add_array_type( typeinfo_pt typ, node_pt elem )
 		nelem = -1;
 	    }
 	    free_node(elem);
-	} else if ((elem->node_kind == _Sym) && 
+	} else if ((elem->node_kind == _Sym) &&
 	       (elem->node.sym != NULL) &&
 	       (elem->node.sym->sym_type->type_kind == enum_type)) {
 	    nelem = elem->node.sym->sym_value.intval;
@@ -1025,7 +1022,7 @@ combine_typespec(tmod)
     if (tmod->_short == 0) {
 	if (typ->_short)    tmod->_short = 1;
 	if (typ->_long_long)tmod->_long_long = 1;
-    
+
 	if (typ->_long) {
 	    if (tmod->_long) {
 		tmod->_long_long = 1;
@@ -1077,7 +1074,7 @@ typeof_typespec(tlist)
 	    } else {
 		result->_sizeof = SIZEOF_INT;
 		result->_alignof = ALIGNOF_INT;
-		result->_anon_int = 
+		result->_anon_int =
 		    !(result->_unsigned || result->_signed);
 	    }
 	    set_hash_for_type(result);
@@ -1167,7 +1164,7 @@ pointer_to_sym (sym)
     typeinfo_t *ptr_type;
     static typeinfo_t *int_pointer = NULL;
 
-    if(int_pointer == NULL) 
+    if(int_pointer == NULL)
     int_pointer = add_pointer_type(typeof_int());
 
     ptr_type = new_type(pointer_to);
@@ -1233,7 +1230,7 @@ add_field(typ, width)
 
     reduce_node(width);
 
-    if (width->node_kind != _Int_Number || width->node.ival < 1 || 
+    if (width->node_kind != _Int_Number || width->node.ival < 1 ||
 	width->node.ival > 31) {
 	warning(NODE_FNAME(width), NODE_FLINE(width),
 		"Bit filed width not handled properly (see %s:%d)",
@@ -1313,7 +1310,7 @@ grok_decl_list(tspec, vlist, uniq)
 	return grok_decl_list(tspec, vlist->node.unary, uniq);
       case _Func_Call:
 	/*
-	 * We're declaring a function. 
+	 * We're declaring a function.
 	 * vlist->node.binary.r is the formal parameter list.
 	 */
 	{
@@ -1493,7 +1490,7 @@ all_types_gened(typeinfo_pt typ, file_pos_t pos)
     if (typ->type_next) {
 	all_types_gened(typ->type_next, pos);
     }
-    
+
     switch (typ->type_kind) {
     case pointer_to:
     case array_of:
@@ -1512,9 +1509,9 @@ all_types_gened(typeinfo_pt typ, file_pos_t pos)
     default:
 	assert(0);
     }
-    
+
     basetype = typ->type_base;
-    
+
     if (basetype == NULL) {
 	if (simple_ptr_typedef(typ)) return;
 	basetype = get_anonymous_type(typ);
@@ -1526,7 +1523,7 @@ all_types_gened(typeinfo_pt typ, file_pos_t pos)
 	basetype->sym_def = pos;
 	basetype->gened = 1;
 	gen_tag_types(basetype->sym_tags, 0);
-	/* This isn't right in the case of a 
+	/* This isn't right in the case of a
 	 * new type coming from a function pointer
 	 * that's a param of another function
 	 */
@@ -1578,8 +1575,8 @@ decl_defined(symbol_pt sym)
     assert(sym->sym_ident->node.id.name != NULL);
     dup = find_sym(sym->sym_ident->node.id.name);
 
-    if (dup && 
-	sym->sym_kind==dup->sym_kind && 
+    if (dup &&
+	sym->sym_kind==dup->sym_kind &&
 	equal_types(sym->sym_type, dup->sym_type)) {
 
 	return dup;
@@ -1618,7 +1615,7 @@ find_units(unit_n ord, typeinfo_pt typ, boolean from_body)
     for (t = typ; t; t = t->type_next) {
 	if (! t->_builtin) {
 	    basetype = t->type_base;
-	    if (basetype != NULL && !basetype->intrinsic && 
+	    if (basetype != NULL && !basetype->intrinsic &&
 		basetype->traversal_unit != ord) {
 
 		basetype->traversal_unit = ord;
@@ -1671,7 +1668,7 @@ is_static_function_type(typ)
 	typ = typ->type_next;
 	goto top;
       default:
-        break; 
+        break;
     }
 
     return 0;
@@ -1745,17 +1742,17 @@ grok_decl(symbol_pt sym)
 	    symbol_pt dup;
 	    adjust_param_types(sym);
 	    dup = decl_defined(sym);
-	    
+
 	    if (MAKING_BODY || ! is_static_function_type(typ)) {
 		if (dup) {
 		    sym->sym_ada_name = dup->sym_ada_name;
-		    if (sym->has_initializer && 
+		    if (sym->has_initializer &&
 			pos_unit(sym->sym_def)==pos_unit(dup->sym_def)) {
 
 			dup->interfaced = TRUE;
 		    }
 		}
-		    
+
 		if (! sym->gened) {
 		    if (!dup || sym->has_initializer) {
 			sym->gened = TRUE;
@@ -1768,7 +1765,7 @@ grok_decl(symbol_pt sym)
 	break;
     case var_symbol:
 	if ((!MAKING_BODY) && typ->_static) {
-	    warning(file_name(sym->sym_def), line_number(sym->sym_def), 
+	    warning(file_name(sym->sym_def), line_number(sym->sym_def),
 		    "Static variable %s in header, no Ada variable generated",
 		    sym->sym_ada_name);
 	} else if ((MAKING_BODY || ! typ->_static) &&
@@ -1909,7 +1906,7 @@ grok_sizeof_struct(styp, fields)
 
 	    tmp = bitsize + width;
 	    if (tmp > ftype->_sizeof * BITS_PER_BYTE) {
-		aggsize += (bitsize + BITS_PER_BYTE - 1) / 
+		aggsize += (bitsize + BITS_PER_BYTE - 1) /
 		       BITS_PER_BYTE;
 		bitsize = 0;
 		goto align_field;
@@ -1921,7 +1918,7 @@ grok_sizeof_struct(styp, fields)
 	    bitsize += width;
 	} else {
 	    if (bitsize != 0) {
-		aggsize += (bitsize + BITS_PER_BYTE - 1) / 
+		aggsize += (bitsize + BITS_PER_BYTE - 1) /
 		       BITS_PER_BYTE;
 		bitsize = 0;
 	    }
@@ -2056,7 +2053,7 @@ grok_type(typ)
 /*
  *	fatal(file_name(yypos), line_number(yypos),
  *	      "function error", __FILE__, __LINE__);
- *	fprintf(stderr, "assertion failure line %d, %s\n", 
+ *	fprintf(stderr, "assertion failure line %d, %s\n",
  *	    line_number(current_file_pos), current_name);
  *	assert(0);
  */
@@ -2107,7 +2104,7 @@ grok_enumerator(node_pt id, node_pt val)
     sym = new_sym();
     sym->sym_kind = enum_literal;
     sym->sym_ident = id;
-    sym->sym_ada_name = ada_name(sym->sym_ident->node.id.name, 
+    sym->sym_ada_name = ada_name(sym->sym_ident->node.id.name,
 				 pos_unit(sym->sym_def));
 
     if (val == NULL) {
@@ -2184,7 +2181,7 @@ anonymous_enum(literals)
 			      literals->sym_ada_name)) :
 	    new_node(_Ident, gen_type_name(ENUM_PREFIX));
 
-    sym->sym_ada_name = ada_name(sym->sym_ident->node.id.name, 
+    sym->sym_ada_name = ada_name(sym->sym_ident->node.id.name,
 				 pos_unit(sym->sym_def));
     sym->_created_name = TRUE;
     grok_enum_lits(literals, sym->sym_type);
@@ -2213,7 +2210,7 @@ named_enum(id, literals)
 	sym->sym_type = typeof_enum();
 	sym->sym_type->type_base = sym;
 	sym->sym_ident = new_node(_Ident, new_string(buf));
-	sym->sym_ada_name = ada_name(sym->sym_ident->node.id.name, 
+	sym->sym_ada_name = ada_name(sym->sym_ident->node.id.name,
 				     pos_unit(sym->sym_def));
 	sym->sym_kind = type_symbol;
 	store_sym(sym);
@@ -2252,7 +2249,7 @@ enum_reference(id)
 	    id->node.id.name = new_string(name);
 	}
 	sym->sym_ident = id;
-	sym->sym_ada_name = ada_name(sym->sym_ident->node.id.name, 
+	sym->sym_ada_name = ada_name(sym->sym_ident->node.id.name,
 				     pos_unit(sym->sym_def));
 	sym->_created_by_reference = 1;
 	store_sym(sym);
@@ -2352,7 +2349,7 @@ named_rec(boolean is_union, node_pt id, symbol_pt tags)
     assert(tags != NULL);
 
     /* See if the record's name is already in use. */
-    buf[0] = is_union ? UNION_PREFIX : STRUCT_PREFIX; 
+    buf[0] = is_union ? UNION_PREFIX : STRUCT_PREFIX;
     strcpy(&buf[1], id->node.id.name);
     sym = find_sym(buf);
 
@@ -2392,12 +2389,12 @@ named_rec(boolean is_union, node_pt id, symbol_pt tags)
 	    gen_ada_type(newsym);
 
 	    result = newsym;
-	    
-	    
+
+
 	} else  {
 	    /*
 	     * If we're here, this was an incomplete type in the
-	     * current file that is now being completed.	 
+	     * current file that is now being completed.
 	     * Make its definition come out here.
 	     */
 	    sym->sym_def = tags->sym_def;
@@ -2439,7 +2436,7 @@ rec_reference(boolean is_union, node_pt id)
     assert(id != NULL);
     assert(id->node_kind == _Ident);
 
-    buf[0] = is_union ? UNION_PREFIX : STRUCT_PREFIX; 
+    buf[0] = is_union ? UNION_PREFIX : STRUCT_PREFIX;
     strcpy(&buf[1], id->node.id.name);
 
     sym = find_sym(buf);
@@ -2475,7 +2472,7 @@ novar_declaration(tlist)
 
     tlist = typeof_typespec(tlist);
     assert(no_typemods(tlist));
-    
+
     switch (decl_class(tlist)) {
       case int_decl:
 	return NULL;
@@ -2511,7 +2508,7 @@ find_direct_name(node_pt vlist)
 	if (!result) {
 	    result = find_direct_name(vlist->node.binary.r);
 	}
-    } 
+    }
     return result;
 }
 
@@ -2606,7 +2603,7 @@ set_field_names(tags)
     for (; tags; tags = tags->sym_parse_list) {
     if (tags->sym_ada_name == NULL) {
 	if (tags->sym_ident != NULL) {
-	tags->sym_ada_name = ada_name(tags->sym_ident->node.id.name, 
+	tags->sym_ada_name = ada_name(tags->sym_ident->node.id.name,
 				      pos_unit(tags->sym_def));
 	}
     }
@@ -2634,7 +2631,7 @@ field_declaration(typeinfo_t * tlist, node_t * vlist)
     for (sym=decl_list; sym; sym= sym->sym_parse_list) {
 	sym->_struct_or_union_member = TRUE;
     }
-    
+
 
     return set_symbol_kind(decl_list);
 }
@@ -2711,7 +2708,7 @@ abstract_param(typeinfo_t *typ, node_t *adecl, boolean named)
     sym->sym_kind = param_symbol;
 
     return sym;
-    
+
 }
 
 
@@ -2828,7 +2825,7 @@ bind_to_sym(node_pt id)
 
 }
 
-int 
+int
 num_dimensions (typeinfo_pt typ)
 {
     int res = 1;
@@ -2877,7 +2874,7 @@ private_type_null( symbol_pt tsym )
     if (!map) map = new_symmap("private_type_null");
     nsym = get_symmap(map, tsym);
     if (nsym) return nsym;
-    
+
     /* create new null */
     nsym = new_sym();
     nsym->sym_kind = var_symbol;

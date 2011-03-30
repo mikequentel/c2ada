@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/files.c,v $ */
-/* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
-
 #include <assert.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -107,7 +104,7 @@ set_file_pos(char * path, int line)
 }
 
 /* return 1 if strings not equal, 0 if equal */
-int 
+int
 compare_path(char * s1, char * s2)
 {
     char c1, c2;
@@ -135,22 +132,22 @@ file_pos_t
 find_file(char * path)
     /*
      * Search for <path> in the fnames list;
-     * if found, return pos corresponding to file's first line; 
+     * if found, return pos corresponding to file's first line;
      * otherwise return -1.
      */
 {
     file_id_t i;
-    
+
     for (i = 0; i < findex; i++) {
 	if (!compare_path(fnames[i], path)) {
 	    return file_line_pos( i, 1 );
 	}
     }
-    
+
     return -1;
 }
 
-size_t 
+size_t
 sizeof_file(int fd)
 {
     struct stat stat_buf;
@@ -169,7 +166,7 @@ map_file(int fd, size_t fsize)
     return mmap(0, fsize, PROT_READ, MAP_PRIVATE, fd, 0);
 }
 
-int 
+int
 unmap_file(void * addr, size_t len)
 {
     return munmap(addr, (int)len);
@@ -194,7 +191,7 @@ map_file(fd, fsize)
 	return addr;
 }
 
-int 
+int
 unmap_file(addr, len)
 	void *addr;
 	size_t len;
@@ -224,7 +221,7 @@ warning_at( file_pos_t pos, char * fmt, ...)
     va_end(ap);
 }
 
-void 
+void
 inform_at ( file_pos_t pos, char * fmt, ...)
 {
     va_list ap;

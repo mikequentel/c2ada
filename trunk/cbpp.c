@@ -1,6 +1,3 @@
-/* $Source: /home/CVSROOT/c2ada/cbpp.c,v $ */
-/* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
-
 /*
  * Main for a standard C preprocessor
  */
@@ -42,7 +39,7 @@ usage(prog)
 	fputs("\t\t\tRetain C comments in preprocessed output.\n\n", stderr);
 	fputs("\t\t-builtin\n", stderr);
 	fputs("\t\t\tDisplay all predefined macros.\n", stderr);
-	
+
 	return 1;
 }
 
