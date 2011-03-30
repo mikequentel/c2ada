@@ -4,11 +4,7 @@
 #ifndef _H_GEN_STMT_
 #define _H_GEN_STMT_
 
-#include "lowlevel.h"
-
-#ifndef _H_STMT_
 #include "stmt.h"
-#endif
 
 extern void gen_stmt( stmt_pt s, int ident );
 

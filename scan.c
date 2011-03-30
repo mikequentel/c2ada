@@ -1,10 +1,11 @@
 /* $Source: /home/CVSROOT/c2ada/scan.c,v $ */
 /* $Revision: 1.2 $ $Date: 1999/02/03 19:45:04 $ $Author: nabbasi $ */
 
+#include <assert.h>
 #include <stdio.h>
 #include <memory.h>
 #include <sys/types.h>
-#include "lowlevel.h"
+
 #include "errors.h"
 #include "host.h"
 #include "files.h"
@@ -223,11 +224,13 @@ grok_number(boolean fraction)
     return INTEGER_CONSTANT;
 }
 
+
+struct resword {char *name; short token;};
+extern struct resword *in_word_set(char*, int);
+
 static int
 grok_ident(void)
 {
-    struct resword {char *name; short token;};
-    extern struct resword *in_word_set ANSI_PROTO((char*, int));
 
     char id[1024], *p;
     struct resword *r;

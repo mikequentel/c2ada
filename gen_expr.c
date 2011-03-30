@@ -1,7 +1,9 @@
 /* $Source: /home/CVSROOT/c2ada/gen_expr.c,v $ */
 /* $Revision: 1.1.1.1 $  $Date: 1999/02/02 12:01:51 $ */
 
+#include <assert.h>
 #include <stdio.h>
+
 #include "errors.h"
 #include "gen_expr.h"
 #include "format.h"

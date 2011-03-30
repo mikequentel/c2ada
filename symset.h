@@ -4,6 +4,8 @@
 #ifndef H_SYMSET
 #define H_SYMSET
 
+#include "boolean.h"
+
 typedef struct symset  * symbols_t;
 
 extern void symset_init(void);

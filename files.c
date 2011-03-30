@@ -1,20 +1,16 @@
 /* $Source: /home/CVSROOT/c2ada/files.c,v $ */
 /* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdarg.h>
-
-#include "lowlevel.h"
-#include "errors.h"
-
-#include "printf.h"
-
-#include "hostinfo.h"
-
 #include <sys/types.h>
+#include <sys/stat.h>
+
+#include "errors.h"
+#include "hostinfo.h"
 #include "files.h"
 
-#include <sys/stat.h>
 
 #ifdef HAS_MMAP
 #include <sys/mman.h>

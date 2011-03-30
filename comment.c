@@ -1,11 +1,10 @@
 /* $Source: /home/CVSROOT/c2ada/comment.c,v $ */
 /* $Revision: 1.1.1.1 $ $Date: 1999/02/02 12:01:51 $ $Author: nabbasi $ */
-#include "lowlevel.h"
+
 #include "il.h"
 #include "allocate.h"
 #include "comment.h"
 #include "format.h"
-#include "printf.h"
 #include <string.h>
 
 comment_block_pt

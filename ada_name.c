@@ -6,13 +6,12 @@
  * C identifiers.  All the klugy unique name munging is
  * done here as well
  */
+#include <assert.h>
 #include <string.h>
 #include <stdio.h>  
 #include <ctype.h>
-
 #include <sys/types.h>
 
-#include "lowlevel.h"
 #include "errors.h"
 #include "host.h"
 #include "allocate.h"
@@ -22,18 +21,7 @@
 #include "il.h"
 #include "configure.h"
 
-#if !defined(LINUX)  /* not needed in Linux */
-int toupper(int c)
-    /* For some inexplicable reason /usr/include/ctype.h doesn't
-     * define toupper.
-     */
-{
-    if (c>='a' && c<='z') return c - 'a' + 'A';
-    return c;
-}
-#endif
-
-extern char *ada_keyword ANSI_PROTO((char*, int));
+extern char *ada_keyword(char*, int);
 extern int auto_package;
 
 #undef NULL
@@ -107,15 +95,15 @@ is_reserved_id(char* name)
     }
 
     if (n_reserved == 0) {
-	return FALSE;
+	return 0;
     } else {
 	int i;
 	for (i=0; i<n_reserved; i++) {
 	    if (!lcasecmp(reserved[i], name)) {
-		return TRUE;
+		return 1;
 	    }
 	}
-	return FALSE;
+	return 0;
     }
 }
 
@@ -124,7 +112,8 @@ make_ada_identifier(char * name, char * buf)
     /*
      * Generate a legal Ada identifier from the argument 'name'.
      * Specifically, ignore '$', ignore leading, trailing, or multiple
-     * underscores.
+     * underscores. Since hyphen may come from include directory names
+     * convert it to underscore.
      */
 {
     assert(name != NULL);
@@ -147,6 +136,11 @@ make_ada_identifier(char * name, char * buf)
 	    if (name[1] != '_' && name[1] != 0) {
 		*buf++ = *name;
 	    }
+	    name++;
+	    break;
+	  case '-':
+	    *buf = '_';
+	    buf++;
 	    name++;
 	    break;
 	  default:

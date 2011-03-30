@@ -10,15 +10,15 @@
 #define COMMENT_POS		64
 #endif
 
-extern int output_line ANSI_PROTO((void));
-extern void reset_output_line ANSI_PROTO((void));
+extern int output_line(void);
+extern void reset_output_line(void);
 
-extern void reset_indent ANSI_PROTO((void));
-extern void new_line ANSI_PROTO((void));
-extern void indent_to ANSI_PROTO((int));
-extern void put_string ANSI_PROTO((char*));
-extern void put_char ANSI_PROTO((int));
-extern int cur_indent ANSI_PROTO((void));
+extern void reset_indent(void);
+extern void new_line(void);
+extern void indent_to(int);
+extern void put_string(char*);
+extern void put_char(int);
+extern int cur_indent(void);
 
 extern void putf(char*,...);
 

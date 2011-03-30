@@ -3,11 +3,12 @@
 /*
  * Main for cbind translator
  */
-#include "lowlevel.h"
-#include "errors.h"
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <string.h>
+
+#include "errors.h"
 #include "host.h"
 #include "files.h"
 #include "hash.h"
@@ -42,13 +43,8 @@ int output_refs = 1;		/* Output references from Ada back to C */
 vendor_t ada_compiler = GNAT;
 int ada_version = 1995;
 
-#if !defined(LINUX)  /* these allready defined in system header */
-extern void fputs ANSI_PROTO((char *, FILE *));
-extern void fprintf ANSI_PROTO((FILE *, char *, ...));
-#endif /* LINUX */
-
-extern void yylex_init ANSI_PROTO((void));
-extern void yyparse ANSI_PROTO((void));
+extern void yylex_init(void);
+extern void yyparse(void);
 
 #define streq(s1,s2) (!strcmp(s1,s2))
 

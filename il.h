@@ -7,28 +7,18 @@
 #ifndef _H_IL_
 #define _H_IL_
 
-#ifndef _H_HOST_
 /* include definition of host_int_t */
 #include "host.h"
-#endif
 
-#ifndef _H_HASH_
 /* include definition of hash_t */
 #include "hash.h"
-#endif
 
-#ifndef _H_HOSTINFO_
 #include "hostinfo.h"
-#endif
 
-#ifndef _H_FILES_
 /* include definition of file_pos_t */
 #include "files.h"
-#endif
 
-#ifndef _H_COMMENT_
 #include "comment.h"
-#endif
 
 /* Forward reference, resolved in stmt module */
 struct stmt_t;

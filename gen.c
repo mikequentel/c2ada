@@ -1,17 +1,12 @@
-/* $Source: /home/CVSROOT/c2ada/gen.c,v $ */
-/* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
-
-#include "hostinfo.h"
-
-#include "lowlevel.h"
-#include "errors.h"
-
+#include <assert.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 
+#include "errors.h"
+#include "hostinfo.h"
 #include "host.h"
 #include "files.h"
 #include "hash.h"
@@ -84,11 +79,6 @@ static struct {
 /* forward references */
 static int gen_params( symbol_t * params, int pass, char * result_to_add );
 
-#if !defined(LINUX) /* allready in system headers on linux */
-extern void printf(char *, ...);
-extern void fprintf(FILE *, char *, ...);
-#endif
-
 static void inline_func(symbol_t *, int);
 
 static void
@@ -136,7 +126,7 @@ enq_before( sym_q * q, symbol_pt sym, symbol_pt ante )
 	enq( q, sym );
     }
 }
-    
+
 
 static decl_class_t
 points_to(typ)
@@ -239,7 +229,7 @@ gen_ada_func(symbol_pt sym, symbol_pt ante)
 	for (back2=0, back1=compilation[unit].funcq.qhead;
 	     ;
 	     back2 = back1, back1 = back1->sym_gen_list) {
-	    
+
 	    assert(back1->sym_gen_list);
 	    if (back1->sym_gen_list==sym) {
 	       /* reorder list */
@@ -279,7 +269,7 @@ gen_ada_lit(symbol_pt sym)
 }
 
 
-static void 
+static void
 put_string_both( char * s )
 {
     put_string(s);
@@ -307,14 +297,14 @@ print_position(pos)
     char buf[200];
     extern int output_refs;
 
-    if (output_refs) 
+    if (output_refs)
     {
 	sprintf(buf, "-- %s:%d\n", file_name(pos), (int)line_number(pos));
 	/* right-justify out to column 79 */
 	indent_to(80 - strlen(buf));
 	put_string(buf);
-    } 
-    else 
+    }
+    else
     {
 	put_char('\n');
     }
@@ -378,7 +368,7 @@ cond_start_quote(count, in_quote)
     int *count, *in_quote;
 {
     if (!*in_quote) {
-	
+
 	putf("%{\"");    /* put start-of-string-literal, quote-char */
 	*in_quote = 1;
 	(*count)++;
@@ -462,7 +452,7 @@ string_name(boolean is_wide)
     static char * char_array;
 
     /* TBD: Could use a switch to see if Wide_String & Char_Array
-     * have already been renamed, so that we don't need to predef 
+     * have already been renamed, so that we don't need to predef
      * prefix.
      */
 
@@ -542,7 +532,7 @@ print_string_value( char* val, int expected_len, boolean c_string)
     char *repr;
     boolean fixed_length = expected_len != -1;
     int excess;
-    
+
 
     for (count = 0; *val; val++) {
 	c = (unsigned int) *val;
@@ -580,11 +570,11 @@ print_string_value( char* val, int expected_len, boolean c_string)
     } else {
 	excess = 0;
     }
-    
+
     for (;excess; excess--){
 	putf(" & %s", nul_name(0));
     }
-	
+
 }
 
 void
@@ -618,12 +608,12 @@ print_comment(char * p)
 {
         if (!p) return;
 
-#if defined(LINUX) /* to make gcc -Wall happy on linux */
-	while (is_white( (int)*p)) {
+#if 0
+	while (is_white((int)*p)) {
 		p++;
 	}
 #else
-	while (is_white(*p)) {
+	while (isspace(*p)) {
 		p++;
 	}
 #endif
@@ -709,7 +699,7 @@ static char *c_char,
 
 struct typeinfo_t *bogus_type;
 
-void 
+void
 init_predef_names()
 {
     static int initialized = 0;
@@ -792,11 +782,11 @@ typesym_nameof( typeinfo_pt typ, boolean use_parent_type )
 	}
 	typesym = (basetype->aliases? basetype->sym_value.aliased_sym :
 		                      basetype );
-	
+
 
 	assert(typesym->sym_ada_name != NULL);
-	
-	    
+
+
 	/*
 	 * NB: The test against yypos is a way of detecting
 	 * symbols generated during fixup.
@@ -806,10 +796,10 @@ typesym_nameof( typeinfo_pt typ, boolean use_parent_type )
 	    is_current_unit(unit_ord) ||
 	    typesym->intrinsic ||
 	    typesym->sym_def==yypos) {
-	    
+
 	    return typesym->sym_ada_name;
 	}
-	sprintf(buf, "%s.%s", unit_name(unit_ord), 
+	sprintf(buf, "%s.%s", unit_name(unit_ord),
 		typesym->sym_ada_name);
 	return buf;
     }
@@ -824,26 +814,26 @@ int_type_builtin_name(typeinfo_pt typ)
 
     assert( decl_class(typ)==int_decl );
 
-    if (size == SIZEOF_CHAR) {	
+    if (size == SIZEOF_CHAR) {
 
 	return unsgnd       ? c_unsigned_char :
 	       typ->_signed ? c_signed_char   :
 		              c_char;
 
     } else if (size == SIZEOF_SHORT) {
-	
+
 	return unsgnd ? c_unsigned_short : c_signed_short;
-	
+
     } else if ((size == SIZEOF_INT) && ! (typ->_long)) {
-	
+
 	return unsgnd ? c_unsigned_int 	: c_signed_int;
-	
+
     } else if (size == SIZEOF_LONG) {
-	
+
 	return unsgnd ? c_unsigned_long	: c_signed_long;
     }
 #ifdef SIZEOF_LONG_LONG
-    if (size == SIZEOF_LONG_LONG) 
+    if (size == SIZEOF_LONG_LONG)
 	return unsgnd ? c_unsigned_long_long : c_signed_long_long;
 #endif
     assert("non-standard int type");
@@ -867,7 +857,7 @@ type_nameof(typ, use_parent_type, is_param)
     if (typ == bogus_type)   return "??? unknown type ???";
 
     if (typ->_boolean)       return "boolean";
- 
+
     dclass = decl_class(typ);
     /*
      * special-case: (void *) and (const void *) parameters
@@ -1021,7 +1011,7 @@ gen_size_rep(symbol_pt sym)
     print_position(sym->sym_def);
 }
 
-static int 
+static int
 compar_enum (tag1, tag2)
     symbol_pt *tag1;
     symbol_pt *tag2;
@@ -1048,7 +1038,7 @@ setup_tags(symbol_pt    tag,
     /*
      * Prepares an enum tag list for printing, returns information
      * about the contents of the list.
-     * Called from gen_enum_type. 
+     * Called from gen_enum_type.
      */
 {
     symbol_t *t, **list;
@@ -1101,14 +1091,14 @@ gen_tags(symbol_pt sym, symbol_pt *list, int ntags, boolean rep)
 	    sprintf(buf, " => %d", (int) list[i]->sym_value.intval);
 	    put_string(buf);
 	}
-	if (i < ntags-1) 
+	if (i < ntags-1)
 	    put_char(',');
 	if (rep)
 	    put_char('\n');
 	else
 	    c_comment_or_position(list[i]);
-	while ((i < ntags-1) && 
-	       (list[i]->sym_value.intval == list[i+1]->sym_value.intval)) 
+	while ((i < ntags-1) &&
+	       (list[i]->sym_value.intval == list[i+1]->sym_value.intval))
 	    i++;
     }
     indent_to(4);
@@ -1146,7 +1136,7 @@ gen_enum_type(symbol_pt sym)
     set_symbol_done(sym);
 }
 
-void 
+void
 subtype_decl(subtype_name, package_name, type_name, indent, ident, pos)
     char *subtype_name, *package_name, *type_name;
     int indent;
@@ -1164,7 +1154,7 @@ subtype_decl(subtype_name, package_name, type_name, indent, ident, pos)
 	}
 	put_string(type_name);
 	put_char(';');
-	if (ident != NULL) 
+	if (ident != NULL)
 	    c_comment(ident);
 	print_position(pos);
     }
@@ -1215,7 +1205,7 @@ anon_function_pointer_name(sym)
 	return buf;
 }
 
-static boolean 
+static boolean
 is_anon_function_pointer(typeinfo_pt typ)
 {
     if (typ->type_kind == function_type) {
@@ -1268,7 +1258,7 @@ upper_array_bound(int elem, char* index_name)
 }
 
 enum array_gen_t {init_var_array, var_array, bounds_array, box_array} ;
-/* 
+/*
  * generate the (...) part of an array declaration.
  * return the type of the array element
  */
@@ -1308,7 +1298,7 @@ gen_dimensions(typ, a)
 		putf("0..%s", upper_array_bound(dimensions[i], index_name));
 		break;
 	    case bounds_array:
-		putf("%s range 0..%s", 
+		putf("%s range 0..%s",
 		     index_name,
 		     upper_array_bound(dimensions[i], index_name));
 		break;
@@ -1340,7 +1330,7 @@ gen_var_or_field(symbol_pt sym,       /* symbol to gen */
 		 int       colonpos,  /* decl colon column */
 		 int       import,    /* unit# to import from */
 		 char *    rename,    /* renaming string for func type */
-		 int       hidden)    /* if true, prefix sym name 
+		 int       hidden)    /* if true, prefix sym name
 				       * with unit name */
 {
     typeinfo_t *typ, *elemtyp;
@@ -1359,7 +1349,7 @@ gen_var_or_field(symbol_pt sym,       /* symbol to gen */
     if (colonpos != 0) indent_to(colonpos);
     put_string(": ");
 
-    if ((ada_version >= 1995) && (typ->type_kind != field_type) &&  
+    if ((ada_version >= 1995) && (typ->type_kind != field_type) &&
 	!rename && (typ->type_kind != union_of)) {
 	put_string("aliased ");
     }
@@ -1384,7 +1374,7 @@ gen_var_or_field(symbol_pt sym,       /* symbol to gen */
 
 	    putf(" renames %s.%s", unit_name(import), sym->sym_ada_name);
 
-	} else if ((decl_class(typ) == array_decl) && 
+	} else if ((decl_class(typ) == array_decl) &&
 		   !typ->type_base->sym_type->_typedef) {
 
 	    enum array_gen_t kind;
@@ -1405,16 +1395,16 @@ gen_var_or_field(symbol_pt sym,       /* symbol to gen */
     if (!sym->_struct_or_union_member &&
 	(sym->sym_scope<2       ||
 	 sym->_static ||
-	 sym->emit_initializer    )     ) {         
-	
+	 sym->emit_initializer    )     ) {
+
 	if (sym->has_initializer) {
-	
+
 	    /* NB: dynamically allocated variables are initialized
 	     * with separate statements, since in general the
 	     * fixup may require the generation of auxiliary
 	     * statements.  Cf. fix_stmt_Compound.
 	     */
-	
+
 	    put_string(" := ");
 	    if (sym->sym_type->type_kind == array_of) {
 		/* indent array initialization under decl */
@@ -1424,7 +1414,7 @@ gen_var_or_field(symbol_pt sym,       /* symbol to gen */
 
 	} else if (!current_unit_is_header && !interfaces_c(sym)) {
 	    /* output an initializer for statically allocated vars */
-	
+
 	    if (sym->sym_type->type_kind != pointer_to) {
 		/* Emit a "zero" of the appropriate type. */
 		put_string(" := ");
@@ -1470,8 +1460,8 @@ gen_simple_type(symbol_pt sym)
 	    new_line();
 	    gen_enum_type(sym);
 	} else {
-	    subtype_decl(sym->sym_ada_name, NULL, 
-			 sym->sym_type->type_base->sym_ada_name, 
+	    subtype_decl(sym->sym_ada_name, NULL,
+			 sym->sym_type->type_base->sym_ada_name,
 			 4, sym->sym_ident, sym->sym_def);
 	    set_symbol_done(sym);
 	}
@@ -1511,7 +1501,7 @@ import_subtype(typeq)
     for (sym = typeq->qhead; sym; sym = sym->sym_gen_list) {
 	unit = pos_unit(sym->sym_def);
 	subtype_decl(sym->sym_ada_name, unit_name(unit),
-		     sym->sym_ada_name, 4, 
+		     sym->sym_ada_name, 4,
 		     sym->sym_ident, sym->sym_def);
     }
 }
@@ -1590,10 +1580,10 @@ gen_function_pointer(name, sym, typ)
 
     if (ada_version < 1995) {
 
-	putf("subtype %s is %s", sym->sym_ada_name, c_function_pointer);    
-	
+	putf("subtype %s is %s", sym->sym_ada_name, c_function_pointer);
+
     } else if (typebase && typebase->emitted) {
-	
+
 
 	putf("subtype %s is %s", name, typebase->sym_ada_name);
 
@@ -1709,7 +1699,7 @@ gen_access_type( symbol_pt sym, boolean private_part )
 	     nullsym->sym_ada_name,
 	     sym->sym_ada_name);
     }
-	     
+
 }
 
 static void
@@ -1754,14 +1744,14 @@ sym_for_incomplete_record(symbol_pt sym)
     /*
      * Basically what we want to know here is whether this module
      * is generating any pointers to this type.  Because of the
-     * type reordering going on in gen_unit -- and in the gen module 
+     * type reordering going on in gen_unit -- and in the gen module
      * generally -- we're going to emit (1) incomplete record types
      * (2) access to record types (3) complete record types.
      * The code here seems to work -- why, I (rgh) don't know.
      */
     return !type->type_base || type->type_base==sym;
 }
-    
+
 
 static void
 gen_record_incompletes(sym_q * typeq, boolean private_part)
@@ -1915,13 +1905,13 @@ gen_record_rep(sym, largest_lhs)
 	}
 }
 
-static int 
+static int
 is_hidden_type_name_in_rec(rec_sym, type_name)
     symbol_t *rec_sym;
     char *type_name;
 {
     symbol_t *tag;
-    
+
     for(tag = rec_sym->sym_tags; tag; tag = tag->sym_parse_list) {
 	if(!strcasecmp(type_name, tag->sym_ada_name))
 	    return 1;
@@ -1951,7 +1941,7 @@ gen_record_t(symbol_pt sym, boolean private_part)
 
     typ = sym->sym_type;
     assert(typ != NULL);
-    is_gnat_union = (ada_compiler == GNAT) && 
+    is_gnat_union = (ada_compiler == GNAT) &&
             (typ->type_kind == union_of);
 
     new_line();
@@ -1960,7 +1950,7 @@ gen_record_t(symbol_pt sym, boolean private_part)
 
     if (typ->type_base != NULL && typ->type_base != sym) {
         subtype_decl(sym->sym_ada_name, NULL,
-		     typ->type_base->sym_ada_name, 4, 
+		     typ->type_base->sym_ada_name, 4,
 		     sym->sym_ident, sym->sym_def);
 	set_symbol_done(sym);
         if (has_comment) new_line();
@@ -1989,7 +1979,7 @@ gen_record_t(symbol_pt sym, boolean private_part)
             /* default to first if all sizes are 0,
 	     * it seems like sizes can be 0 for subtypes
 	     */
-            biggest_tag = sym->sym_tags;	
+            biggest_tag = sym->sym_tags;
             biggest_tag_size = 0;
             for(tag = sym->sym_tags; tag; tag = tag->sym_parse_list) {
 		if (biggest_tag_size < tag->sym_type->_sizeof) {
@@ -2035,7 +2025,7 @@ gen_record_t(symbol_pt sym, boolean private_part)
                 for (; tag; tag = tag->sym_parse_list) {
 		    putf("%>when %s_kind =>\n", 16, tag->sym_ada_name);
 		    gen_var_or_field(tag, 20, largest_lhs + 20, -1,
-				     NULL, 
+				     NULL,
 				     is_hidden_type_name_in_rec(
 					 sym, type_nameof(tag->sym_type,0,0)));
                 }
@@ -2047,7 +2037,7 @@ gen_record_t(symbol_pt sym, boolean private_part)
             } else {
                 for (; tag; tag = tag->sym_parse_list) {
 		    gen_var_or_field(tag, 12, largest_lhs + 12, -1,
-				     NULL, 
+				     NULL,
 				     is_hidden_type_name_in_rec(
 					 sym, type_nameof(tag->sym_type,0,0)));
                 }
@@ -2164,11 +2154,11 @@ gen_sorted_types(sym_q * typeq, boolean private)
     typeinfo_pt  typ;
     decl_class_t prev;
     decl_class_t cur;
-    
+
     /*
      * Make 2 passes through the types.
      * On the first pass, generate extra types for anonymous
-     * function pointers that go with record fields.  
+     * function pointers that go with record fields.
      * Then on the 2nd pass generate the actual types.
      */
     if (!private && ada_version >= 1995) {
@@ -2192,7 +2182,7 @@ gen_sorted_types(sym_q * typeq, boolean private)
 	    }
 	}
     }
-    
+
     /* 2nd pass: now we're actually emitting the type decls */
     prev = struct_decl;
     for (sym = typeq->qhead; sym; sym = sym->sym_gen_list) {
@@ -2331,7 +2321,7 @@ gen_params(params, pass, result_to_add)
      *        char_array and "in out char_array" for certain types.
      * Pass 3 generates tmp_param: constant char_array := param&nul
      *        declarations for in string parameters.
-     * Pass 4 generates just a list of the parameter names, 
+     * Pass 4 generates just a list of the parameter names,
      *        not the type names, e.g. (param1, param2(param2'first)'access).
      */
     if (has_void_params(params)) {
@@ -2391,13 +2381,13 @@ gen_params(params, pass, result_to_add)
 	    if (is_const_charp(typ)) {
 		if (first_use) {
 		    /* put_string("use type Interfaces.C.Char_Array;\n"); */
-		    putf("%>function \"&\" (S: %s.Char_Array; C: %s.Char)", 
+		    putf("%>function \"&\" (S: %s.Char_Array; C: %s.Char)",
 			 8, IC, IC);
-		    putf("%>return %s.Char_Array renames %s.\"&\";", 
+		    putf("%>return %s.Char_Array renames %s.\"&\";",
 			 12, IC, IC);
-		    if (!cur_unit_is_child_of_predef() && 
+		    if (!cur_unit_is_child_of_predef() &&
 			(ada_version >= 1995)) {
-			
+
 			putf("%>Nul: %s.Char renames %s.Nul;\n\n",
 			     8,
 			     predef_pkg,
@@ -2421,7 +2411,7 @@ gen_params(params, pass, result_to_add)
 		     has_const_charp? "Tmp_" : "",
 		     sym->sym_ada_name);
 	    }
-	    if (sym->sym_parse_list != NULL) 
+	    if (sym->sym_parse_list != NULL)
 		put_string(",\n");
 	    break;
 	}
@@ -2446,14 +2436,12 @@ gen_params(params, pass, result_to_add)
     return cur_indent();
 }
 
-#if !defined(LINUX) /* function not used! */
 static int
 multiple_params(params)
 	symbol_t *params;
 {
 	return params != NULL && params->sym_parse_list != NULL;
 }
-#endif
 
 static boolean
 declaring_sym_in_spec(symbol_pt sym)
@@ -2482,14 +2470,14 @@ gen_vars(sym_q *vq, int import)
     /*
      * Make 2 passes through the variables, like the types.
      * On the first pass, generate extra types for anonymous
-     * function pointers.  
+     * function pointers.
      */
     if (ada_version >= 1995) {
 	first_anon_func = 0;
 	for (sym = vq->qhead; sym; sym = sym->sym_gen_list) {
 
 	    if (!sym->emitted) {
-		
+
 		typ = sym->sym_type;
 		assert(typ != NULL);
 
@@ -2508,9 +2496,9 @@ gen_vars(sym_q *vq, int import)
     for (sym = vq->qhead; sym; sym = sym->sym_gen_list) {
 
 	if ((sym->sym_scope < 2) || sym->_static) {
-	    
+
 	    if (sym_done(sym)) continue;
-	    if (sym->sym_type->type_kind==array_of && 
+	    if (sym->sym_type->type_kind==array_of &&
 		   /* TBD:only handling this special case now */
 		has_undone_requisites(sym)) {
 
@@ -2545,7 +2533,7 @@ import_vars(void)
 
 void
 gen_local_func(symbol_pt sym, int indent)
-    /* 
+    /*
      * A local function is a function within the scope of another.
      * This construct, which cannot appear in the C source, is
      * synthesized to handle C constructs that otherwise aren't
@@ -2597,7 +2585,7 @@ gen_subp(symbol_pt sym,
     /*
      * Make 2 passes through the parameters, like the types.
      * On the first pass, generate extra types for anonymous
-     * function pointers.  
+     * function pointers.
      * Then on the 2nd pass generate the actual function and parameters.
      */
     if (ada_version >= 1995 && !rename) {
@@ -2669,13 +2657,13 @@ gen_subp(symbol_pt sym,
 	    gen_funcdef(sym,4);
 	    print_position(sym->sym_def);
 	}
-	if (!is_inline && 
+	if (!is_inline &&
 	    ( is_spec == declaring_sym_in_spec(sym) )) {
 
 	    boolean was_to_spec = output_is_spec();
 	    output_to(is_spec);
 	    putf("%>pragma Convention(C, %s);", 4, sym->sym_ada_name);
-	    output_to(was_to_spec); 
+	    output_to(was_to_spec);
 	}
 	new_line();
 
@@ -2917,7 +2905,7 @@ interface_c(sym, indent)
 	print_position(sym->sym_def);
 
     } else {
-	putf("\n%>pragma interface(C, %s);", indent, sym->sym_ada_name);
+	putf("\n%>pragma Interface(C, %s);", indent, sym->sym_ada_name);
 	print_position(sym->sym_def);
     }
 }
@@ -3075,15 +3063,15 @@ fix_vars( sym_q * vq )
 	    sym->has_initializer &&
 	    (sym->sym_scope<2       ||
 	     sym->_static ||
-	     sym->emit_initializer    )     ) { 
+	     sym->emit_initializer    )     ) {
 
 	    fix_sym_initializer( sym );
 	}
     }
 } /* fix_vars() */
-	
 
-	    
+
+
 
 static void
 gen_stdarg_concat_func( typeinfo_pt type )
@@ -3101,7 +3089,7 @@ gen_use_type_decl( typeinfo_pt type )
 {
     putf("%>use type %s;\n", 4, type_nameof(type,FALSE,FALSE));
 }
-	    
+
 
 static void
 gen_unit(unit_n ord)
@@ -3131,7 +3119,7 @@ gen_unit(unit_n ord)
 	put_comment_block( comment, 0 );
     }
 
-    /* 
+    /*
      * If we are not a child of the predefined package, "with" it,
      * so we can get the built-in types
      */
@@ -3188,7 +3176,7 @@ gen_unit(unit_n ord)
     for (i=0; ; i++) {
 	uord = nth_body_ref_unit_ord(i);
 	if (uord== -1) break;
-	    
+
 	putf("with %s;\n", unit_name(uord));
     }
 
@@ -3265,7 +3253,7 @@ gen_unit(unit_n ord)
     import_subprograms();
 
     if (unit_has_private_part( current_unit() ) ||
-	compilation[ord].varq.qhead != NULL || 
+	compilation[ord].varq.qhead != NULL ||
 	compilation[ord].funcq.qhead != NULL) {
 
 	output_to_spec();
@@ -3315,7 +3303,7 @@ type_deps_clear(typeinfo_pt type, symbol_pt sym)
     switch (decl_class(type)) {
 
     case pointer_decl:
-	    
+
 	if (is_access_to_record(type)) {
 	    /*
 	     * This test assumes that all record types have
@@ -3350,7 +3338,7 @@ type_deps_clear(typeinfo_pt type, symbol_pt sym)
 	    symbol_pt basetype = type->type_base;
 	    assert(basetype != NULL);
 
-	    if (basetype != sym) { 
+	    if (basetype != sym) {
 		/* Typedef of struct OR incomplete record */
 
 		return basetype->cleared;
@@ -3383,10 +3371,10 @@ typesort(sym_q *typeq)
     symbol_pt last;
     symbol_pt next;
     boolean   changed;
-    
+
     typeq->qhead = NULL;
     typeq->qtail = NULL;
-    
+
     /*
      * Loop through list possibly many times adding symbols which
      * are ready to be generated back into the typeq.  In practice

@@ -5,11 +5,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
-#include "lowlevel.h"
+#include "boolean.h"
 #include "errors.h"
-
-#include "printf.h"
-
 #include "format.h"
 
 extern FILE *cur_unit_fd;

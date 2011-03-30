@@ -1,17 +1,17 @@
 /* $Source: /home/CVSROOT/c2ada/units.c,v $ */
 /* $Revision: 1.3 $ $Date: 1999/02/09 18:16:51 $ $Author: nabbasi $ */
 
+#include <assert.h>
 #include <limits.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
 #include <ctype.h>
-#include "lowlevel.h"
+
 #include "errors.h"
 #include "ada_name.h"
 #include "files.h"
-#include "printf.h"
 #include "units.h"
 #include "allocate.h"
 #include "vendor.h"
@@ -404,7 +404,6 @@ decode_unit_map(void)
     return first;
 }
 
-#if !defined(LINUX) /* function not called ! */
 static void
 dump_unit_map(unit_map *first)
     /* for debugging */
@@ -417,8 +416,6 @@ dump_unit_map(unit_map *first)
 	first = first->next;
     }
 }
-#endif
-
 
 static unit_map *
 find_unit(first, iname)
@@ -525,7 +522,6 @@ initialize_unit(unit_n ord, file_id_t file)
     table[ord] = unit;
 }
 
-#if !defined(LINUX) /* function not called! */
 static void
 dump_unit(unit_n ord)
     /* print out information about a unit from the unit table */
@@ -542,7 +538,6 @@ dump_unit(unit_n ord)
     printf("\tpath = %s\n", unit->unit_path);
     fflush(stdout);
 }
-#endif
 
 void
 unit_included(file_pos_t pos, int nest)

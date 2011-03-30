@@ -1,11 +1,12 @@
 /* $Source: /home/CVSROOT/c2ada/nodeop.c,v $ */
 /* $Revision: 1.2 $ $Date: 1999/02/03 19:45:04 $ $Author: nabbasi $ */
 
+#include <assert.h>
 #include <stdarg.h>
 #include <memory.h>
 #include <sys/types.h>
 #include <string.h>
-#include "lowlevel.h"
+
 #include "errors.h"
 #include "host.h"
 #include "files.h"
