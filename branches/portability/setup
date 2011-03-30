@@ -8,11 +8,11 @@ EOF
 
 case `uname` in
     Darwin)
-	# This setup is for MAC OS X Tiger, with XCode 2.2.1.
+	# This setup is for MAC OS X Snow Leopard, with XCode 3.2.6.
 	cat >>Makefile.config <<EOF
 EXTRA_LIBS =
 PYTHON_TOP = /usr
-PYTHON_VER = python2.3
+PYTHON_VER = python2.6
 EOF
 	;;
     Linux)
