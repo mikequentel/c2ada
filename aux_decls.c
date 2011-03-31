@@ -30,7 +30,7 @@ typedef struct unchecked_cvt {
     int         unit;
     symbol_pt   cvt_func;
     boolean     in_spec;
-    
+
     struct unchecked_cvt * next;
 
 } unchecked_cvt_t, *unchecked_cvt_pt;
@@ -71,8 +71,8 @@ gen_unchecked_conversion_funcs( int unit,
 }
 
 
-symbol_pt 
-unchecked_conversion_func(typeinfo_pt from_type, 
+symbol_pt
+unchecked_conversion_func(typeinfo_pt from_type,
 			  typeinfo_pt to_type,
 			  file_pos_t  pos,
 			  boolean     in_spec )
@@ -107,7 +107,7 @@ unchecked_conversion_func(typeinfo_pt from_type,
 	sym->sym_def  = pos;
 
 	new_unchecked_cvt(sym, from_type, to_type, unit, in_spec);
-	
+
 	set_unchecked_conversion(unit, in_spec);
 
 	deallocate(fname);
@@ -129,15 +129,13 @@ static unit_type_usage_t use_type_o;
 static PyObject * module_UnitDict;
 static PyObject * class_UnitDict;
 
-static PyObject * unitDict_use_type;
-
 void
 init_unit_dict(void)
 {
     PyErr_Clear();
     module_UnitDict= PyImport_ImportModule("UnitDict");
     assert(module_UnitDict);
-    
+
     class_UnitDict = PyObject_GetAttrString(module_UnitDict, "UnitDict");
     assert(class_UnitDict);
 
@@ -147,11 +145,11 @@ init_unit_dict(void)
     use_type_o.dict = PyObject_GetAttrString(use_type_o.unitDict, "dict");
     assert(use_type_o.dict);
 
-    stdarg_concat_o.unitDict = 
+    stdarg_concat_o.unitDict =
 	PyObject_GetAttrString(module_UnitDict, "stdarg_concat");
     assert(stdarg_concat_o.unitDict);
 
-    stdarg_concat_o.dict = 
+    stdarg_concat_o.dict =
 	PyObject_GetAttrString(stdarg_concat_o.unitDict, "dict");
     assert(stdarg_concat_o.dict);
 }
@@ -223,7 +221,6 @@ gen_unit_type_usages(unit_type_usage_pt          usage,
 {
     typeinfo_pt type_item;
     int i;
-    boolean has_concats;
 
     PyObject * key;           /* unit */
     PyObject * entry;         /* entry = stdarg_concat.dict[key] */

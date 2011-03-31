@@ -128,7 +128,7 @@ static void
 unix_error()
 {
 	if (errno != 0) {
-                  fprintf(stderr,strerror(errno));
+        	fprintf(stderr,"%s", strerror(errno));
 	}
 }
 
