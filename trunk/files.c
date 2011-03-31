@@ -54,7 +54,7 @@ pos_line(file_pos_t pos)
 static file_pos_t
 file_line_pos( file_id_t f, int line)
 {
-    return (f << LINE_NUMBER_BITS) | line;
+    return (((long)f) << LINE_NUMBER_BITS) | line;
 }
 
 

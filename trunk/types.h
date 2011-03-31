@@ -18,6 +18,7 @@ extern int *get_dimensions(typeinfo_t*);
 extern boolean equal_types( typeinfo_pt t1, typeinfo_pt t2 );
 extern boolean assignment_equal_types( typeinfo_pt tleft, typeinfo_pt tright);
 
+extern typeinfo_t *abstract_declarator_type(typeinfo_pt, node_pt);
 extern typeinfo_t *new_type(typekind_t);
 extern typeinfo_t *copy_type(typeinfo_t*);
 extern typeinfo_t *concat_types(typeinfo_t*, typeinfo_t*);

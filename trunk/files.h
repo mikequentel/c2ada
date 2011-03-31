@@ -43,7 +43,7 @@ typedef unsigned long line_nt;
 extern file_id_t pos_file(file_pos_t);
 extern line_nt   pos_line(file_pos_t);
 
-#define line_number(x)		((x) & ((1 << LINE_NUMBER_BITS) - 1))
+#define line_number(x)		((x) & ((1L << LINE_NUMBER_BITS) - 1))
 
 extern int num_files(void);
 

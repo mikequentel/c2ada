@@ -603,7 +603,7 @@ print_symbol_t(symbol_pt s, int indent)
 void
 print_stmt_kind(stmt_kind_t s)
 {
-    printf(nameof_stmt_kind(s));
+    printf("%s", nameof_stmt_kind(s));
 }
 
 void
@@ -630,13 +630,13 @@ print_symbol(symbol_pt s, int indent)
 void
 print_typekind(typekind_t t)
 {
-    printf(nameof_typekind(t));
+    printf("%s", nameof_typekind(t));
 }
 
 void
 print_node_kind(node_kind_t n)
 {
-    printf(nameof_node_kind(n));
+    printf("%s", nameof_node_kind(n));
 }
 
 void
@@ -649,7 +649,7 @@ print_typeinfo(typeinfo_t *t, int indent)
 void
 print_sym_kind(sym_kind_t s)
 {
-    printf(nameof_sym_kind(s));
+    printf("%s", nameof_sym_kind(s));
 }
 
 void
@@ -657,7 +657,7 @@ print_case_alist(case_alist_pt ap, int indent)
 {
     spaces(indent);
     if(ap == NULL) { printf("(null)\n"); return; }
-    printf("case_alist at %x:\n", (unsigned int) ap);
+    printf("case_alist at %lx:\n", (unsigned long int) ap);
     print_node(ap->exp, indent+NEXT);
     spaces(indent);
     printf("case_alist.rest:\n");
@@ -669,7 +669,7 @@ print_case_slist(case_slist_pt sp, int indent)
 {
     spaces(indent);
     if(sp == NULL) { printf("(null)\n"); return; }
-    printf("case_slist at %x:\n", (unsigned int) sp);
+    printf("case_slist at %lx:\n", (unsigned long int) sp);
     print_stmt(sp->stm, indent+NEXT);
     spaces(indent);
     printf("case_slist.rest:\n");
@@ -681,7 +681,7 @@ print_case_blist(case_blist_pt bp, int indent)
 {
     spaces(indent);
     if(bp == NULL) { printf("(null)\n"); return; }
-    printf("case_blist at %x:\n", (unsigned int) bp);
+    printf("case_blist at %lx:\n", (unsigned long int) bp);
     print_case_alist(bp->alts, indent+NEXT);
     spaces(indent);
     printf("case_blist.stms:\n");
@@ -691,7 +691,7 @@ print_case_blist(case_blist_pt bp, int indent)
     print_case_blist(bp->rest, indent+NEXT);
     print_uns_pair("has_default", bp->has_default, indent+NEXT);
     spaces(indent);
-    printf("case_blist.last_stmt at %x:\n", (unsigned int) bp->last_stmt);
+    printf("case_blist.last_stmt at %lx:\n", (unsigned long int) bp->last_stmt);
 }
 
 void
@@ -705,8 +705,8 @@ print_case_stmt(case_stmt_pt cp, int indent)
     printf("case_stmt.branches:\n");
     print_case_blist(cp->branches, indent+NEXT);
     spaces(indent);
-    printf("case_stmt.default_branch at %x:\n",
-            (unsigned int) cp->default_branch);
+    printf("case_stmt.default_branch at %lx:\n",
+            (unsigned long int) cp->default_branch);
 }
 
 void
@@ -732,11 +732,11 @@ print_macro(m, indent)
 	printf("param[%d] %s\n", i, m->macro_param_vec[i]);
     }
     spaces(indent);
-    printf("macro_next %x\n", (unsigned int) m->macro_next);
+    printf("macro_next %lx\n", (unsigned long int) m->macro_next);
     spaces(indent);
     printf("macro_hash %d\n", (int) m->macro_hash);
     spaces(indent);
-    printf("macro_hash_link %x\n", (unsigned int) m->macro_hash_link);
+    printf("macro_hash_link %lx\n", (unsigned long int) m->macro_hash_link);
     spaces(indent);
     printf("macro_func\n");
     print_macro_function(m->macro_func, indent+4);
@@ -833,7 +833,7 @@ print_comment_block(bl, indent)
 
     spaces(indent);
     if(bl == NULL) { printf("(null)\n"); return; }
-    printf("next %x\n", (unsigned int) bl->next);
+    printf("next %lx\n", (unsigned long int) bl->next);
     spaces(indent);
     printf("count %d\n", bl->count);
     for(i=0; i<COMMENT_BLOCKSIZE; i++) {

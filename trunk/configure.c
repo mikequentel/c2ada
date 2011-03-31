@@ -36,7 +36,7 @@ configure_project( char * filename )
     the_sources = PyObject_GetAttrString(the_data, "source");
     assert(the_sources);
 }
-    
+
 char **
 configured_reserved_ids(int * count_p)
     /* return the.reserved_names as a C string list */
@@ -136,8 +136,6 @@ configured_sym_info( symbol_pt sym, typeinfo_pt type )
     PyObject * return_type_is_voidObj;
     PyObject * ada_nameObj;
 
-    file_id_t file = pos_file(sym->sym_def);
-
     source = file_source( pos_file(sym->sym_def) );
     if (!source) return FALSE;
 
@@ -150,7 +148,7 @@ configured_sym_info( symbol_pt sym, typeinfo_pt type )
 
     /* return_type_is_void, boolean */
 
-    return_type_is_voidObj = 
+    return_type_is_voidObj =
 	PyObject_GetAttrString(declObj, "return_type_is_void");
     if (!return_type_is_voidObj) PyErr_Clear();
 
@@ -170,7 +168,7 @@ configured_sym_info( symbol_pt sym, typeinfo_pt type )
 
     /* private : boolean */
     {
-	PyObject * privateObj = 
+	PyObject * privateObj =
 	    PyObject_GetAttrString(declObj, "private");
 	if (privateObj) {
 	    sym->private = PyObject_IsTrue(privateObj);
@@ -192,7 +190,7 @@ configured_sym_info( symbol_pt sym, typeinfo_pt type )
     return TRUE;
 
 } /* configured_sym_info */
-    
+
 
 static char * configured_output_dir_value;
 
@@ -211,7 +209,7 @@ configured_output_dir()
 
 
 /* "Source partner" is the relationship between a .c file and the .h
- * file that describes its interface. The function <configured_source_partner> 
+ * file that describes its interface. The function <configured_source_partner>
  * takes either name and returns the other.
  */
 
@@ -228,7 +226,7 @@ configured_source_partner( char * fname )
     }
     return result;
 }
-    
+
 
 static PyObject *
 stringListObj( int count, char ** items )
@@ -240,7 +238,7 @@ stringListObj( int count, char ** items )
     list = PyList_New(count);
 
     for (i=0; i<count; i++) {
-	
+
 	char *s = items[i];
 	PyObject *sObj = PyString_FromString(s);
 	PyList_SetItem( list, i, sObj );
@@ -249,7 +247,7 @@ stringListObj( int count, char ** items )
 }
 
 
-char * 
+char *
 configured_macro_replacement(file_id_t file,
 			     char * macro_name,
 			     char * macro_body,
@@ -297,5 +295,5 @@ configured_macro_replacement(file_id_t file,
 
     PyErr_Clear();
     return 0;
-    
+
 }

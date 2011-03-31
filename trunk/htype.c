@@ -110,8 +110,6 @@ main()
 #define SIZE_FLAG "%u"
 #endif
 
-	char *p = (char*) &host_byte_order;
-
 	printf("#define BITS_PER_BYTE\t\t\t%d\n\n", NBBY);
 	printf("#define SIZEOF_CHAR\t\t\t" SIZE_FLAG "\n", CHAR_SIZE);
 	printf("#define SIZEOF_SHORT\t\t\t" SIZE_FLAG "\n", SHORT_SIZE);
