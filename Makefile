@@ -1,7 +1,4 @@
-# $Source: /home/CVSROOT/c2ada/Makefile,v $
-# $Revision: 1.3 $  $Date: 1999/02/09 18:16:51 $
-
-## This Makefile required GNU make (gmake on Solaris).
+## This Makefile requires GNU make (gmake on Solaris).
 
 ## The initial target (real dependencies TBD)
 all::
@@ -10,10 +7,14 @@ all::
 # in the C2Ada source distribution. The form here simply sets this
 # to the source directory.
 #
-HERE		?= $(HOME)/sf/c2ada
+# NOTE this requires a recent GNU Make; 3.81 is OK.
+#
+HERE		?= $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 
 #--------------------------------------------------------------------------
 # Configuration
+#
+# THIS DOES NOT WORK
 Makefile.config: setup
 	./setup
 
@@ -32,7 +33,7 @@ GPERF		?= gperf
 ## necessary on Solaris (libpython only supplied in archive form, not
 ## as shareable object).
 #
-EXTRA_LIBS	?= 
+EXTRA_LIBS	?=
 
 ## This variable can override the 'ranlib' executable on your system.
 #
@@ -84,7 +85,7 @@ PYTHON_SCRIPTS_PATH = $(HERE):$(PYTHON_LIB)
 DEF_PPATH	= -DPPATH=\"$(PYTHON_SCRIPTS_PATH)\"
 
 GNU_C_OPTS	= -g -Wall -Wimplicit -Wreturn-type
-CC		= gcc 
+CC		= gcc
 CFLAGS		= $(GNU_C_OPTS) -DDEBUG $(PYTHONINCLUDES) $(DEF_PPATH)
 LINKER		= gcc
 
@@ -225,9 +226,9 @@ make::		c2ada
 # This is the executable for C2Ada.
 #
 c2ada:		$(FEOBJS) $(LOCAL_LIBS) config.o
-		@echo "LOCAL_LIBS = $(LOCAL_LIBS)" 
-		@echo "LDFLAGS = $(LDFLAGS)" 
-		@echo "LIBS = $(LIBS)" 
+		@echo "LOCAL_LIBS = $(LOCAL_LIBS)"
+		@echo "LDFLAGS = $(LDFLAGS)"
+		@echo "LIBS = $(LIBS)"
 		@echo "PYTHONLIBS = $(PYTHONLIBS)"
 		$(LINKER) $(LDFLAGS) $(FEOBJS) $(LOCAL_LIBS) \
                 $(LIBS) config.o $(PYTHONLIBS) \
