@@ -876,8 +876,8 @@ static int step_impl(const char *string, const regex_t *expbuf)
 {
   regmatch_t match;
   if (regexec(expbuf, string, 1, &match, 0) == 0) {
-    loc1 = string + match.rm_so;
-    loc2 = string + match.rm_eo;
+    loc1 = (char *)string + match.rm_so;
+    loc2 = (char *)string + match.rm_eo;
     return 1;
   } else {
     return 0;
