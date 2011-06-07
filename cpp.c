@@ -33,6 +33,9 @@ extern comment_block_pt fetch_comment_block(void);
 #define MAX_SEARCH      32
 #endif
 
+#define SYNC_RST_CSP    0
+#define SYNC_INC_CSP    1
+
 struct cpp_file_t {
     char *	path;
     char *	text;	       /* file buffer */
@@ -55,7 +58,6 @@ static char   class_initialized;
 #define cond_add(buf,c)         {if (buf) {add((buf), (c));}}
 
 #define UNHANDLED()             unhandled(__FILE__, __LINE__)
-#define UNIMPLEMENTED()         not_implemented(__FILE__,__LINE__)
 
 static buffer_t cppbuf;
 static boolean  buffer_initialized;
@@ -139,14 +141,6 @@ unhandled(file, line)
 }
 
 static void
-not_implemented(file, line)
-    char *file;
-    int line;
-{
-    fatal(FN, LN, "Not yet implemented (source %s:%d)", file, line);
-}
-
-static void
 bad_directive()
 {
     if (scanning()) {
@@ -173,15 +167,6 @@ unexpected_eof(msg)
 {
     char buf[128];
     sprintf(buf, "end of file %s", msg);
-    unexpected(buf);
-}
-
-static void
-unexpected_eol(msg)
-    char *msg;
-{
-    char buf[128];
-    sprintf(buf, "end of line %s", msg);
     unexpected(buf);
 }
 
@@ -278,7 +263,9 @@ init_char_class()
     cpp_char_class[' '] = WHITE;
     cpp_char_class['\t'] = WHITE;
     cpp_char_class['\f'] = WHITE;
+    cpp_char_class['\v'] = WHITE;
     cpp_char_class['\n'] = END_OF_LINE;
+    cpp_char_class['\r'] = END_OF_LINE;
 
     class_initialized = 1;
 }
@@ -623,6 +610,14 @@ top:
             goto top; /* return next_char(); */
         }
         result = f->text[cp->scan_index++];
+        /* Look ahead & detect DOS/WIN CR-LF EOL;
+         * skip the CR & return the LF
+         */
+        if (('\r' == result) && ('\n' == f->text[cp->scan_index]))
+        {
+            result = f->text[cp->scan_index++];
+        }
+
         break;
     case scan_macro_expansion:
         m = cp->scan.expansion.expand_macro;
@@ -729,14 +724,16 @@ skip_white(c)
     return scan_white(NULL, c);
 }
 
+/* When called for a #define, this fails almost all the time
+ * (see E_CIFAIL in error.h, the only one which worked)
+ * even though the plain C version below this worked just fine.
+ */
+
 static int
-scan_cpp_comment(buf, c)
-    buffer_t *buf;
-    int c;
+scan_cpp_comment(buffer_t * buf, boolean want_delim)
 {
+    int c = next_char();
 
-
-    c = next_char();
     for (;;) {
         switch (classof(c)) {
           case END_INPUT:
@@ -752,9 +749,13 @@ scan_cpp_comment(buf, c)
             c = next_char();
             break;
           case END_OF_LINE:
-            incline(0);
+            incline(SYNC_RST_CSP);
             cond_add(buf,c);
-            c = next_char();
+            /* There shouldn't be another char to get; don't get it! */
+            /*c = next_char();*/
+
+            /* Added presumptively from scan_c_comment as a bread crumb */
+		    /*if (want_delim) { ... } */
             return c;
           default:
             UNHANDLED();
@@ -767,7 +768,6 @@ scan_cpp_comment(buf, c)
 static int
 scan_c_comment(buffer_t * buf, boolean want_delim)
 {
-
     int      c = next_char();
 
     for (;;) {
@@ -783,7 +783,7 @@ scan_c_comment(buffer_t * buf, boolean want_delim)
             c = next_char();
             break;
           case END_OF_LINE:
-            incline(0);
+            incline(SYNC_RST_CSP);
             cond_add(buf,c);
             c = next_char();
             break;
@@ -810,7 +810,7 @@ scan_c_comment(buffer_t * buf, boolean want_delim)
                 c = next_char();
                 cond_add(buf,c);
                 if (is_eol(c)) {
-                    incline();
+                    incline(SYNC_RST_CSP);  /* value added */
                 }
                 else if (is_eof(c)) {
                     return c;
@@ -857,7 +857,7 @@ scan_to_end(buffer_t *buf, buffer_t *cbuf, int c)
           case '\\':
             c = next_char();
             if (is_eol(c)) {
-                incline(0);
+                incline(SYNC_RST_CSP);
                 c = next_char();
             }
             else if (is_eof(c)) {
@@ -1025,7 +1025,7 @@ scan_to_del(buffer_t *buf, int c, int del)
               case '\\':
                 c = next_char();
                 if (is_eol(c)) {
-                    incline(0);
+                    incline(SYNC_RST_CSP);
                     c = next_char();
                 }
                 else if (c == '\'' || c == '"' || c == '\\') {
@@ -1198,7 +1198,7 @@ grok_define( buffer_t * buf, int c )
     c = skip_white(c);
 
     if (!is_alpha(c)) {
-        expected("idetifier", c);
+        expected("identifier", c);
         return skip_to_end(c);
     }
 
@@ -1287,7 +1287,7 @@ grok_define( buffer_t * buf, int c )
                     c = next_char();
                     switch (c) {
                       case '\n':
-                        incline();
+                        incline(SYNC_RST_CSP);   /* value added */
                         c = next_char();
                         break;
                       case '\\':
@@ -1932,7 +1932,7 @@ scan_actual(buf,c, level)
                 }
                 switch (c) {
                   case '\n':
-                    incline();
+                    incline(SYNC_RST_CSP);   /* value added */
                     c = next_char();
                     break;
                   default:
@@ -2300,7 +2300,7 @@ skip(buf, c)
             c = next_char();
             break;
           case END_OF_LINE:
-            incline(0);
+            incline(SYNC_RST_CSP);
             c = next_char();
             break;
           case PARAM_START:
@@ -2367,7 +2367,7 @@ scan(buf)
             add(buf, c);
             return 0;
           case END_OF_LINE:
-            incline(1);
+            incline(SYNC_INC_CSP);
             check_position(buf);
             add(buf, c);
             return 0;
