@@ -18,9 +18,9 @@ On 2015-02-03, Mike Quentel imported the Sourceforge project to Github.com with 
 
 * From the original notes at SourceForge:
 
-** "port to linux by Nasser Abbasi"
+   * "port to linux by Nasser Abbasi"
 
-** "see http://12000.org/my_notes/ada/index.htm"
+   * "see http://12000.org/my_notes/ada/index.htm"
 
 ## Getting Started
 * Prerequisites
