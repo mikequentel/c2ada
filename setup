@@ -18,6 +18,7 @@ EOF
     Linux)
 	cat >>Makefile.config <<EOF
 EXTRA_LIBS =
+PYTHON_VER = python2.7
 EOF
 	;;
     SunOS)
