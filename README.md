@@ -17,6 +17,16 @@ On 2015-02-03, Mike Quentel imported the Sourceforge project to Github.com with 
 * Originally hosted at SourceForge, with contributions from jcreem, krischik, nmabbasi, simonjwright
 
 * From the original notes at SourceForge:
-_port to linux by Nasser Abbasi_
 
-_see http://12000.org/my_notes/ada/index.htm_  
+   * "port to linux by Nasser Abbasi"
+
+   * "see http://12000.org/my_notes/ada/index.htm"
+
+## Getting Started
+* Prerequisites
+** Python 2.x
+** [gperf](ftp://ftp.gnu.org/gnu/gperf/)
+1. Optionally fork, then clone c2ada
+1. `cd` to the root directory of c2ada and modify `PYTHON_VER` in `setup` as needed.
+1. Run `make`
+* Expected result: creation of `c2ada` executable.
